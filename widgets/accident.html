@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>事故定位</title>
+    <link rel="stylesheet" href="../css/widgets-content.css"/>
+</head>
+
+<body>
+<div class="widgets-content widgets-accident">
+    <div class="widgets-row">
+        <p class="name"><sub>*</sub>经度(X)：</p>
+        <div class="content">
+            <input id="AccLng" type="text" placeholder=""/>
+            <a class="btn-accident" onclick="getLocation()">定位</a>
+        </div>
+    </div>
+    <div class="widgets-row">
+        <p class="name"><sub>*</sub>纬度(Y)：</p>
+        <div class="content">
+            <input id="AccLat" type="text" placeholder=""/>
+            <a class="btn-accident" onclick="clearAcc()">清空</a>
+        </div>
+    </div>
+    <div class="widgets-row">
+        <p class="name">样例：</p>
+        <div class="content" style="line-height: 30px;">
+            117.73426，38.93628
+        </div>
+    </div>
+    <div class="widgets-row">
+        <div class="widgets-button">
+            <span class="accident-btn" onclick="alert(0)">添加事故点</span>
+        </div>
+    </div>
+    <!--<div class="widgets-row">-->
+    <!--<div class="prompt-word">点击此按钮后再在地图上点击添加事故点</div>-->
+    <!--</div>-->
+</div>
+<script src="../js/jquery-3.3.1.min.js"></script>
+<script>
+    $(function () {
+        //获取父窗口的关闭事件
+        $('.widgets-select', window.parent.document).find('.widgets-close').click(function () {
+            markerTool.clear();
+            markerTool.close();
+        })
+    });
+    var map = parent.map;
+    var markerTool = parent.markerTool;
+    markerTool.removeEventListener("mouseup", getCoordinate);
+    markerTool.addEventListener("mouseup", getCoordinate);
+
+    function getLocation() {
+        markerTool.open();
+    }
+
+    function getCoordinate(currentLnglat, currentMarker, allMarkers) {
+        // console.log(currentLnglat);
+        document.getElementById("AccLng").value = currentLnglat[0].toFixed(5);
+        document.getElementById("AccLat").value = currentLnglat[1].toFixed(5);
+        markerTool.clear();
+        markerTool.close();
+    }
+
+    function clearAcc() {
+        document.getElementById("AccLng").value = "";
+        document.getElementById("AccLat").value = "";
+    }
+</script>
+</body>
+
+</html>

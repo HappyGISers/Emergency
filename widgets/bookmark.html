@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>书签</title>
+    <link rel="stylesheet" href="../css/widgets-content.css"/>
+</head>
+
+<body>
+<div class="widgets-content widgets-bookmark">
+    <div class="widgets-row">
+        <div class="content">
+            <input type="text" placeholder="书签名称" id="bookmark-input"/>
+            <div class="btn-add-bookmark">+</div>
+        </div>
+    </div>
+    <div class="widgets-row">
+        <ul class="list-bookmark" style="cursor: pointer;">
+        </ul>
+    </div>
+</div>
+<script src="../js/jquery-3.3.1.min.js"></script>
+<script>
+    var map = parent.map;
+    $(function () {
+        var bookmarkData = []; //存放json数据
+        if (window.localStorage) {
+            if (window.localStorage.getItem('bookmarks')) {
+                bookmarkData = JSON.parse(window.localStorage.getItem('bookmarks'));
+            }
+            else {
+                bookmarkData = [];
+            }
+            for (var i = 0; i < bookmarkData.length; i++) {
+                var extentStr = bookmarkData[i].extent[0].toFixed(3) + ', ' + bookmarkData[i].extent[1].toFixed(3) + ', ' + bookmarkData[i].extent[2].toFixed(3) + ', ' + bookmarkData[i].extent[3].toFixed(3);
+                $('.list-bookmark').append('<li><p>' + bookmarkData[i].name + '</p><span>' + extentStr + '</span><a class="delete-btn" title="删除"></a></li>');
+            }
+        }
+        //添加
+        $('.btn-add-bookmark').click(function () {
+            var bookmarkName = $('#bookmark-input').val();
+            if (bookmarkName == '') {
+                alert('书签名称不能为空！');
+            } else {
+                var extentStr = map.getBounds().getSouthWest().lng.toFixed(3) + ", " + map.getBounds().getSouthWest().lat.toFixed(3) + ", " + map.getBounds().getNorthEast().lng.toFixed(3) + ", " + map.getBounds().getNorthEast().lat.toFixed(3);
+                $('.list-bookmark').append('<li><p>' + bookmarkName + '</p><span>' + extentStr + '</span><a class="delete-btn" title="删除"></a></li>');
+                //向数组中新加内容
+                bookmarkData.push({
+                    "name": bookmarkName,
+                    "extent": [map.getBounds().getSouthWest().lng, map.getBounds().getSouthWest().lat, map.getBounds().getNorthEast().lng, map.getBounds().getNorthEast().lat]
+                });
+                localStorage.setItem("bookmarks", JSON.stringify(bookmarkData));
+            }
+        });
+        //删除
+        $(".list-bookmark").on("click", "li .delete-btn", function (e) {
+            if (window.localStorage) {
+                $(this).parents('li').remove();
+                //删除数组中相同的
+                var name = $(this).parents('li').find('p').text();
+                for (var i = 0; i < bookmarkData.length; i++) {
+                    if (name == bookmarkData[i].name) {
+                        bookmarkData.splice(i, 1);
+                        break;
+                    }
+                }
+                localStorage.setItem("bookmarks", JSON.stringify(bookmarkData));
+                e.stopPropagation();
+            }
+        });
+        // 点击
+        $(".list-bookmark").on("click", "li", function () {
+            if (window.localStorage) {
+                var name = $(this).find('p').text();
+                for (var i = 0; i < bookmarkData.length; i++) {
+                    if (name == bookmarkData[i].name) {
+                        map.setViewport(bookmarkData[i].extent);
+                        break;
+                    }
+                }
+            }
+        })
+    })
+</script>
+</body>
+
+</html>

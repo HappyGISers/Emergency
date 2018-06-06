@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>打印</title>
+    <link rel="stylesheet" href="../css/widgets-content.css"/>
+</head>
+
+<body>
+<div class="widgets-content widgets-print">
+    <div class="widgets-row">
+        <p class="name">分辨率：</p>
+        <div class="content">
+            <select id="resolution" class="select">
+                <option value="72">72 dpi</option>
+                <option value="150">150 dpi</option>
+                <option value="300">300 dpi</option>
+            </select>
+        </div>
+    </div>
+    <div class="widgets-row">
+        <div class="widgets-button">
+            <span class="print-btn" onclick="print()">打印</span>
+        </div>
+    </div>
+</div>
+</body>
+<script>
+    var map = parent.map;
+
+    function print() {
+        map.print(document.getElementById('resolution').value);
+    }
+</script>
+</html>

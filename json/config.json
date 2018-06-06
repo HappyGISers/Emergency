@@ -1,0 +1,29 @@
+{
+  "widgets": [
+    {
+      "icon": "images/6.png",
+      "name": "事故定位",
+      "url": "widgets/accident.html"
+    },
+    {
+      "icon": "images/7.png",
+      "name": "路径规划",
+      "url": "widgets/path_analysis.html"
+    },
+    {
+      "icon": "images/4.png",
+      "name": "书签",
+      "url": "widgets/bookmark.html"
+    },
+    {
+      "icon": "images/5.png",
+      "name": "打印",
+      "url": "widgets/print.html"
+    }
+  ]
+}
+
+
+
+
+

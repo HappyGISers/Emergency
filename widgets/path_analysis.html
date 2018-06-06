@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>路径规划</title>
+    <link rel="stylesheet" href="../css/widgets-content.css"/>
+</head>
+
+<body>
+<div class="widgets-content widgets-path">
+    <div class="widgets-row">
+        <div class="widgets-tab">
+            <p class="select"><sub>*</sub>起点</p>
+            <p><sub>*</sub>终点</p>
+        </div>
+        <div class="widgets-tab-main">
+            <div class="widgets-tab-content">
+                <p class="name"><sub>*</sub>经度(X)：</p>
+                <div class="content">
+                    <input type="text" placeholder="" id="startLng"/>
+                </div>
+            </div>
+            <div class="widgets-tab-content">
+                <p class="name"><sub>*</sub>纬度(Y)：</p>
+                <div class="content">
+                    <input type="text" placeholder="" id="startLat"/>
+                </div>
+            </div>
+            <div class="widgets-tab-content">
+                <div class="widgets-button">
+                    <span class="location-btn" onclick="getLocation(0)">定位</span>
+                </div>
+            </div>
+        </div>
+        <div class="widgets-tab-main" style="display: none;">
+            <div class="widgets-tab-content">
+                <p class="name"><sub>*</sub>经度(X)：</p>
+                <div class="content">
+                    <input type="text" placeholder="" id="endLng"/>
+                </div>
+            </div>
+            <div class="widgets-tab-content">
+                <p class="name"><sub>*</sub>纬度(Y)：</p>
+                <div class="content">
+                    <input type="text" placeholder="" id="endLat"/>
+                </div>
+            </div>
+            <div class="widgets-tab-content">
+                <div class="widgets-button">
+                    <span class="location-btn" onclick="getLocation(1)">定位</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="widgets-row">
+        <div class="widgets-button">
+            <span class="searchpath-btn" onclick="analysis()">查询路径</span>
+            <span class="delete-btn" onclick="clearRoute()">清除</span>
+        </div>
+    </div>
+</div>
+<script src="../js/jquery-3.3.1.min.js"></script>
+<script src="../js/dest.min.js"></script>
+<script src="../js/coordinateUtils.js"></script>
+<script src="../js/amap-direction.js"></script>
+<script>
+
+    //获取父窗口的关闭事件
+    $('.widgets-select', window.parent.document).find('.widgets-close').click(function () {
+        markerTool.clear();
+        markerTool.close();
+        clearPath();
+    });
+
+    var map = parent.map;
+    var markerTool = parent.markerTool;
+    markerTool.removeEventListener("mouseup", getCoordinate);
+    markerTool.addEventListener("mouseup", getCoordinate);
+    var curIndex = 0;
+    $(function () {
+        $('.widgets-path .widgets-tab p').click(function () {
+            $(this).addClass('select').siblings('p').removeClass('select');
+            var index = $(this).index();
+            $('.widgets-path .widgets-tab-main').hide().eq(index).show();
+        })
+    });
+
+    function getLocation(index) {
+        curIndex = index;
+        markerTool.open();
+    }
+
+    function getCoordinate(currentLnglat, currentMarker, allMarkers) {
+        // console.log(currentLnglat);
+        if (curIndex === 0) {
+            document.getElementById("startLng").value = currentLnglat[0].toFixed(5);
+            document.getElementById("startLat").value = currentLnglat[1].toFixed(5);
+        }
+        else {
+            document.getElementById("endLng").value = currentLnglat[0].toFixed(5);
+            document.getElementById("endLat").value = currentLnglat[1].toFixed(5);
+        }
+        markerTool.clear();
+        markerTool.close();
+    }
+
+    function analysis() {
+        driving("direction", "--",
+            {
+                x: document.getElementById("startLng").value,
+                y: document.getElementById("startLat").value
+            },
+            {
+                x: document.getElementById("endLng").value,
+                y: document.getElementById("endLat").value
+            });
+    }
+
+    function clearRoute() {
+        markerTool.clear();
+        markerTool.close();
+        clearPath();
+    }
+</script>
+</body>
+
+</html>
