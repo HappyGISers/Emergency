@@ -4,19 +4,54 @@ $(function () {
     var json = {
         "widgets": [
             {
+                "icon": "images/8.png",
+                "name": "图层控制",
+                "url": "widgets/layer_control.html"
+            },
+            {
                 "icon": "images/6.png",
                 "name": "事故定位",
                 "url": "widgets/accident.html"
             },
             {
+                "icon": "images/12.png",
+                "name": "专题标注",
+                "url": "widgets/special_label.html"
+            },
+            {
+                "icon": "images/2.png",
+                "name": "态势标绘",
+                "url": "widgets/situation_plotting.html"
+            },
+            {
+                "icon": "images/11.png",
+                "name": "轨迹查询",
+                "url": "widgets/track_query.html"
+            },
+            {
                 "icon": "images/7.png",
-                "name": "路径规划",
+                "name": "路径分析",
                 "url": "widgets/path_analysis.html"
             },
             {
+                "icon": "images/9.png",
+                "name": "简单查询",
+                "url": "widgets/query.html"
+            },
+            {
+                "icon": "images/1.png",
+                "name": "缓冲区分析",
+                "url": "widgets/buffer.html"
+            },
+            {
                 "icon": "images/4.png",
-                "name": "书签",
+                "name": "地理书签",
                 "url": "widgets/bookmark.html"
+            },
+            {
+                "icon": "images/10.png",
+                "name": "场景保存",
+                "url": "widgets/scene_save.html"
             },
             {
                 "icon": "images/5.png",

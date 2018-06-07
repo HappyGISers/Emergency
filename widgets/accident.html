@@ -61,7 +61,7 @@
         var x = document.getElementById("AccLng").value;
         var y = document.getElementById("AccLat").value;
         if (x.length > 0 && y.length > 0) {
-            map.centerAndZoom(new T.LngLat(parseFloat(x), parseFloat(y)), 10);
+            map.centerAndZoom(new T.LngLat(parseFloat(x), parseFloat(y)), 16);
         }
         else {
             alert("事故点经纬度不能为空");
