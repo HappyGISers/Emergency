@@ -52,6 +52,7 @@
                 });
                 localStorage.setItem("bookmarks", JSON.stringify(bookmarkData));
             }
+            $('#bookmark-input').val("");
         });
         //删除
         $(".list-bookmark").on("click", "li .delete-btn", function (e) {

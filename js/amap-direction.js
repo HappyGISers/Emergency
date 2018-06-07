@@ -244,6 +244,7 @@ function clearPath() {
         for (var line in lines) {
             map.removeOverLay(lines[line]);
         }
+        lines = [];
     }
 }
 

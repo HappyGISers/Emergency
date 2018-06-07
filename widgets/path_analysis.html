@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>路径规划</title>
+    <title>路径分析</title>
     <link rel="stylesheet" href="../css/widgets-content.css"/>
 </head>
 
@@ -65,7 +65,6 @@
 <script src="../js/coordinateUtils.js"></script>
 <script src="../js/amap-direction.js"></script>
 <script>
-
     //获取父窗口的关闭事件
     $('.widgets-select', window.parent.document).find('.widgets-close').click(function () {
         markerTool.clear();
@@ -75,6 +74,7 @@
 
     var map = parent.map;
     var markerTool = parent.markerTool;
+    var T = parent.T;
     markerTool.removeEventListener("mouseup", getCoordinate);
     markerTool.addEventListener("mouseup", getCoordinate);
     var curIndex = 0;
@@ -86,40 +86,87 @@
         })
     });
 
+    var startIcon = new T.Icon({
+        iconUrl: "images/start.png",
+        scale: 0.7,
+        iconAnchor: new T.Point(0.5, 1)
+    });
+
+
+    var endIcon = new T.Icon({
+        iconUrl: "images/end.png",
+        scale: 0.7,
+        iconAnchor: new T.Point(0.5, 1)
+    });
+
+    var startMarker;
+    var endMarker;
+
     function getLocation(index) {
         curIndex = index;
         markerTool.open();
     }
 
     function getCoordinate(currentLnglat, currentMarker, allMarkers) {
-        // console.log(currentLnglat);
         if (curIndex === 0) {
             document.getElementById("startLng").value = currentLnglat[0].toFixed(5);
             document.getElementById("startLat").value = currentLnglat[1].toFixed(5);
+            if (startMarker) {
+                map.removeOverLay(startMarker);
+                startMarker = null;
+            }
+            startMarker = new T.Marker(new T.LngLat(currentLnglat[0], currentLnglat[1]), {icon: startIcon});
+            map.addOverLay(startMarker);
         }
         else {
             document.getElementById("endLng").value = currentLnglat[0].toFixed(5);
             document.getElementById("endLat").value = currentLnglat[1].toFixed(5);
+            if (endMarker) {
+                map.removeOverLay(endMarker);
+                endMarker = null;
+            }
+            endMarker = new T.Marker(new T.LngLat(currentLnglat[0], currentLnglat[1]), {icon: endIcon});
+            map.addOverLay(endMarker);
         }
-        markerTool.clear();
         markerTool.close();
+        setTimeout(function () {
+            markerTool.clear();
+        }, 0);
     }
 
     function analysis() {
-        driving("direction", "--",
-            {
-                x: document.getElementById("startLng").value,
-                y: document.getElementById("startLat").value
-            },
-            {
-                x: document.getElementById("endLng").value,
-                y: document.getElementById("endLat").value
-            });
+        var startX = document.getElementById("startLng").value;
+        var startY = document.getElementById("startLat").value;
+        var endX = document.getElementById("endLng").value;
+        var endY = document.getElementById("endLat").value;
+        if (startX.length > 0 && startY.length > 0 && endX.length > 0 && endY.length > 0) {
+            clearPath();
+            driving("direction", "--",
+                {
+                    x: document.getElementById("startLng").value,
+                    y: document.getElementById("startLat").value
+                },
+                {
+                    x: document.getElementById("endLng").value,
+                    y: document.getElementById("endLat").value
+                });
+        }
+        else {
+            alert("起始点或终止点坐标不能为空！")
+        }
     }
 
     function clearRoute() {
         markerTool.clear();
         markerTool.close();
+        if (startMarker) {
+            map.removeOverLay(startMarker);
+            startMarker = null;
+        }
+        if (endMarker) {
+            map.removeOverLay(endMarker);
+            endMarker = null;
+        }
         clearPath();
     }
 </script>

@@ -1,57 +1,82 @@
 $(function () {
-    $.get("json/config.json", function (json) {
-        //console.log(json.widgets)
-        //添加各种工具的按钮
-        $('body').append('<ul class="widgets" id="widgets"></ul>');
-        for (var i = 0; i < json.widgets.length; i++) {
-            var li = '<li class="widgets' + i + '" title="' + json.widgets[i].name + '"><span><img src="' + json.widgets[i].icon + '"/></span></li>';
-            $('#widgets').append(li);
-        }
-
-        //各种工具的点击事件
-        $('#widgets li').click(function () {
-            var index = $(this).index();
-            var thisclass = $(this).attr('class');
-            var newclass = $('.' + thisclass + '-main');
-            if (newclass.length > 0 && newclass.is(":hidden")) {
-                //显示当前选择
-                $('.widgets-select .widgets-close').click();
-                //$('.widgets-main').removeClass('widgets-select').hide();
-                newclass.addClass('widgets-select').show();
-                $(this).find('span').addClass('select').parent('li').siblings('li').find('span').removeClass('select');
-            } else if (newclass.length > 0 && newclass.is(":visible")) {
-                //隐藏所有
-                $('.widgets-select .widgets-close').click();
-                //$('#widgets li span').removeClass('select');
-                //newclass.removeClass('widgets-select').hide();
-            } else {
-                $('.widgets-select .widgets-close').click();
-                $(this).find('span').addClass('select').parent('li').siblings('li').find('span').removeClass('select');
-                //$('.widgets-main').removeClass('widgets-select').hide();
-                //向页面新加弹框内容
-                var divhtml = '<div class="widgets-main ' + thisclass + '-main widgets-select"><div class="widgets-main-title"><p>' + json.widgets[index].name + '</p><div class="widgets-close"></div></div><div class="widgets-content"><iframe frameborder="0" src="' + json.widgets[index].url + '"></iframe><div class="widgets-layer"></div></div></div>';
-                $('body').append(divhtml);
-                //拖拽
-                $('.' + thisclass + '-main').myDrag({
-                    direction: 'all',
-                    randomPosition: false,
-                    handler: '.widgets-main-title p',
-                    dragStart: function (x, y) {
-                        $('.widgets-layer').show();
-                    },
-                    dragEnd: function (x, y) {
-                        $('.widgets-layer').hide();
-                    }
-                });
-
+    // $.get("json/config.json", function (json) {
+    //console.log(json.widgets)
+    var json = {
+        "widgets": [
+            {
+                "icon": "images/6.png",
+                "name": "事故定位",
+                "url": "widgets/accident.html"
+            },
+            {
+                "icon": "images/7.png",
+                "name": "路径规划",
+                "url": "widgets/path_analysis.html"
+            },
+            {
+                "icon": "images/4.png",
+                "name": "书签",
+                "url": "widgets/bookmark.html"
+            },
+            {
+                "icon": "images/5.png",
+                "name": "打印",
+                "url": "widgets/print.html"
             }
-            //弹框中的关闭事件
-            $('.widgets-close').click(function () {
-                $('#widgets li span').removeClass('select');
-                $('.widgets-main').removeClass('widgets-select').hide();
-            })
+        ]
+    };
+
+    //添加各种工具的按钮
+    $('body').append('<ul class="widgets" id="widgets"></ul>');
+    for (var i = 0; i < json.widgets.length; i++) {
+        var li = '<li class="widgets' + i + '" title="' + json.widgets[i].name + '"><span><img src="' + json.widgets[i].icon + '"/></span></li>';
+        $('#widgets').append(li);
+    }
+
+    //各种工具的点击事件
+    $('#widgets li').click(function () {
+        var index = $(this).index();
+        var thisclass = $(this).attr('class');
+        var newclass = $('.' + thisclass + '-main');
+        if (newclass.length > 0 && newclass.is(":hidden")) {
+            //显示当前选择
+            $('.widgets-select .widgets-close').click();
+            //$('.widgets-main').removeClass('widgets-select').hide();
+            newclass.addClass('widgets-select').show();
+            $(this).find('span').addClass('select').parent('li').siblings('li').find('span').removeClass('select');
+        } else if (newclass.length > 0 && newclass.is(":visible")) {
+            //隐藏所有
+            $('.widgets-select .widgets-close').click();
+            //$('#widgets li span').removeClass('select');
+            //newclass.removeClass('widgets-select').hide();
+        } else {
+            $('.widgets-select .widgets-close').click();
+            $(this).find('span').addClass('select').parent('li').siblings('li').find('span').removeClass('select');
+            //$('.widgets-main').removeClass('widgets-select').hide();
+            //向页面新加弹框内容
+            var divhtml = '<div class="widgets-main ' + thisclass + '-main widgets-select"><div class="widgets-main-title"><p>' + json.widgets[index].name + '</p><div class="widgets-close"></div></div><div class="widgets-content"><iframe frameborder="0" src="' + json.widgets[index].url + '"></iframe><div class="widgets-layer"></div></div></div>';
+            $('body').append(divhtml);
+            //拖拽
+            $('.' + thisclass + '-main').myDrag({
+                direction: 'all',
+                randomPosition: false,
+                handler: '.widgets-main-title p',
+                dragStart: function (x, y) {
+                    $('.widgets-layer').show();
+                },
+                dragEnd: function (x, y) {
+                    $('.widgets-layer').hide();
+                }
+            });
+
+        }
+        //弹框中的关闭事件
+        $('.widgets-close').click(function () {
+            $('#widgets li span').removeClass('select');
+            $('.widgets-main').removeClass('widgets-select').hide();
         })
     })
+    // })
 });
 (function ($, window, document, undefined) {
     //定义的构造函数
