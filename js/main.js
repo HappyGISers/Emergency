@@ -18,7 +18,7 @@ window.onload = function () {
     map.addLayer(gaode); // 添加高德地图
     // var satelliteLayer = new T.TileLayer(satelliteLayerUrl);
     // map.addLayer(satelliteLayer);
-    map.centerAndZoom(mapCenter, zoom); // 定位到中心点和指定级别
+    // map.centerAndZoom(mapCenter, zoom); // 定位到中心点和指定级别
     var zoom = new T.Control.Zoom();
     //添加缩放平移控件
     map.addControl(zoom);

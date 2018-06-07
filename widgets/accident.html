@@ -13,7 +13,7 @@
         <p class="name"><sub>*</sub>经度(X)：</p>
         <div class="content">
             <input id="AccLng" type="text" placeholder=""/>
-            <a class="btn-accident" onclick="getLocation()">定位</a>
+            <a class="btn-accident" onclick="zoom()">定位</a>
         </div>
     </div>
     <div class="widgets-row">
@@ -31,7 +31,7 @@
     </div>
     <div class="widgets-row">
         <div class="widgets-button">
-            <span class="accident-btn" onclick="alert(0)">添加事故点</span>
+            <span class="accident-btn" onclick="addAccident()">添加事故点</span>
         </div>
     </div>
     <!--<div class="widgets-row">-->
@@ -40,6 +40,7 @@
 </div>
 <script src="../js/jquery-3.3.1.min.js"></script>
 <script>
+    var T = parent.T;
     $(function () {
         //获取父窗口的关闭事件
         $('.widgets-select', window.parent.document).find('.widgets-close').click(function () {
@@ -52,8 +53,19 @@
     markerTool.removeEventListener("mouseup", getCoordinate);
     markerTool.addEventListener("mouseup", getCoordinate);
 
-    function getLocation() {
+    function addAccident() {
         markerTool.open();
+    }
+
+    function zoom() {
+        var x = document.getElementById("AccLng").value;
+        var y = document.getElementById("AccLat").value;
+        if (x.length > 0 && y.length > 0) {
+            map.centerAndZoom(new T.LngLat(parseFloat(x), parseFloat(y)), 10);
+        }
+        else {
+            alert("事故点经纬度不能为空");
+        }
     }
 
     function getCoordinate(currentLnglat, currentMarker, allMarkers) {
