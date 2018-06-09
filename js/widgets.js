@@ -21,7 +21,7 @@ $(function () {
             {
                 "icon": "images/2.png",
                 "name": "态势标绘",
-                "url": "widgets/situation_plotting.html"
+                "url": "widgets/situation_plotting/situation_plotting.html"
             },
             {
                 "icon": "images/11.png",
