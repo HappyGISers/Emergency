@@ -1,10 +1,240 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
+
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>图层控制</title>
+    <link rel="stylesheet" href="../css/widgets-content.css"/>
 </head>
-<body>
 
+<body>
+<div class="widgets-content widgets-layer">
+    <div class="widgets-row" style="z-index: 2;">
+        <div class="widgets-layer-title">
+            业务图层
+            <div class="layer-alert">
+                <div class="btn"></div>
+                <div class="layer-alert-menu">
+                    <div class="menu-item">打开所有图层</div>
+                    <div class="menu-item">关闭所有图层</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="widgets-row">
+        <div class="list-layer">
+            <div class="checkbox"><img src="../images/map1.png">高德地图(普通地图)</div>
+            <div class="layer-alert">
+                <div class="btn"></div>
+                <div class="layer-alert-menu">
+                    <div class="menu-item">缩放至</div>
+                    <div class="menu-item">透明度</div>
+                    <div class="menu-line"></div>
+                    <div class="menu-item dissable">上移</div>
+                    <div class="menu-item">下移</div>
+                </div>
+                <div class="layer-alert-opacity">
+                    <div class="left">
+                        <p>不透明</p>
+                        <div class="opacity-btn" id="opacity-minus1"></div>
+                    </div>
+                    <div class="right">
+                        <p>透明</p>
+                        <div class="opacity-btn" id="opacity-add1"></div>
+                    </div>
+                    <div class="center">
+                        <span>0%</span>
+                        <span>50%</span>
+                        <span>100%</span>
+                    </div>
+                    <div class="scale_panel">
+                        <div class="scale" id="bar1">
+                            <div class="silderbg"></div>
+                            <span id="silder1"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="list-layer">
+            <div class="checkbox"><img src="../images/map2.png">高德地图标注(影像地图)</div>
+            <div class="layer-alert">
+                <div class="btn"></div>
+                <div class="layer-alert-menu">
+                    <div class="menu-item">缩放至</div>
+                    <div class="menu-item">透明度</div>
+                    <div class="menu-line"></div>
+                    <div class="menu-item">上移</div>
+                    <div class="menu-item">下移</div>
+                </div>
+                <div class="layer-alert-opacity">
+                    <div class="left">
+                        <p>不透明</p>
+                        <div class="opacity-btn" id="opacity-minus2"></div>
+                    </div>
+                    <div class="right">
+                        <p>透明</p>
+                        <div class="opacity-btn" id="opacity-add2"></div>
+                    </div>
+                    <div class="center">
+                        <span>0%</span>
+                        <span>50%</span>
+                        <span>100%</span>
+                    </div>
+                    <div class="scale_panel">
+                        <div class="scale" id="bar2">
+                            <div class="silderbg"></div>
+                            <span id="silder2"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="list-layer">
+            <div class="checkbox"><img src="../images/map3.png">高德地图(影像地图)</div>
+            <div class="layer-alert">
+                <div class="btn"></div>
+                <div class="layer-alert-menu">
+                    <div class="menu-item">缩放至</div>
+                    <div class="menu-item">透明度</div>
+                    <div class="menu-line"></div>
+                    <div class="menu-item">上移</div>
+                    <div class="menu-item dissable">下移</div>
+                </div>
+                <div class="layer-alert-opacity">
+                    <div class="left">
+                        <p>不透明</p>
+                        <div class="opacity-btn" id="opacity-minus3"></div>
+                    </div>
+                    <div class="right">
+                        <p>透明</p>
+                        <div class="opacity-btn" id="opacity-add3"></div>
+                    </div>
+                    <div class="center">
+                        <span>0%</span>
+                        <span>50%</span>
+                        <span>100%</span>
+                    </div>
+                    <div class="scale_panel">
+                        <div class="scale" id="bar3">
+                            <div class="silderbg"></div>
+                            <span id="silder3"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="../js/jquery-3.3.1.min.js"></script>
+<script>
+    $(function () {
+        //获取父窗口的关闭事件
+        $('.widgets-select', window.parent.document).find('.widgets-close').click(function () {
+            //alert('我是子页面的图层控制')
+        })
+        //弹框
+        $('.layer-alert .btn').click(function (e) {
+            e.stopPropagation();
+            $('.list-layer').css({
+                'z-index': '1'
+            });
+            $(this).parents('.list-layer').css({
+                'z-index': '2'
+            });
+            $('.layer-alert-opacity').hide();
+            if ($(this).parents('.layer-alert').hasClass('active')) {
+                $(this).parents('.layer-alert').removeClass('active');
+            } else {
+                $('.layer-alert').removeClass('active');
+                $(this).parents('.layer-alert').addClass('active');
+            }
+        })
+        $('.menu-item').click(function (e) {
+            e.stopPropagation();
+            $('.layer-alert-opacity').hide();
+            if ($(this).html() == '透明度') {
+                $(this).parents('.layer-alert').find('.layer-alert-opacity').show();
+            } else {
+                $('.layer-alert').removeClass('active');
+            }
+        })
+        $('.layer-alert-opacity').click(function (e) {
+            e.stopPropagation();
+        })
+        $('body').click(function (e) {
+            e.stopPropagation();
+            if ($('.layer-alert').hasClass('active')) {
+                $('.layer-alert').removeClass('active');
+                $('.layer-alert-opacity').hide();
+            }
+        })
+        //复选框
+        $('.checkbox').click(function () {
+            if ($(this).hasClass('checked')) {
+                $(this).removeClass('checked');
+            } else {
+                $(this).addClass('checked');
+            }
+        })
+    })
+    //透明度
+    scale = function (btn, bar, add, minus) {
+        this.btn = document.getElementById(btn);
+        this.bar = document.getElementById(bar);
+        this.minus = document.getElementById(minus);
+        this.add = document.getElementById(add);
+        this.step = this.bar.getElementsByTagName("DIV")[0];
+        this.init();
+    };
+    scale.prototype = {
+        init: function () {
+            this.silderx = 0;
+            this.silderm = 0;
+            var f = this,
+                g = document,
+                b = window,
+                m = Math;
+            f.btn.onmousedown = function (e) {
+                var x = (e || b.event).clientX;
+                var l = this.offsetLeft;
+                var max = f.bar.offsetWidth - this.offsetWidth;
+                g.onmousemove = function (e) {
+                    var thisX = (e || b.event).clientX;
+                    var to = m.min(max, m.max(-2, l + (thisX - x)));
+                    var pos = m.round(m.max(0, to / max) * 100);
+                    f.silderx = to;
+                    f.silderm = pos;
+                    f.ondrag(pos, to);
+                    b.getSelection ? b.getSelection().removeAllRanges() : g.selection.empty();
+                };
+                g.onmouseup = new Function('this.onmousemove=null');
+            };
+            f.add.onclick = function () {
+                if (f.silderm < 100) {
+                    f.silderm++;
+                    f.silderx += 1.34;
+                    f.ondrag(f.silderm, f.silderx);
+                }
+            }
+            f.minus.onclick = function () {
+                if (f.silderm > 0) {
+                    f.silderm--;
+                    f.silderx -= 1.34;
+                    f.ondrag(f.silderm, f.silderx);
+                }
+            }
+        },
+        ondrag: function (pos, x) {
+            this.btn.style.left = x + 'px';
+            this.step.style.width = Math.max(0, x) + 'px';
+            console.log('当前透明度' + pos + '%');
+        }
+    }
+    new scale('silder1', 'bar1', 'opacity-add1', 'opacity-minus1');
+    new scale('silder2', 'bar2', 'opacity-add2', 'opacity-minus2');
+    new scale('silder3', 'bar3', 'opacity-add3', 'opacity-minus3');
+</script>
 </body>
+
 </html>

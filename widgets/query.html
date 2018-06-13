@@ -1,10 +1,122 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
+
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>关键字查询</title>
+    <link rel="stylesheet" href="../css/widgets-content.css"/>
 </head>
-<body>
 
+<body>
+<div class="widgets-content widgets-keyword">
+    <div class="widgets-row">
+        <div class="content" style="margin-bottom: 5px;">
+            <input type="text" placeholder="请输入关键字" id="keyword-input"/>
+            <div class="btn-search btn-search-keyword"></div>
+        </div>
+    </div>
+    <div class="widgets-row">
+        <div class="prompt-word">
+            <span class="checkbox">在当前地图范围内查询</span>
+        </div>
+    </div>
+    <div class="widgets-row">
+        <div class="widgets-button">
+            <span onclick="alert(0)">全部缩放</span>
+            <span onclick="alert(0)">清空</span>
+        </div>
+    </div>
+    <div class="widgets-row">
+        <div class="list-title">
+            <p class="select">全部（149）</p>
+            <p>空气质量测点（1）</p>
+            <p>建设项目（148）</p>
+        </div>
+        <ul class="list-keyword">
+            <li>
+                <img src="../images/air.png">
+                <p class="listname">
+                    <a>海淀北京植物园 - 空气质量测点</a>
+                </p>
+            </li>
+            <li>
+                <img src="../images/construction.png">
+                <p class="listname">
+                    <a>海淀北京植物园 - 空气质量测点</a>
+                </p>
+                <a class="listdetails" href="http://baidu.com" target="_blank">详情></a>
+            </li>
+            <li>
+                <img src="../images/construction.png">
+                <p class="listname">
+                    <a>海淀北京植物园 - 空气质量测点</a>
+                </p>
+                <a class="listdetails" href="http://baidu.com" target="_blank">详情></a>
+            </li>
+            <li>
+                <img src="../images/construction.png">
+                <p class="listname">
+                    <a>海淀北京植物园 - 空气质量测点</a>
+                </p>
+                <a class="listdetails" href="http://baidu.com" target="_blank">详情></a>
+            </li>
+            <li>
+                <img src="../images/construction.png">
+                <p class="listname">
+                    <a>海淀北京植物园 - 空气质量测点</a>
+                </p>
+                <a class="listdetails" href="http://baidu.com" target="_blank">详情></a>
+            </li>
+            <li>
+                <img src="../images/construction.png">
+                <p class="listname">
+                    <a>海淀北京植物园 - 空气质量测点</a>
+                </p>
+                <a class="listdetails" href="http://baidu.com" target="_blank">详情></a>
+            </li>
+            <li>
+                <img src="../images/construction.png">
+                <p class="listname">
+                    <a>海淀北京植物园 - 空气质量测点</a>
+                </p>
+                <a class="listdetails" href="http://baidu.com" target="_blank">详情></a>
+            </li>
+            <li>
+                <img src="../images/construction.png">
+                <p class="listname">
+                    <a>海淀北京植物园 - 空气质量测点</a>
+                </p>
+                <a class="listdetails" href="http://baidu.com" target="_blank">详情></a>
+            </li>
+        </ul>
+    </div>
+</div>
+<script src="../js/jquery-1.9.1.min.js"></script>
+<script>
+    $(function () {
+        //获取父窗口的关闭事件
+        $('.widgets-select', window.parent.document).find('.widgets-close').click(function () {
+            //alert('我是子页面的关键字查询')
+        })
+        //复选框
+        $('.checkbox').click(function () {
+            if ($(this).hasClass('checked')) {
+                $(this).removeClass('checked');
+            } else {
+                $(this).addClass('checked');
+            }
+        })
+        //搜索
+        $('.btn-search-keyword').click(function () {
+            var bookmarkName = $('#keyword-input').val();
+            if (bookmarkName == '') {
+                alert('关键字不能为空！');
+            } else {
+
+            }
+        })
+    })
+</script>
 </body>
+
 </html>
