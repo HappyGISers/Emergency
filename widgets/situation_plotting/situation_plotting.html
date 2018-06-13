@@ -132,8 +132,8 @@
                                     <span>填充色</span>
                                 </td>
                                 <td width="60%">
-                                    <input type="text" id="FillClr" name="FillClr" onclick="showcolors('FillClr')" style="background-color: #FFCC33;
-                                            margin: 5px;" alt="clrDlgLin" value="#FFCC33" readonly=readonly />
+                                    <input type="text" id="FillClr" name="FillClr" onclick="showcolors('FillClr')" style="background-color: #FF3399;
+                                            margin: 5px;" alt="clrDlgLin" value="#FF3399" readonly=readonly />
                                 </td>
                             </tr>
                             <tr>
@@ -170,20 +170,11 @@
                             </tr>
                             <tr>
                                 <td width="40%">
-                                    <span>线形</span>
-                                </td>
-                                <td width="60%">
-                                    <input type="text" id="LinDash" name="LinDash" value="0" style="width: 30px; margin: 5px;" />(dash)
-                                    <input type="text" id="LinDot" name="LinDot" value="0" style="width: 30px; margin: 5px;" />(space)
-                                </td>
-                            </tr>
-                            <tr>
-                                <td width="40%">
                                     <span>线颜色</span>
                                 </td>
                                 <td width="60%">
-                                    <input type="text" id="LinClr" name="OutClr" onclick="showcolors('LinClr')" style="background-color: #000000;
-                                            margin: 5px;" alt="clrDlgLin" value="#000000" readonly=readonly />
+                                    <input type="text" id="LinClr" name="OutClr" onclick="showcolors('LinClr')" style="background-color: #FFFFFF;
+                                            margin: 5px;" alt="clrDlgLin" value="#FFFFFF" readonly=readonly />
                                 </td>
                             </tr>
                             <tr>
@@ -199,11 +190,13 @@
                     <div style="text-align: right; margin: 5px;">
                         <div class="widgets-button">
                             <span onclick="editGeom()">修改样式</span>
-                            <span id="cancelEditBtn" onclick="cancelEditGeom()" disabled="true">撤销修改</span>
-                            <span  onclick="removeInteractions()">清除状态</span>
-                            <span  onclick="removeAllFeatures()">清空要素</span>
+                            <span id="cancelEditBtn" onclick="cancelEditGeom()" class="disabled">撤销修改</span>
                         </div>
                     </div>
+                </div>
+                <div class="widgets-button">
+                    <span  onclick="removeInteractions()">清除状态</span>
+                    <span  onclick="removeAllFeatures()">清空要素</span>
                 </div>
             </div>
         </div>

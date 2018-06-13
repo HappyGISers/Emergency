@@ -2649,8 +2649,8 @@ MilStd.ModifyTool.prototype.activate = function () {
     this.features_ = this.selectTool.getFeatures();
     this.features_.forEach(this.addFeature_, this);
     //修改
-    ol.events.listen(this.features_, ol.Collection.EventType.ADD, this.handleFeatureAdd_, this);
-    ol.events.listen(this.features_, ol.Collection.EventType.REMOVE, this.handleFeatureRemove_, this);
+    ol.events.listen(this.features_, ol.CollectionEventType.ADD, this.handleFeatureAdd_, this);
+    ol.events.listen(this.features_, ol.CollectionEventType.REMOVE, this.handleFeatureRemove_, this);
 
     MilStd.tool.MilStdDrawTool.prototype.ShieldDBClickZoomEvent(this.map_);
 
@@ -2671,8 +2671,8 @@ MilStd.ModifyTool.prototype.disconnectEventHandlers = function () {
         this.map_.removeInteraction(this);
     }
     //修改2017.11.2
-    ol.events.unlisten(this.features_, ol.Collection.EventType.ADD, this.handleFeatureAdd_, this);
-    ol.events.unlisten(this.features_, ol.Collection.EventType.REMOVE, this.handleFeatureRemove_, this);
+    ol.events.unlisten(this.features_, ol.CollectionEventType.ADD, this.handleFeatureAdd_, this);
+    ol.events.unlisten(this.features_, ol.CollectionEventType.REMOVE, this.handleFeatureRemove_, this);
 };
 
 MilStd.ModifyTool.prototype.modifyEndHandle = function (e) {
@@ -3011,19 +3011,19 @@ MilStd.ModifyTool.prototype.updateFeature = function (segmentData, coordinate, i
 MilStd.ModifyTool.handleEvent = function (mapBrowserEvent) {
     //var handled;
     //if (!mapBrowserEvent.map.getView().getHints()[ol.ViewHint.INTERACTING] &&
-    //mapBrowserEvent.type == ol.MapBrowserEvent.EventType.POINTERMOVE) {
+    //mapBrowserEvent.type == ol.pointer.EventType.POINTERMOVE) {
     //    this.handlePointerMove_(mapBrowserEvent);
     //}
     //return ol.interaction.Pointer.handleEvent.call(this, mapBrowserEvent) &&
     //!handled;
 
     //2017.1.19修改
-    if (!(mapBrowserEvent instanceof ol.MapBrowserPointerEvent)) {
-        return true;
-    }
+    // if (!(mapBrowserEvent instanceof ol.MapBrowserPointerEvent)) {
+    //     return true;
+    // }
     var handled;
-    if (!mapBrowserEvent.map.getView().getHints()[ol.View.Hint.INTERACTING] &&
-        mapBrowserEvent.type == ol.MapBrowserEvent.EventType.POINTERMOVE &&
+    if (!mapBrowserEvent.map.getView().getHints()[ol.ViewHint.INTERACTING] &&
+        mapBrowserEvent.type == ol.pointer.EventType.POINTERMOVE &&
         !this.handlingDownUpSequence) {
         this.handlePointerMove_(mapBrowserEvent);
     }

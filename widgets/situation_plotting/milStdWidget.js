@@ -17,6 +17,7 @@ var selectedFeatures;
 //样式数组
 var styles;
 var T = parent.T;
+var currentScenData = parent.currentSceneData;
 //地图容器
 var map = parent.map;
 //初始化
@@ -154,6 +155,7 @@ function onDrawEnd(event) {
     var feature = event.feature;
     feature.setStyle(drawStyle);
     source.addFeature(feature);
+    currentScenData.milstdFeatures = source.getFeatures();
 }
 
 //修改军标
@@ -232,7 +234,7 @@ function editGeom() {
             selectedFeatures.push(feature);
             var editStyle = getEditStyle();
             feature.setStyle(editStyle);
-            $('#cancelEditBtn').attr({ disabled: false })
+            $('#cancelEditBtn').attr("class","enable")
         });
     });
 
@@ -246,7 +248,7 @@ function editGeom() {
                 selectedFeatures[i].setStyle(editStyle);
             }
         }
-        $('#cancelEditBtn').attr({ disabled: false })
+        $('#cancelEditBtn').attr("class","enable")
     });
 }
 
@@ -282,12 +284,12 @@ function cancelEditGeom() {
     }
     selectedFeatures = new Array();
     styles = new Array();
-    $('#cancelEditBtn').attr({ disabled: true });
+    $('#cancelEditBtn').attr("class","disabled");
 }
 
 //移除所有控件
 function removeInteractions() {
-    $('#cancelEditBtn').attr({ disabled: true });
+    $('#cancelEditBtn').attr("class","disabled");
 
     if (drawTool) {
         drawTool.deactivate();

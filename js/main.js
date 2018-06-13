@@ -1,5 +1,6 @@
 var map; //地图实例
 var markerTool; //加点工具
+var currentSceneData = {};
 window.onload = function () {
     var satelliteLayerUrl = "http://cache1.arcgisonline.cn/ArcGIS/rest/services/ChinaOnlineCommunity/MapServer/tile/{z}/{y}/{x}";//影像图地址
     var mapCenter = new T.LngLat(118.13214548600001, 24.424820321000027);//地图中心点坐标
