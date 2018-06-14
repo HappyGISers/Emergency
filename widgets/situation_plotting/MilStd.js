@@ -1,3 +1,124 @@
+/**********************************************************标绘绘制（MilStd）start************************************************/
+goog.provide('GeomInteraction.Drag');
+
+/**
+ * @constructor
+ * @extends {ol.interaction.Pointer}
+ */
+GeomInteraction.Drag = function (map) {
+
+    ol.interaction.Pointer.call(this, {
+        handleDownEvent: GeomInteraction.Drag.prototype.handleDownEvent,
+        handleDragEvent: GeomInteraction.Drag.prototype.handleDragEvent,
+        handleMoveEvent: GeomInteraction.Drag.prototype.handleMoveEvent,
+        handleUpEvent: GeomInteraction.Drag.prototype.handleUpEvent
+    });
+
+    /**
+     * @type {ol.Pixel}
+     * @private
+     */
+    this.coordinate_ = null;
+
+    /**
+     * @type {string|undefined}
+     * @private
+     */
+    this.cursor_ = 'pointer';
+
+    /**
+     * @type {ol.Feature}
+     * @private
+     */
+    this.feature_ = null;
+
+    /**
+     * @type {string|undefined}
+     * @private
+     */
+    this.previousCursor_ = undefined;
+
+};
+ol.inherits(GeomInteraction.Drag, ol.interaction.Pointer);
+
+
+/**
+ * @param {ol.MapBrowserEvent} evt Map browser event.
+ * @return {boolean} `true` to start the drag sequence.
+ */
+GeomInteraction.Drag.prototype.handleDownEvent = function (evt) {
+    var map = evt.map;
+
+    var feature = map.forEachFeatureAtPixel(evt.pixel,
+        function (feature, layer) {
+            return feature;
+        });
+
+    if (feature) {
+        this.coordinate_ = evt.coordinate;
+        this.feature_ = feature;
+    }
+
+    return !!feature;
+};
+
+
+/**
+ * @param {ol.MapBrowserEvent} evt Map browser event.
+ */
+GeomInteraction.Drag.prototype.handleDragEvent = function (evt) {
+    var map = evt.map;
+
+    var feature = map.forEachFeatureAtPixel(evt.pixel,
+        function (feature, layer) {
+            return feature;
+        });
+
+    var deltaX = evt.coordinate[0] - this.coordinate_[0];
+    var deltaY = evt.coordinate[1] - this.coordinate_[1];
+
+    var geometry = /** @type {ol.geom.SimpleGeometry} */
+        (this.feature_.getGeometry());
+    geometry.translate(deltaX, deltaY);
+
+    this.coordinate_[0] = evt.coordinate[0];
+    this.coordinate_[1] = evt.coordinate[1];
+};
+
+
+/**
+ * @param {ol.MapBrowserEvent} evt Event.
+ */
+GeomInteraction.Drag.prototype.handleMoveEvent = function (evt) {
+    if (this.cursor_) {
+        var map = evt.map;
+        var feature = map.forEachFeatureAtPixel(evt.pixel,
+            function (feature, layer) {
+                return feature;
+            });
+        var element = evt.map.getTargetElement();
+        if (feature) {
+            if (element.style.cursor != this.cursor_) {
+                this.previousCursor_ = element.style.cursor;
+                element.style.cursor = this.cursor_;
+            }
+        } else if (this.previousCursor_ !== undefined) {
+            element.style.cursor = this.previousCursor_;
+            this.previousCursor_ = undefined;
+        }
+    }
+};
+
+
+/**
+ * @param {ol.MapBrowserEvent} evt Map browser event.
+ * @return {boolean} `false` to stop the drag sequence.
+ */
+GeomInteraction.Drag.prototype.handleUpEvent = function (evt) {
+    this.coordinate_ = null;
+    this.feature_ = null;
+    return false;
+};
 
 /**********************************************************绘制的枚举和标绘参数start************************************************/
 goog.provide("MilStd.enum");
@@ -2383,6 +2504,7 @@ MilStd.tool.MilStdDrawTool.prototype.activate = function (milType, milStdParams,
 };
 
 MilStd.tool.MilStdDrawTool.prototype.deactivate = function () {
+    parent.map.enableDrag();
     this.disconnectEventHandlers();
     //this.map.removeLayer(this.featureOverLay);
     //2017.1.19修改
@@ -2625,6 +2747,7 @@ ol.inherits(MilStd.ModifyTool, ol.interaction.Pointer);
 
 
 MilStd.ModifyTool.prototype.activate = function () {
+    parent.map.disableDrag();
     if (this.selectTool == null) {
         this.selectTool = new ol.interaction.Select({ wrapX: false });
     }
@@ -2657,6 +2780,7 @@ MilStd.ModifyTool.prototype.activate = function () {
 };
 
 MilStd.ModifyTool.prototype.deactivate = function () {
+    parent.map.enableDrag();
     if (this.map_ !== undefined && this.map_ != null) {
         MilStd.tool.MilStdDrawTool.prototype.UnShieldDBClickZoomEvent(this.map_);
         this.map_.removeInteraction(this.selectTool);
@@ -2681,6 +2805,7 @@ MilStd.ModifyTool.prototype.modifyEndHandle = function (e) {
         this.clearOverLayer(this.overlay_);
         this.oldVerticesFeature.clear();
     }
+    parent.map.enableDrag();
 };
 
 /**
@@ -3143,6 +3268,7 @@ MilStd.DragPan = function (map) {
 ol.inherits(MilStd.DragPan, ol.interaction.Pointer);
 //2017.1.19修改
 MilStd.DragPan.prototype.activate = function () {
+    parent.map.disableDrag();
     if (this.map_ === undefined || this.map_ == null) {
         return;
     }
@@ -3161,6 +3287,7 @@ MilStd.DragPan.prototype.activate = function () {
 };
 //2017.1.19修改
 MilStd.DragPan.prototype.deactivate = function () {
+    parent.map.enableDrag();
     if (this.map_ === undefined || this.map_ == null) {
         return;
     }
@@ -3274,3 +3401,5 @@ MilStd.DragPan.prototype.handleUpEvent = function (evt) {
     this.feature_ = null;
     return false;
 };
+
+/**********************************************************标绘绘制（MilStd）end************************************************/﻿
