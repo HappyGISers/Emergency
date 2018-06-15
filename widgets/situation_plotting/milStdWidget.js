@@ -17,7 +17,6 @@ var selectedFeatures;
 //样式数组
 var styles;
 var T = parent.T;
-var currentScenData = parent.currentSceneData;
 //地图容器
 var map = parent.map;
 //初始化
@@ -53,7 +52,6 @@ function init() {
 
 //绘制军标
 function drawArrow(type) {
-    map.disableDoubleClickZoom();
     removeInteractions();
     switch (type) {
         case "SimpleArrow":
@@ -101,6 +99,26 @@ function drawArrow(type) {
         case "CurveFlag":
             drawTool.activate(type, null, "drawFlag");
             break;
+        //十字箭头指北针
+        case "ArrowCross":
+        //圆形尖角指北针
+        case "CircleClosedangle":
+        //尖角指北针
+        case "Closedangle":
+        //双向尖角指北针
+        case "DoubleClosedangle":
+        //四角指北针
+        case "Fourstar":
+        //菱形指北针
+        case "Rhombus":
+        //同向尖角指北针
+        case "SameDirectionClosedangle":
+        //三角指北针
+        case "Triangle":
+        //风向标指北针
+        case "Vane":
+            drawTool.activate(type, null, "drawCompass");
+            break;
         //贝塞尔曲线成区
         case "Bezier":
         //贝塞尔曲线
@@ -136,8 +154,6 @@ function onDrawEnd(event) {
     var feature = event.feature;
     feature.setStyle(drawStyle);
     source.addFeature(feature);
-    currentScenData.milstdFeatures = source.getFeatures();
-    map.enableDoubleClickZoom();
 }
 
 //修改军标
@@ -149,7 +165,6 @@ function modifyArrow() {
 
 //移动军标
 function moveArrow() {
-    map.disableDrag();
     removeInteractions();
 
     dragTool = new MilStd.DragPan(map);
@@ -159,7 +174,7 @@ function moveArrow() {
 //移除选中的军标
 function removeArrow() {
     removeInteractions();
-    map.disableDrag();
+
     boxSelectTool = new ol.interaction.DragBox({
         style: new ol.style.Style({
             stroke: new ol.style.Stroke({
@@ -179,7 +194,6 @@ function removeArrow() {
                 source.removeFeature(selectedFeatures[i]);
             }
         }
-        map.enableDrag();
     });
 }
 
@@ -218,7 +232,7 @@ function editGeom() {
             selectedFeatures.push(feature);
             var editStyle = getEditStyle();
             feature.setStyle(editStyle);
-            $('#cancelEditBtn').attr("class","enable")
+            $('#cancelEditBtn').attr({ disabled: false })
         });
     });
 
@@ -232,7 +246,7 @@ function editGeom() {
                 selectedFeatures[i].setStyle(editStyle);
             }
         }
-        $('#cancelEditBtn').attr("class","enable")
+        $('#cancelEditBtn').attr({ disabled: false })
     });
 }
 
@@ -268,12 +282,12 @@ function cancelEditGeom() {
     }
     selectedFeatures = new Array();
     styles = new Array();
-    $('#cancelEditBtn').attr("class","disabled");
+    $('#cancelEditBtn').attr({ disabled: true });
 }
 
 //移除所有控件
 function removeInteractions() {
-    $('#cancelEditBtn').attr("class","disabled");
+    $('#cancelEditBtn').attr({ disabled: true });
 
     if (drawTool) {
         drawTool.deactivate();

@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <title>事故定位</title>
-    <link rel="stylesheet" href="../css/widgets-content.css"/>
+    <link rel="stylesheet" href="./accident.css"/>
 </head>
 
 <body>
@@ -13,7 +13,7 @@
         <p class="name"><sub>*</sub>经度(X)：</p>
         <div class="content">
             <input id="AccLng" type="text" placeholder=""/>
-            <a class="btn-accident" onclick="zoom()">定位</a>
+            <a class="btn-accident" onclick="addAccident()">重选</a>
         </div>
     </div>
     <div class="widgets-row">
@@ -31,37 +31,41 @@
     </div>
     <div class="widgets-row">
         <div class="widgets-button">
-            <span class="accident-btn" onclick="addAccident()">添加事故点</span>
+            <span class="accident-btn" onclick="saveIncidentsMarker()">添加事故点</span>
         </div>
     </div>
     <!--<div class="widgets-row">-->
     <!--<div class="prompt-word">点击此按钮后再在地图上点击添加事故点</div>-->
     <!--</div>-->
 </div>
-<script src="../js/jquery-3.3.1.min.js"></script>
+<script src="../../js/jquery-3.3.1.min.js"></script>
 <script>
     var T = parent.T;
+    var accidentInfo = parent.mainData.data.accidentInfo;
     $(function () {
         //获取父窗口的关闭事件
         $('.widgets-select', window.parent.document).find('.widgets-close').click(function () {
+            markerTool.removeEventListener("mouseup", getCoordinate);
             markerTool.clear();
             markerTool.close();
         })
     });
     var map = parent.map;
     var markerTool = parent.markerTool;
-    markerTool.removeEventListener("mouseup", getCoordinate);
-    markerTool.addEventListener("mouseup", getCoordinate);
+    $("#AccLng").val(accidentInfo.longitude);
+    $("#AccLat").val(accidentInfo.latitude);
 
     function addAccident() {
         markerTool.open();
+        markerTool.removeEventListener("mouseup", getCoordinate);
+        markerTool.addEventListener("mouseup", getCoordinate);
     }
 
     function zoom() {
         var x = document.getElementById("AccLng").value;
         var y = document.getElementById("AccLat").value;
         if (x.length > 0 && y.length > 0) {
-            map.centerAndZoom(new T.LngLat(parseFloat(x), parseFloat(y)), 16);
+            map.centerAndZoom(new T.LngLat(parseFloat(x), parseFloat(y)), 10);
         }
         else {
             alert("事故点经纬度不能为空");
@@ -80,6 +84,28 @@
         document.getElementById("AccLng").value = "";
         document.getElementById("AccLat").value = "";
         markerTool.clear();
+    }
+
+    function saveIncidentsMarker() {
+        var lon = document.getElementById("AccLng").value;
+        var lat = document.getElementById("AccLat").value;
+        if (!lon || !lat) {
+            alert("事故点经纬度不能为空");
+            return;
+        }
+        $.ajax({
+            type: "POST",
+            url: parent.ctx + "/eventMap/saveIncidentsMarker.vm",
+            data: {longitude: lon, latitude: lat, eventId: accidentInfo.dataId},
+            dataType: 'json',
+            success: function (retMsg) {//调用成功的话
+                if (retMsg.success) {
+                    alert("添加成功");
+                    parent.mainData.getAccident();
+                } else {
+                }
+            }
+        });
     }
 </script>
 </body>

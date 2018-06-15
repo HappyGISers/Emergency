@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <title>路径分析</title>
-    <link rel="stylesheet" href="../css/widgets-content.css"/>
+    <link rel="stylesheet" href="./path_analysis.css"/>
 </head>
 
 <body>
@@ -60,23 +60,24 @@
         </div>
     </div>
 </div>
-<script src="../js/jquery-3.3.1.min.js"></script>
-<script src="../js/dest.min.js"></script>
-<script src="../js/coordinateUtils.js"></script>
-<script src="../js/amap-direction.js"></script>
+<script src="../../js/jquery-3.3.1.min.js"></script>
+<script src="../../js/dest.min.js"></script>
+<script src="../../js/coordinateUtils.js"></script>
+<script src="../../js/amap-direction.js"></script>
 <script>
     //获取父窗口的关闭事件
     $('.widgets-select', window.parent.document).find('.widgets-close').click(function () {
+        markerTool.removeEventListener("mouseup", getCoordinate);
         markerTool.clear();
         markerTool.close();
-        clearPath();
+        clearRoute();
     });
 
     var map = parent.map;
     var markerTool = parent.markerTool;
     var T = parent.T;
-    markerTool.removeEventListener("mouseup", getCoordinate);
-    markerTool.addEventListener("mouseup", getCoordinate);
+
+
     var curIndex = 0;
     $(function () {
         $('.widgets-path .widgets-tab p').click(function () {
@@ -105,6 +106,8 @@
     function getLocation(index) {
         curIndex = index;
         markerTool.open();
+        markerTool.removeEventListener("mouseup", getCoordinate);
+        markerTool.addEventListener("mouseup", getCoordinate);
     }
 
     function getCoordinate(currentLnglat, currentMarker, allMarkers) {

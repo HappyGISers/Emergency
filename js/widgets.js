@@ -4,59 +4,59 @@ $(function () {
     var json = {
         "widgets": [
             {
-                "icon": "images/8.png",
+                "icon": "widgets/layer_control/images/icon.png",
                 "name": "图层控制",
-                "url": "widgets/layer_control.html"
+                "url": "widgets/layer_control/layer_control.html"
             },
             {
-                "icon": "images/6.png",
+                "icon": "widgets/accident/images/icon.png",
                 "name": "事故定位",
-                "url": "widgets/accident.html"
+                "url": "widgets/accident/accident.html"
             },
             {
-                "icon": "images/12.png",
+                "icon": "widgets/special_label/images/icon.png",
                 "name": "专题标注",
-                "url": "widgets/special_label.html"
+                "url": "widgets/special_label/special_label.html"
             },
             {
-                "icon": "images/2.png",
+                "icon": "widgets/situation_plotting/images/icon.png",
                 "name": "态势标绘",
                 "url": "widgets/situation_plotting/situation_plotting.html"
             },
             {
-                "icon": "images/11.png",
+                "icon": "widgets/track_query/images/icon.png",
                 "name": "轨迹查询",
-                "url": "widgets/track_query.html"
+                "url": "widgets/track_query/track_query.html"
             },
             {
-                "icon": "images/7.png",
+                "icon": "widgets/path_analysis/images/icon.png",
                 "name": "路径分析",
-                "url": "widgets/path_analysis.html"
+                "url": "widgets/path_analysis/path_analysis.html"
             },
             {
-                "icon": "images/9.png",
+                "icon": "widgets/query/images/icon.png",
                 "name": "简单查询",
-                "url": "widgets/query.html"
+                "url": "widgets/query/query.html"
             },
             {
-                "icon": "images/1.png",
+                "icon": "widgets/buffer/images/icon.png",
                 "name": "缓冲区分析",
-                "url": "widgets/buffer.html"
+                "url": "widgets/buffer/buffer.html"
             },
             {
-                "icon": "images/4.png",
+                "icon": "widgets/bookmark/images/icon.png",
                 "name": "地理书签",
-                "url": "widgets/bookmark.html"
+                "url": "widgets/bookmark/bookmark.html"
             },
             {
-                "icon": "images/10.png",
+                "icon": "widgets/scene_save/images/icon.png",
                 "name": "场景保存",
-                "url": "widgets/scene_save.html"
+                "url": "widgets/scene_save/scene_save.html"
             },
             {
-                "icon": "images/5.png",
+                "icon": "widgets/print/images/icon.png",
                 "name": "打印",
-                "url": "widgets/print.html"
+                "url": "widgets/print/print.html"
             }
         ]
     };

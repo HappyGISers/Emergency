@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <title>图层控制</title>
-    <link rel="stylesheet" href="../css/widgets-content.css"/>
+    <link rel="stylesheet" href="./layer_control.css"/>
 </head>
 
 <body>
@@ -15,15 +15,15 @@
             <div class="layer-alert">
                 <div class="btn"></div>
                 <div class="layer-alert-menu">
-                    <div class="menu-item">打开所有图层</div>
-                    <div class="menu-item">关闭所有图层</div>
+                    <div class="menu-item" id="open">打开所有图层</div>
+                    <div class="menu-item" id="close">关闭所有图层</div>
                 </div>
             </div>
         </div>
     </div>
-    <div class="widgets-row">
+    <div class="widgets-row" id="layersId">
         <div class="list-layer">
-            <div class="checkbox"><img src="../images/map1.png">高德地图(普通地图)</div>
+            <div class="checkbox"><img src="../../images/map1.png">高德地图(普通地图)</div>
             <div class="layer-alert">
                 <div class="btn"></div>
                 <div class="layer-alert-menu">
@@ -57,7 +57,7 @@
             </div>
         </div>
         <div class="list-layer">
-            <div class="checkbox"><img src="../images/map2.png">高德地图标注(影像地图)</div>
+            <div class="checkbox"><img src="../../images/map2.png">高德地图标注(影像地图)</div>
             <div class="layer-alert">
                 <div class="btn"></div>
                 <div class="layer-alert-menu">
@@ -91,7 +91,7 @@
             </div>
         </div>
         <div class="list-layer">
-            <div class="checkbox"><img src="../images/map3.png">高德地图(影像地图)</div>
+            <div class="checkbox"><img src="../../images/map3.png">高德地图(影像地图)</div>
             <div class="layer-alert">
                 <div class="btn"></div>
                 <div class="layer-alert-menu">
@@ -126,7 +126,8 @@
         </div>
     </div>
 </div>
-<script src="../js/jquery-3.3.1.min.js"></script>
+<script src="../../js/jquery-3.3.1.min.js"></script>
+<script src="../../js/widgets/targetMark.js"></script>
 <script>
     $(function () {
         //获取父窗口的关闭事件
@@ -150,15 +151,15 @@
                 $(this).parents('.layer-alert').addClass('active');
             }
         })
-        $('.menu-item').click(function (e) {
-            e.stopPropagation();
-            $('.layer-alert-opacity').hide();
-            if ($(this).html() == '透明度') {
-                $(this).parents('.layer-alert').find('.layer-alert-opacity').show();
-            } else {
-                $('.layer-alert').removeClass('active');
-            }
-        })
+//        $('.menu-item').click(function (e) {
+//            e.stopPropagation();
+//            $('.layer-alert-opacity').hide();
+//            if ($(this).html() == '透明度') {
+//                $(this).parents('.layer-alert').find('.layer-alert-opacity').show();
+//            } else {
+//                $('.layer-alert').removeClass('active');
+//            }
+//        })
         $('.layer-alert-opacity').click(function (e) {
             e.stopPropagation();
         })
@@ -170,13 +171,13 @@
             }
         })
         //复选框
-        $('.checkbox').click(function () {
-            if ($(this).hasClass('checked')) {
-                $(this).removeClass('checked');
-            } else {
-                $(this).addClass('checked');
-            }
-        })
+//        $('.checkbox').click(function () {
+//            if ($(this).hasClass('checked')) {
+//                $(this).removeClass('checked');
+//            } else {
+//                $(this).addClass('checked');
+//            }
+//        })
     })
     //透明度
     scale = function (btn, bar, add, minus) {
