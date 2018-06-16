@@ -70,3 +70,10 @@ function createInfoWindow(data, layer) {
     }
     return new T.InfoWindow(sContent);
 }
+
+function zoomToPoints(coordinates) {
+    var points = new ol.geom.MultiPoint(coordinates);
+    var extent = points.getExtent();
+    var view = map.getView();
+    view.fit(extent);
+};
