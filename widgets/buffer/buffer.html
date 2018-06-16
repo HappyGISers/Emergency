@@ -1,10 +1,188 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
+
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>周边查找</title>
+    <link rel="stylesheet" href="./buffer.css"/>
 </head>
-<body>
 
+<body>
+<div class="widgets-content widgets-buffer">
+    <div class="widgets-row">
+        <p class="name">选择区域：</p>
+        <div class="content">
+            <div class="lump" title="点">
+                <img src="./images/lump1.png"/>
+            </div>
+            <div class="lump" title="手绘折线">
+                <img src="./images/lump2.png"/>
+            </div>
+            <div class="lump" title="矩形">
+                <img src="./images/lump3.png"/>
+            </div>
+            <div class="lump" title="面">
+                <img src="./images/lump5.png"/>
+            </div>
+            <div class="lump" title="手绘面">
+                <img src="./images/lump4.png"/>
+            </div>
+            <div class="lump" title="选择要素">
+                <img src="./images/lump6.png"/>
+            </div>
+        </div>
+    </div>
+    <div class="widgets-row" style="position: relative;z-index: 2;">
+        <p class="name">查询对象：</p>
+        <div class="content">
+            <div class="analog-select">
+                <div class="analog-select-value">请选择查询对象</div>
+                <div class="analog-select-valueall">
+                    <p class="checkbox">工业企业</p>
+                    <p class="checkbox">市政排污口</p>
+                    <p class="checkbox">园区内风险单元</p>
+                    <p class="checkbox">电网500kv_点</p>
+                    <p class="checkbox">电网500kv_线</p>
+                    <p class="checkbox">风险单元</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="widgets-row">
+        <p class="name">缓冲范围：</p>
+        <div class="content" style="margin-bottom: 0;">
+            <input type="text" name="" value="5"/>
+            <select class="select">
+                <option>千米</option>
+                <option>米</option>
+            </select>
+        </div>
+    </div>
+    <div class="widgets-row">
+        <div class="widgets-button">
+            <span class="search-btn" onclick="alert(0)">搜索</span>
+        </div>
+    </div>
+    <div class="widgets-row">
+        <div class="widgets-button" style="margin-top: 10px;">
+            <span onclick="alert(0)">全部缩放</span>
+            <span onclick="alert(0)">清空</span>
+        </div>
+    </div>
+    <div class="widgets-row">
+        <div class="list-title">
+            <p class="select">全部（149）</p>
+            <p>空气质量测点（1）</p>
+            <p>建设项目（148）</p>
+        </div>
+        <ul class="list-keyword">
+            <li>
+                <img src="./images/air.png">
+                <p class="listname">
+                    <a>海淀北京植物园 - 空气质量测点</a>
+                </p>
+            </li>
+            <li>
+                <img src="./images/construction.png">
+                <p class="listname">
+                    <a>海淀北京植物园 - 空气质量测点</a>
+                </p>
+                <a class="listdetails" href="http://baidu.com" target="_blank">详情></a>
+            </li>
+            <li>
+                <img src="./images/construction.png">
+                <p class="listname">
+                    <a>海淀北京植物园 - 空气质量测点</a>
+                </p>
+                <a class="listdetails" href="http://baidu.com" target="_blank">详情></a>
+            </li>
+            <li>
+                <img src="./images/construction.png">
+                <p class="listname">
+                    <a>海淀北京植物园 - 空气质量测点</a>
+                </p>
+                <a class="listdetails" href="http://baidu.com" target="_blank">详情></a>
+            </li>
+            <li>
+                <img src="./images/construction.png">
+                <p class="listname">
+                    <a>海淀北京植物园 - 空气质量测点</a>
+                </p>
+                <a class="listdetails" href="http://baidu.com" target="_blank">详情></a>
+            </li>
+            <li>
+                <img src="./images/construction.png">
+                <p class="listname">
+                    <a>海淀北京植物园 - 空气质量测点</a>
+                </p>
+                <a class="listdetails" href="http://baidu.com" target="_blank">详情></a>
+            </li>
+            <li>
+                <img src="./images/construction.png">
+                <p class="listname">
+                    <a>海淀北京植物园 - 空气质量测点</a>
+                </p>
+                <a class="listdetails" href="http://baidu.com" target="_blank">详情></a>
+            </li>
+            <li>
+                <img src="./images/construction.png">
+                <p class="listname">
+                    <a>海淀北京植物园 - 空气质量测点</a>
+                </p>
+                <a class="listdetails" href="http://baidu.com" target="_blank">详情></a>
+            </li>
+        </ul>
+    </div>
+</div>
+<script src="../../js/jquery-3.3.1.min.js"></script>
+<script>
+    $(function () {
+        //获取父窗口的关闭事件
+        $('.widgets-select', window.parent.document).find('.widgets-close').click(function () {
+            //alert('我是子页面的周边查找')
+        })
+        //选中状态
+        $('.lump').click(function () {
+            if ($(this).hasClass('active')) {
+                $(this).removeClass('active');
+            } else {
+                $(this).addClass('active').siblings('.lump').removeClass('active');
+            }
+        })
+        //下拉，复选
+        $('.analog-select-value').click(function (e) {
+            e.stopPropagation();
+            $(this).next('.analog-select-valueall').stop().slideToggle();
+        })
+        $('.analog-select .checkbox').click(function (e) {
+            e.stopPropagation();
+            if ($(this).hasClass('checked')) {
+                $(this).removeClass('checked');
+            } else {
+                $(this).addClass('checked');
+            }
+            var len = $('.analog-select .checked').length;
+            if (len > 0) {
+                var html = ''
+                for (var i = 0; i < len; i++) {
+                    html += $('.analog-select .checked').eq(i).html();
+                    if (i < len - 1) {
+                        html += '，'
+                    }
+                }
+                $('.analog-select-value').html(html);
+            } else {
+                $('.analog-select-value').html('请选择查询对象');
+            }
+
+        })
+        $('body').click(function () {
+            if (!$('.analog-select-valueall').is(":hidden")) {
+                $('.analog-select-valueall').hide();
+            }
+        })
+    })
+</script>
 </body>
+
 </html>

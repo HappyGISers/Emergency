@@ -12,7 +12,7 @@
     <div class="widgets-row">
         <div class="content">
             <input type="text" placeholder="书签名称" id="bookmark-input"/>
-            <div class="btn-add-bookmark">+</div>
+            <div title="添加书签" class="btn-add-bookmark">+</div>
         </div>
     </div>
     <div class="widgets-row">
@@ -33,7 +33,7 @@
                 bookmarkData = [];
             }
             for (var i = 0; i < bookmarkData.length; i++) {
-                var extentStr = bookmarkData[i].extent[0].toFixed(3) + ', ' + bookmarkData[i].extent[1].toFixed(3) + ', ' + bookmarkData[i].extent[2].toFixed(3) + ', ' + bookmarkData[i].extent[3].toFixed(3);
+                var extentStr = bookmarkData[i].extent[0].toFixed(3) + ' ' + bookmarkData[i].extent[1].toFixed(3) + ' ' + bookmarkData[i].extent[2].toFixed(3) + ' ' + bookmarkData[i].extent[3].toFixed(3);
                 $('.list-bookmark').append('<li><p>' + bookmarkData[i].name + '</p><span>' + extentStr + '</span><a class="delete-btn" title="删除"></a></li>');
             }
         }
@@ -43,7 +43,7 @@
             if (bookmarkName == '') {
                 alert('书签名称不能为空！');
             } else {
-                var extentStr = map.getBounds().getSouthWest().lng.toFixed(3) + ", " + map.getBounds().getSouthWest().lat.toFixed(3) + ", " + map.getBounds().getNorthEast().lng.toFixed(3) + ", " + map.getBounds().getNorthEast().lat.toFixed(3);
+                var extentStr = map.getBounds().getSouthWest().lng.toFixed(3) + " " + map.getBounds().getSouthWest().lat.toFixed(3) + " " + map.getBounds().getNorthEast().lng.toFixed(3) + " " + map.getBounds().getNorthEast().lat.toFixed(3);
                 $('.list-bookmark').append('<li><p>' + bookmarkName + '</p><span>' + extentStr + '</span><a class="delete-btn" title="删除"></a></li>');
                 //向数组中新加内容
                 bookmarkData.push({

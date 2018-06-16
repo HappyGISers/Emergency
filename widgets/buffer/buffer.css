@@ -1,0 +1,428 @@
+html,
+body {
+    padding: 0;
+    margin: 0;
+    font-family: 'Microsoft yahei';
+    font-size: 14px;
+    color: #333;
+    height: 100%;
+}
+
+p,
+ul,
+li {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+a {
+    text-decoration: none;
+}
+
+input {
+    outline: none;
+}
+
+/*公共样式*/
+
+.widgets-content {
+    padding: 14px;
+}
+
+.widgets-row {
+    clear: both;
+    overflow: visible;
+    min-height: 30px;
+}
+
+.widgets-row p.name {
+    float: left;
+    font-size: 14px;
+    color: #333;
+    line-height: 30px;
+    width: 58px;
+    text-align: right;
+}
+
+.widgets-row p.name sub {
+    vertical-align: baseline;
+    color: #f00;
+    font-size: 14px;
+    margin-right: 2px;
+}
+
+.widgets-row div.content {
+    float: right;
+    width: 84%;
+    min-height: 30px;
+    position: relative;
+    margin-bottom: 14px;
+}
+
+.widgets-row div.content .select {
+    width: 100%;
+    height: 30px;
+    font-size: 14px;
+    color: #333;
+}
+
+.widgets-row div.content input {
+    display: block;
+    width: 96%;
+    padding: 0 2%;
+    height: 30px;
+    border: 1px solid #ddd;
+    font-size: 14px;
+}
+
+.widgets-row div.content input:hover {
+    border-color: #3b8fc4;
+}
+
+.widgets-row div.content .btn-add-bookmark {
+    color: #3b8fc4;
+    width: 30px;
+    position: absolute;
+    right: -1px;
+    top: 1px;
+    bottom: 1px;
+    font-size: 20px;
+    font-weight: bold;
+    text-align: center;
+    line-height: 26px;
+    cursor: pointer;
+}
+
+.widgets-row div.content .btn-add-bookmark:hover {
+    background-color: #e6e6e6;
+}
+
+.widgets-row div.content .btn-add,
+.widgets-row div.content .btn-search {
+    color: #3b8fc4;
+    width: 30px;
+    position: absolute;
+    right: -1px;
+    top: 1px;
+    bottom: 0px;
+    font-size: 20px;
+    font-weight: bold;
+    text-align: center;
+    line-height: 26px;
+    cursor: pointer;
+}
+
+.widgets-row div.content .btn-add:hover,
+.widgets-row div.content .btn-search:hover {
+    background-color: #e6e6e6;
+}
+
+.widgets-row div.content .btn-accident {
+    float: right;
+    display: block;
+    height: 30px;
+    line-height: 30px;
+    padding: 0px 10px;
+    font-size: 14px;
+    text-align: center;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    color: #333;
+    background-repeat: no-repeat;
+    background-position: 10px center;
+    border-radius: 2px;
+    cursor: pointer;
+}
+
+.widgets-row div.content .btn-accident:hover {
+    background-color: #e6e6e6;
+    border-color: #d2d2d2;
+}
+
+.widgets-button {
+    width: 100%;
+    overflow: hidden;
+    text-align: right;
+}
+
+.widgets-button span {
+    display: inline-block;
+    height: 30px;
+    line-height: 30px;
+    padding: 0px 10px;
+    font-size: 14px;
+    text-align: center;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    color: #333;
+    background-repeat: no-repeat;
+    background-position: 10px center;
+    border-radius: 2px;
+    cursor: pointer;
+}
+
+.widgets-button span:hover {
+    background-color: #e6e6e6;
+    border-color: #d2d2d2;
+}
+
+.widgets-row .prompt-word {
+    line-height: 18px;
+    font-size: 13px;
+    padding: 5px 0;
+    text-align: right;
+    color: #8a6d3b;
+}
+
+.widgets-content .widgets-tab {
+    border-left: 1px solid #ddd;
+    height: 31px;
+}
+
+.widgets-content .widgets-tab p {
+    float: left;
+    height: 30px;
+    line-height: 30px;
+    padding: 0px 12px;
+    font-size: 14px;
+    text-align: center;
+    background: #f7f7f7;
+    border: 1px solid #ddd;
+    border-left: none;
+    border-bottom: none;
+    color: #333;
+    cursor: pointer;
+}
+
+.widgets-content .widgets-tab p:hover {
+    background: #fff;
+}
+
+.widgets-content .widgets-tab p sub {
+    vertical-align: baseline;
+    color: #f00;
+    font-size: 14px;
+    margin-right: 4px;
+}
+
+.widgets-content .widgets-tab p.select {
+    border-bottom: 1px solid #fff;
+    background: #fff;
+}
+
+.widgets-content .widgets-tab-main {
+    padding-top: 14px;
+    border: 1px solid #ddd;
+    margin-bottom: -1px;
+    margin-bottom: 14px;
+}
+
+.widgets-content .widgets-tab-main .widgets-tab-content {
+    overflow: hidden;
+}
+
+.widgets-content .widgets-tab-main .widgets-tab-content .widgets-button {
+    text-align: center;
+    margin-bottom: 14px;
+}
+
+.widgets-button span.search-btn {
+    background-image: url(./images/search.png);
+    padding-left: 32px;
+}
+
+/*周边查找*/
+
+.widgets-buffer {
+}
+
+.widgets-buffer .widgets-row p.name {
+    width: 72px;
+    text-align: left;
+}
+
+.widgets-buffer .widgets-row div.content {
+    width: 78%;
+    text-align: left;
+}
+
+.widgets-buffer .lump {
+    background-color: #fff;
+    width: 30px;
+    height: 30px;
+    margin-right: 5px;
+    border: 1px solid #ddd;
+    color: #6d6e70;
+    border-radius: 3px;
+    float: left;
+    text-align: center;
+    line-height: 30px;
+    cursor: pointer;
+}
+
+.widgets-buffer .lump img {
+    width: 16px;
+    height: 16px;
+    vertical-align: -2px;
+}
+
+.widgets-buffer .lump.active {
+    border-color: #3B8FC4;
+}
+
+/*关键字查询*/
+
+.widgets-keyword {
+    padding-bottom: 0;
+}
+
+.widgets-keyword .widgets-row .prompt-word {
+    text-align: left;
+}
+
+.widgets-keyword .widgets-row div.content {
+    width: 100%;
+}
+
+.widgets-buffer .list-title {
+    overflow: hidden;
+    border-bottom: 1px solid #E4E4E4;
+    padding: 10px 0;
+}
+
+.widgets-buffer .list-title p {
+    float: left;
+    font-size: 13px;
+    color: #333;
+    cursor: pointer;
+}
+
+.widgets-buffer .list-title p.select {
+    font-weight: bold;
+}
+
+.widgets-buffer .list-keyword {
+    max-height: 215px;
+    overflow-y: auto;
+}
+
+.widgets-keyword .list-keyword ul,
+.widgets-buffer .list-keyword ul {
+}
+
+.widgets-buffer .list-keyword li {
+    overflow: hidden;
+    border-bottom: 1px solid #E4E4E4;
+    padding: 9px 0;
+}
+
+.widgets-buffer .list-keyword li img {
+    width: 25px;
+    vertical-align: -4px;
+    float: left;
+    margin-right: 5px;
+}
+
+.widgets-buffer .list-keyword li p.listname {
+    float: left;
+    margin: 0;
+    line-height: 25px;
+    font-size: 14px;
+    color: #333;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    width: 78%;
+}
+
+.widgets-buffer .list-keyword li p.listname a {
+    cursor: pointer;
+}
+
+.widgets-buffer .list-keyword li p.listname a:hover {
+    color: #3b8fc4;
+}
+
+.widgets-buffer .list-keyword li a.listdetails {
+    display: block;
+    float: right;
+    font-size: 13px;
+    text-align: center;
+    color: #666;
+    cursor: pointer;
+    line-height: 25px;
+    padding-right: 5px;
+}
+
+.widgets-buffer .list-keyword li a.listdetails:hover {
+    color: #3b8fc4;
+}
+
+/**下拉框**/
+
+.analog-select {
+    width: 248px;
+    position: relative;
+}
+
+.analog-select .analog-select-value {
+    font-size: 14px;
+    color: #333;
+    padding: 0 10px;
+    padding-right: 30px;
+    height: 30px;
+    line-height: 30px;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+    background: #fff url(./images/select.png) no-repeat 98% center;
+    cursor: pointer;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.analog-select .analog-select-valueall {
+    border: 1px solid #e4e9ef;
+    border-top: none;
+    position: absolute;
+    top: 29px;
+    left: 0px;
+    right: 0;
+    display: none;
+    max-height: 190px;
+    overflow: hidden;
+    overflow-y: auto;
+    border-bottom-right-radius: 3px;
+    border-bottom-left-radius: 3px;
+}
+
+.analog-select .analog-select-valueall p {
+    padding: 6px 10px;
+    font-size: 13px;
+    border-top: 1px solid #e4e9ef;
+    background: #f8fdff;
+    cursor: pointer;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    padding-left: 28px;
+    background: #fff url(./images/checkbox-no.png) no-repeat 10px center;
+}
+
+.analog-select .analog-select-valueall p.checked {
+    background: #fff url(./images/checkbox-ok.png) no-repeat 10px center;
+}
+
+.widgets-buffer .widgets-row div.content input {
+    width: 20%;
+    float: left;
+}
+
+.widgets-buffer .widgets-row div.content .select {
+    width: 20%;
+    float: left;
+    height: 32px;
+    margin-left: 5px;
+    border-color: #ddd;
+}
