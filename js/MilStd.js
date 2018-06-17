@@ -2504,7 +2504,7 @@ MilStd.tool.MilStdDrawTool.prototype.activate = function (milType, milStdParams,
 };
 
 MilStd.tool.MilStdDrawTool.prototype.deactivate = function () {
-    parent.map.enableDrag();
+
     this.disconnectEventHandlers();
     //this.map.removeLayer(this.featureOverLay);
     //2017.1.19修改
@@ -2747,7 +2747,6 @@ ol.inherits(MilStd.ModifyTool, ol.interaction.Pointer);
 
 
 MilStd.ModifyTool.prototype.activate = function () {
-    parent.map.disableDrag();
     if (this.selectTool == null) {
         this.selectTool = new ol.interaction.Select({ wrapX: false });
     }
@@ -2780,7 +2779,6 @@ MilStd.ModifyTool.prototype.activate = function () {
 };
 
 MilStd.ModifyTool.prototype.deactivate = function () {
-    parent.map.enableDrag();
     if (this.map_ !== undefined && this.map_ != null) {
         MilStd.tool.MilStdDrawTool.prototype.UnShieldDBClickZoomEvent(this.map_);
         this.map_.removeInteraction(this.selectTool);
@@ -2805,7 +2803,6 @@ MilStd.ModifyTool.prototype.modifyEndHandle = function (e) {
         this.clearOverLayer(this.overlay_);
         this.oldVerticesFeature.clear();
     }
-    parent.map.enableDrag();
 };
 
 /**
@@ -3142,10 +3139,10 @@ MilStd.ModifyTool.handleEvent = function (mapBrowserEvent) {
     //return ol.interaction.Pointer.handleEvent.call(this, mapBrowserEvent) &&
     //!handled;
 
-    //2017.1.19修改
-    // if (!(mapBrowserEvent instanceof ol.MapBrowserPointerEvent)) {
-    //     return true;
-    // }
+    // 2017.1.19修改
+    if (!(mapBrowserEvent instanceof ol.MapBrowserPointerEvent)) {
+        return true;
+    }
     var handled;
     if (!mapBrowserEvent.map.getView().getHints()[ol.ViewHint.INTERACTING] &&
         mapBrowserEvent.type == ol.pointer.EventType.POINTERMOVE &&
@@ -3268,7 +3265,6 @@ MilStd.DragPan = function (map) {
 ol.inherits(MilStd.DragPan, ol.interaction.Pointer);
 //2017.1.19修改
 MilStd.DragPan.prototype.activate = function () {
-    parent.map.disableDrag();
     if (this.map_ === undefined || this.map_ == null) {
         return;
     }
@@ -3287,7 +3283,6 @@ MilStd.DragPan.prototype.activate = function () {
 };
 //2017.1.19修改
 MilStd.DragPan.prototype.deactivate = function () {
-    parent.map.enableDrag();
     if (this.map_ === undefined || this.map_ == null) {
         return;
     }

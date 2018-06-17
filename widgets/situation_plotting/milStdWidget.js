@@ -17,6 +17,8 @@ var selectedFeatures;
 //样式数组
 var styles;
 var T = parent.T;
+var ol = parent.ol;
+var MilStd = parent.MilStd;
 //地图容器
 var map = parent.map;
 //初始化
