@@ -1,6 +1,8 @@
 var map; //地图实例
 var markerTool; //加点工具
-
+var polylineTool;
+var polygonTool;
+var rectangleTool;
 window.onload = function () {
     var satelliteLayerUrl = "http://cache1.arcgisonline.cn/ArcGIS/rest/services/ChinaOnlineCommunity/MapServer/tile/{z}/{y}/{x}";//影像图地址
     var mapCenter = new T.LngLat(109.69, 34.968);//地图中心点坐标
@@ -25,6 +27,9 @@ window.onload = function () {
     //添加缩放平移控件
     map.addControl(zoomCtrl);
     markerTool = new T.MarkTool(map); // 初始化加点工具
+    polylineTool = new T.PolylineTool(map);// 初始化画线工具
+    polygonTool = new T.PolygonTool(map);// 初始化画面工具
+    rectangleTool = new T.RectangleTool(map);// 初始化矩形工具
 };
 
 /**

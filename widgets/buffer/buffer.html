@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <title>周边查找</title>
     <link rel="stylesheet" href="./buffer.css"/>
+    <script rel="stylesheet" src="buffer.js"></script>
 </head>
 
 <body>
@@ -12,16 +13,16 @@
     <div class="widgets-row">
         <p class="name">选择区域：</p>
         <div class="content">
-            <div class="lump" title="点">
+            <div class="lump" title="点" onclick="addGraphic('point')">
                 <img src="./images/lump1.png"/>
             </div>
-            <div class="lump" title="手绘折线">
+            <div class="lump" title="折线" onclick="addGraphic('polyline')">
                 <img src="./images/lump2.png"/>
             </div>
-            <div class="lump" title="矩形">
+            <div class="lump" title="矩形" onclick="addGraphic('rectangle')">
                 <img src="./images/lump3.png"/>
             </div>
-            <div class="lump" title="面">
+            <div class="lump" title="面" onclick="addGraphic('polygon')">
                 <img src="./images/lump5.png"/>
             </div>
             <div class="lump" title="手绘面">

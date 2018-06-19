@@ -18,6 +18,12 @@ var selectedFeatures;
 var styles;
 //地图容器
 var map = parent.map;
+$(function () {
+    //获取父窗口的关闭事件
+    $('.widgets-select', window.parent.document).find('.widgets-close').click(function () {
+        removeInteractions();
+    })
+});
 //初始化
 function init() {
 
