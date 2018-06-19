@@ -86,8 +86,8 @@ input {
     position: absolute;
     right: -1px;
     top: 1px;
-    bottom: 1px;
-    font-size: 20px;
+    bottom: 0;
+    font-size: 22px;
     font-weight: bold;
     text-align: center;
     line-height: 26px;

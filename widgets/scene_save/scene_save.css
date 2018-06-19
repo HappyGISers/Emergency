@@ -80,44 +80,44 @@ input {
     border-color: #3b8fc4;
 }
 
-.widgets-row div.content .btn-add-bookmark {
+.widgets-row div.content .btn-add-scene {
     color: #3b8fc4;
     width: 30px;
     position: absolute;
     right: -1px;
     top: 1px;
-    bottom: 1px;
-    font-size: 20px;
+    bottom: 0;
+    font-size: 22px;
     font-weight: bold;
     text-align: center;
     line-height: 26px;
     cursor: pointer;
 }
 
-.widgets-row div.content .btn-add-bookmark:hover {
+.widgets-row div.content .btn-add-scene:hover {
     background-color: #e6e6e6;
 }
 
-.widgets-bookmark .list-bookmark {
+.widgets-scene .list-scene {
     max-height: 300px;
     overflow-y: auto;
 }
 
-.widgets-bookmark .list-bookmark li {
+.widgets-scene .list-scene li {
     padding: 5px 35px 5px 40px;
     border: 1px solid #E4E4E4;
     border-top-color: #fff;
     line-height: 20px;
-    background: url(./images/book.png) no-repeat 10px center;
+    background: url(./images/scene.png) no-repeat 10px center;
     position: relative;
 }
 
-.widgets-bookmark .list-bookmark li:hover {
+.widgets-scene .list-scene li:hover {
     background-color: #f7f7f7;
     border-top-color: #f7f7f7;
 }
 
-.widgets-bookmark .list-bookmark li p {
+.widgets-scene .list-scene li p {
     font-size: 14px;
     color: #333;
     white-space: nowrap;
@@ -125,7 +125,7 @@ input {
     overflow: hidden;
 }
 
-.widgets-bookmark .list-bookmark li span {
+.widgets-scene .list-scene li span {
     display: block;
     font-size: 12px;
     color: #666;
@@ -134,7 +134,7 @@ input {
     overflow: hidden;
 }
 
-.widgets-bookmark .list-bookmark li .delete-btn {
+.widgets-scene .list-scene li .delete-btn {
     position: absolute;
     width: 20px;
     height: 20px;
@@ -145,6 +145,6 @@ input {
     cursor: pointer;
 }
 
-.widgets-bookmark .list-bookmark li:first-child {
+.widgets-scene .list-scene li:first-child {
     border-top-color: #E4E4E4;
 }
