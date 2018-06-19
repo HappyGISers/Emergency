@@ -1,10 +1,49 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+<html>
 
-</body>
+	<head>
+		<meta charset="UTF-8">
+		<title>场景保存</title>
+		<link rel="stylesheet" href="./scene_save.css" />
+	</head>
+
+	<body>
+		<div class="widgets-content widgets-bookmark">
+			<div class="widgets-row">
+				<div class="content">
+					<input type="text" placeholder="书签名称" id="bookmark-input" />
+					<div title="添加书签" class="btn-add-bookmark">+</div>
+				</div>
+			</div>
+			<div class="widgets-row">
+				<ul class="list-bookmark">
+					<li>
+						<p>碧水庄园</p>
+						<span>2018-05-14</span>
+						<a class="delete-btn"></a>
+					</li>
+					<li>
+						<p>碧水庄园</p>
+						<span>2018-05-14</span>
+						<a class="delete-btn"></a>
+					</li>
+					<li>
+						<p>碧水庄园</p>
+						<span>2018-05-14</span>
+						<a class="delete-btn"></a>
+					</li>
+				</ul>
+			</div>
+		</div>
+		<script src="../../js/jquery-3.3.1.min.js"></script>
+		<script>
+			$(function() {
+				//获取父窗口的关闭事件
+				$('.widgets-select', window.parent.document).find('.widgets-close').click(function() {
+					//alert('我是子页面的场景保存')
+				})
+			})
+		</script>
+	</body>
+
 </html>

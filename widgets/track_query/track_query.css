@@ -24,7 +24,7 @@ input {
     outline: none;
 }
 
-/*路径规划*/
+/*轨迹查询*/
 
 .widgets-content {
     padding: 14px;
@@ -65,6 +65,7 @@ input {
     height: 30px;
     font-size: 14px;
     color: #333;
+    border: 1px solid #ddd;
 }
 
 .widgets-row div.content input {
@@ -74,8 +75,24 @@ input {
     height: 30px;
     border: 1px solid #ddd;
     font-size: 14px;
+	float: left;
 }
-
+.widgets-row div.content input.time{
+	width: 40%;
+	background-image: url(images/day.png);
+	background-repeat: no-repeat;
+	background-position: 95% center;
+}
+.widgets-row div.content input.time:disabled{
+	background-color: #f7f7f7;
+}
+.widgets-row div.content span.center{
+	line-height: 30px;
+	padding-left: 2.5%;
+}
+.widgets-row div.content input.time:last-child{
+	float: right;
+}
 .widgets-row div.content input:hover {
     border-color: #3b8fc4;
 }
@@ -108,7 +125,7 @@ input {
 }
 
 .widgets-button span.disabled {
-    background-color: #f1f1f1 !important;
+    background-color: #f7f7f7 !important;
     cursor: not-allowed !important;
 }
 
@@ -164,17 +181,7 @@ input {
     margin-bottom: 14px;
 }
 
-.widgets-button span.location-btn {
-    background-image: url(./images/location.png);
-    padding-left: 35px;
-}
-
-.widgets-button span.delete-btn {
-    background-image: url(./images/delete2.png);
-    padding-left: 37px;
-}
-
-.widgets-button span.searchpath-btn {
-    background-image: url(./images/searchpath.png);
-    padding-left: 37px;
+.widgets-button span.search-btn {
+    background-image: url(./images/search.png);
+    padding-left: 32px;
 }

@@ -1,10 +1,84 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+<html>
 
-</body>
+	<head>
+		<meta charset="UTF-8">
+		<title>轨迹查询</title>
+		<link rel="stylesheet" href="./track_query.css" />
+	</head>
+
+	<body>
+		<div class="widgets-content widgets-path">
+			<div class="widgets-row">
+				<div class="widgets-tab">
+					<p class="select"><sub>*</sub>车辆</p>
+					<p><sub>*</sub>人员</p>
+				</div>
+				<div class="widgets-tab-main">
+					<div class="widgets-tab-content">
+						<p class="name">选择人员：</p>
+						<div class="content">
+							<select class="select">
+				                <option>张三</option>
+				                <option>李四</option>
+				            </select>
+						</div>
+					</div>
+					<div class="widgets-tab-content">
+						<p class="name">时间：</p>
+						<div class="content">
+							<input type="text" placeholder="" class="time" disabled />
+							<span class="center">至</span>
+							<input type="text" placeholder="" class="time" disabled />
+						</div>
+					</div>
+					<div class="widgets-tab-content">
+						<div class="widgets-button">
+							<span class="search-btn">查询</span>
+						</div>
+					</div>
+				</div>
+				<div class="widgets-tab-main" style="display: none;">
+					<div class="widgets-tab-content">
+						<p class="name">选择人员：</p>
+						<div class="content">
+							<select class="select">
+				                <option>张三</option>
+				                <option>李四</option>
+				            </select>
+						</div>
+					</div>
+					<div class="widgets-tab-content">
+						<p class="name">时间：</p>
+						<div class="content">
+							<input type="text" placeholder="" class="time" disabled />
+							<span class="center">至</span>
+							<input type="text" placeholder="" class="time" disabled />
+						</div>
+					</div>
+					<div class="widgets-tab-content">
+						<div class="widgets-button">
+							<span class="search-btn">查询</span>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<script src="../../js/jquery-3.3.1.min.js"></script>
+		<script>
+			$(function() {
+				//获取父窗口的关闭事件
+				$('.widgets-select', window.parent.document).find('.widgets-close').click(function() {
+					//alert('我是子页面的轨迹查询')
+				})
+				//起点、终点切换
+				$('.widgets-path .widgets-tab p').click(function() {
+					$(this).addClass('select').siblings('p').removeClass('select');
+					var index = $(this).index();
+					$('.widgets-path .widgets-tab-main').hide().eq(index).show();
+				})
+			})
+		</script>
+	</body>
+
 </html>
