@@ -47,6 +47,7 @@ function addMarker(data) {
     });
     // 将标注添加到地图中
     map.addOverLay(marker);
+
     return marker;
 }
 
@@ -68,5 +69,5 @@ function createInfoWindow(data, layer) {
             sContent += "</div>";
         }
     }
-    return new T.InfoWindow(sContent);
+    return new T.InfoWindow(sContent, {offset: new T.Point(0, 56)}); //加上图片的像素高度偏移
 }

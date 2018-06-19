@@ -80,24 +80,6 @@ input {
     border-color: #3b8fc4;
 }
 
-.widgets-row div.content .btn-add-bookmark {
-    color: #3b8fc4;
-    width: 30px;
-    position: absolute;
-    right: -1px;
-    top: 1px;
-    bottom: 1px;
-    font-size: 20px;
-    font-weight: bold;
-    text-align: center;
-    line-height: 26px;
-    cursor: pointer;
-}
-
-.widgets-row div.content .btn-add-bookmark:hover {
-    background-color: #e6e6e6;
-}
-
 .widgets-row div.content .btn-add,
 .widgets-row div.content .btn-search {
     color: #3b8fc4;
@@ -113,31 +95,15 @@ input {
     cursor: pointer;
 }
 
+.widgets-row div.content .btn-search {
+    background-image: url(./images/search.png);
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
 .widgets-row div.content .btn-add:hover,
 .widgets-row div.content .btn-search:hover {
     background-color: #e6e6e6;
-}
-
-.widgets-row div.content .btn-accident {
-    float: right;
-    display: block;
-    height: 30px;
-    line-height: 30px;
-    padding: 0px 10px;
-    font-size: 14px;
-    text-align: center;
-    background-color: #fff;
-    border: 1px solid #ddd;
-    color: #333;
-    background-repeat: no-repeat;
-    background-position: 10px center;
-    border-radius: 2px;
-    cursor: pointer;
-}
-
-.widgets-row div.content .btn-accident:hover {
-    background-color: #e6e6e6;
-    border-color: #d2d2d2;
 }
 
 .widgets-button {
@@ -165,6 +131,11 @@ input {
 .widgets-button span:hover {
     background-color: #e6e6e6;
     border-color: #d2d2d2;
+}
+
+.widgets-button span.disabled {
+    background-color: #f1f1f1 !important;
+    cursor: not-allowed !important;
 }
 
 .widgets-row .prompt-word {
@@ -241,53 +212,45 @@ input {
     width: 100%;
 }
 
-.widgets-keyword .list-title,
-.widgets-circum .list-title {
+.widgets-keyword .list-title {
     overflow: hidden;
     border-bottom: 1px solid #E4E4E4;
     padding: 10px 0;
 }
 
-.widgets-keyword .list-title p,
-.widgets-circum .list-title p {
+.widgets-keyword .list-title p {
     float: left;
     font-size: 13px;
     color: #333;
     cursor: pointer;
 }
 
-.widgets-keyword .list-title p.select,
-.widgets-circum .list-title p.select {
+.widgets-keyword .list-title p.select {
     font-weight: bold;
 }
 
-.widgets-keyword .list-keyword,
-.widgets-circum .list-keyword {
+.widgets-keyword .list-keyword {
     max-height: 215px;
     overflow-y: auto;
 }
 
-.widgets-keyword .list-keyword ul,
-.widgets-circum .list-keyword ul {
+.widgets-keyword .list-keyword ul {
 }
 
-.widgets-keyword .list-keyword li,
-.widgets-circum .list-keyword li {
+.widgets-keyword .list-keyword li {
     overflow: hidden;
     border-bottom: 1px solid #E4E4E4;
     padding: 9px 0;
 }
 
-.widgets-keyword .list-keyword li img,
-.widgets-circum .list-keyword li img {
+.widgets-keyword .list-keyword li img {
     width: 25px;
     vertical-align: -4px;
     float: left;
     margin-right: 5px;
 }
 
-.widgets-keyword .list-keyword li p.listname,
-.widgets-circum .list-keyword li p.listname {
+.widgets-keyword .list-keyword li p.listname {
     float: left;
     margin: 0;
     line-height: 25px;
@@ -299,18 +262,15 @@ input {
     width: 78%;
 }
 
-.widgets-keyword .list-keyword li p.listname a,
-.widgets-circum .list-keyword li p.listname a {
+.widgets-keyword .list-keyword li p.listname a {
     cursor: pointer;
 }
 
-.widgets-keyword .list-keyword li p.listname a:hover,
-.widgets-circum .list-keyword li p.listname a:hover {
+.widgets-keyword .list-keyword li p.listname a:hover {
     color: #3b8fc4;
 }
 
-.widgets-keyword .list-keyword li a.listdetails,
-.widgets-circum .list-keyword li a.listdetails {
+.widgets-keyword .list-keyword li a.listdetails {
     display: block;
     float: right;
     font-size: 13px;
@@ -321,19 +281,6 @@ input {
     padding-right: 5px;
 }
 
-.widgets-keyword .list-keyword li a.listdetails:hover,
-.widgets-circum .list-keyword li a.listdetails:hover {
+.widgets-keyword .list-keyword li a.listdetails:hover {
     color: #3b8fc4;
-}
-
-.widgets-circum .widgets-row div.content input {
-    width: 20%;
-    float: left;
-}
-.widgets-circum .widgets-row div.content .select {
-    width: 20%;
-    float: left;
-    height: 32px;
-    margin-left: 5px;
-    border-color: #ddd;
 }
