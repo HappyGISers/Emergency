@@ -134,57 +134,14 @@
         $('.widgets-select', window.parent.document).find('.widgets-close').click(function () {
             //alert('我是子页面的图层控制')
         });
-        //弹框
-        $('.layer-alert .btn').click(function (e) {
-            e.stopPropagation();
-            $('.list-layer').css({
-                'z-index': '1'
-            });
-            $(this).parents('.list-layer').css({
-                'z-index': '2'
-            });
-            $('.layer-alert-opacity').hide();
-            if ($(this).parents('.layer-alert').hasClass('active')) {
-                $(this).parents('.layer-alert').removeClass('active');
-            } else {
-                $('.layer-alert').removeClass('active');
-                $(this).parents('.layer-alert').addClass('active');
-            }
-        });
-//        $('.menu-item').click(function (e) {
-//            e.stopPropagation();
-//            $('.layer-alert-opacity').hide();
-//            if ($(this).html() == '透明度') {
-//                $(this).parents('.layer-alert').find('.layer-alert-opacity').show();
-//            } else {
-//                $('.layer-alert').removeClass('active');
-//            }
-//        })
-        $('.layer-alert-opacity').click(function (e) {
-            e.stopPropagation();
-        });
-        $('body').click(function (e) {
-            e.stopPropagation();
-            if ($('.layer-alert').hasClass('active')) {
-                $('.layer-alert').removeClass('active');
-                $('.layer-alert-opacity').hide();
-            }
-        })
-        //复选框
-//        $('.checkbox').click(function () {
-//            if ($(this).hasClass('checked')) {
-//                $(this).removeClass('checked');
-//            } else {
-//                $(this).addClass('checked');
-//            }
-//        })
     });
     //透明度
-    scale = function (btn, bar, add, minus) {
+    scale = function (btn, bar, add, minus, type) {
         this.btn = document.getElementById(btn);
         this.bar = document.getElementById(bar);
         this.minus = document.getElementById(minus);
         this.add = document.getElementById(add);
+        this.type = type;
         this.step = this.bar.getElementsByTagName("DIV")[0];
         this.init();
     };
@@ -209,32 +166,42 @@
                     f.ondrag(pos, to);
                     b.getSelection ? b.getSelection().removeAllRanges() : g.selection.empty();
                 };
-                g.onmouseup = new Function('this.onmousemove=null');
+//                g.onmouseup = new Function('this.onmousemove=null');
+                g.onmouseup = function(e){
+                    g.onmousemove=null;
+                    f.ondrag(f.silderm, f.silderx, true);
+                }
             };
             f.add.onclick = function () {
                 if (f.silderm < 100) {
                     f.silderm++;
                     f.silderx += 1.34;
-                    f.ondrag(f.silderm, f.silderx);
+                    f.ondrag(f.silderm, f.silderx,true);
                 }
             };
             f.minus.onclick = function () {
                 if (f.silderm > 0) {
                     f.silderm--;
                     f.silderx -= 1.34;
-                    f.ondrag(f.silderm, f.silderx);
+                    f.ondrag(f.silderm, f.silderx,true);
                 }
             }
         },
-        ondrag: function (pos, x) {
+        ondrag: function (pos, x, bool) {
             this.btn.style.left = x + 'px';
             this.step.style.width = Math.max(0, x) + 'px';
             console.log('当前透明度' + pos + '%');
+            if(bool){
+                var targetMark = parent.mainData.data.targetMark[this.type];
+                if(targetMark) {
+                    var opacity = 1-pos/100;
+                    $.each(targetMark, function (i, item) {
+                        item.setOpacity(opacity);
+                    })
+                }
+            }
         }
     };
-    new scale('silder1', 'bar1', 'opacity-add1', 'opacity-minus1');
-    new scale('silder2', 'bar2', 'opacity-add2', 'opacity-minus2');
-    new scale('silder3', 'bar3', 'opacity-add3', 'opacity-minus3');
 </script>
 </body>
 
