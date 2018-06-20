@@ -143,6 +143,16 @@
         var endX = document.getElementById("endLng").value;
         var endY = document.getElementById("endLat").value;
         if (startX.length > 0 && startY.length > 0 && endX.length > 0 && endY.length > 0) {
+            markerTool.clear();
+            markerTool.close();
+            if (!startMarker) {
+                startMarker = new T.Marker(new T.LngLat(startX, startY), {icon: startIcon});
+                map.addOverLay(startMarker);
+            }
+            if (!endMarker) {
+                endMarker = new T.Marker(new T.LngLat(endX, endY), {icon: endIcon});
+                map.addOverLay(endMarker);
+            }
             clearPath();
             driving("direction", "--",
                 {
