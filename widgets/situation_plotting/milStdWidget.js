@@ -18,6 +18,9 @@ var selectedFeatures;
 var styles;
 //地图容器
 var map = parent.map;
+
+var ol = parent.ol;
+var MilStd = parent.MilStd;
 $(function () {
     //获取父窗口的关闭事件
     $('.widgets-select', window.parent.document).find('.widgets-close').click(function () {
