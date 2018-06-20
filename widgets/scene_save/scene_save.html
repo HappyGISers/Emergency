@@ -17,30 +17,75 @@
     </div>
     <div class="widgets-row">
         <ul class="list-scene">
-            <li>
-                <p>碧水庄园</p>
-                <span>2018-05-14</span>
-                <a class="delete-btn"></a>
-            </li>
-            <li>
-                <p>碧水庄园</p>
-                <span>2018-05-14</span>
-                <a class="delete-btn"></a>
-            </li>
-            <li>
-                <p>碧水庄园</p>
-                <span>2018-05-14</span>
-                <a class="delete-btn"></a>
-            </li>
         </ul>
     </div>
 </div>
 <script src="../../js/jquery.min.js"></script>
 <script>
+    var map = parent.map;
     $(function () {
-        //获取父窗口的关闭事件
-        $('.widgets-select', window.parent.document).find('.widgets-close').click(function () {
-            //alert('我是子页面的场景保存')
+        var sceneData = []; //存放json数据
+        if (window.localStorage) {
+            if (window.localStorage.getItem('scenes')) {
+                sceneData = JSON.parse(window.localStorage.getItem('scenes'));
+            }
+            else {
+                sceneData = [];
+            }
+            for (var i = 0; i < sceneData.length; i++) {
+                var time = sceneData[i].time;
+                $('.list-scene').append('<li><p>' + sceneData[i].name + '</p><span>' + time + '</span><a class="delete-btn" title="删除"></a></li>');
+            }
+        }
+        //添加
+        $('.btn-add-scene').click(function () {
+            var sceneName = $('#scene-input').val();
+            if (sceneName == '') {
+                alert('场景名称不能为空！');
+            } else {
+                var time = new Date();   // 程序计时的月从0开始取值后+1
+                var m = time.getMonth() + 1;
+                var t = time.getFullYear() + "-" + m + "-"
+                    + time.getDate() + " " + time.getHours() + ":"
+                    + time.getMinutes() + ":" + time.getSeconds();
+                $('.list-scene').append('<li><p>' + sceneName + '</p><span>' + t + '</span><a class="delete-btn" title="删除"></a></li>');
+                //向数组中新加内容
+                sceneData.push({
+                    "name": sceneName,
+                    "geojson": sceneName,
+                    "time": t
+                });
+                localStorage.setItem("scenes", JSON.stringify(sceneData));
+            }
+            $('#scene-input').val("");
+        });
+        //删除
+        $(".list-scene").on("click", "li .delete-btn", function (e) {
+            if (window.localStorage) {
+                $(this).parents('li').remove();
+                //删除数组中相同的
+                var name = $(this).parents('li').find('p').text();
+                for (var i = 0; i < sceneData.length; i++) {
+                    if (name == sceneData[i].name) {
+                        sceneData.splice(i, 1);
+                        break;
+                    }
+                }
+                localStorage.setItem("scenes", JSON.stringify(sceneData));
+                e.stopPropagation();
+            }
+        });
+        // 点击
+        $(".list-scene").on("click", "li", function () {
+            if (window.localStorage) {
+                var name = $(this).find('p').text();
+                for (var i = 0; i < sceneData.length; i++) {
+                    if (name == sceneData[i].name) {
+                        console.log(sceneData[i].time);
+                        break;
+                    }
+                }
+            }
         })
     })
 </script>
