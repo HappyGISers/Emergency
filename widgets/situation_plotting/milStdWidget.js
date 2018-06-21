@@ -142,19 +142,15 @@ function drawArrow(type) {
 function onDrawEnd(event) {
     var drawStyle = new ol.style.Style({
         fill: new ol.style.Fill({
-            color: $('#FillClr').val()
+            color: $('#FillClr').val() + "64"
         }),
         stroke: new ol.style.Stroke({
             color: $('#LinClr').val(),
-            lineCap: $('#LinHeadType').val(),
-            lineJoin: $('#LinJointType').val(),
-            lineDash: [parseInt($('#LinDash').val()), parseInt($('#LinDot').val())],
             width: parseInt($('#LinWidth').val())
         }),
         image: new ol.style.Circle({
-            radius: parseInt($('#PntRadius').val()),
             fill: new ol.style.Fill({
-                color: $('#FillClr').val()
+                color: $('#FillClr').val() + "64"
             })
         })
     });
@@ -240,7 +236,7 @@ function editGeom() {
             selectedFeatures.push(feature);
             var editStyle = getEditStyle();
             feature.setStyle(editStyle);
-            $('#cancelEditBtn').attr({ disabled: false })
+            $('#cancelEditBtn').attr("class", "enable");
         });
     });
 
@@ -254,7 +250,7 @@ function editGeom() {
                 selectedFeatures[i].setStyle(editStyle);
             }
         }
-        $('#cancelEditBtn').attr({ disabled: false })
+        $('#cancelEditBtn').attr("class", "enable");
     });
 }
 
@@ -262,19 +258,15 @@ function editGeom() {
 function getEditStyle() {
     var style = new ol.style.Style({
         fill: new ol.style.Fill({
-            color: $('#FillClr').val()
+            color: $('#FillClr').val() + "64"
         }),
         stroke: new ol.style.Stroke({
             color: $('#LinClr').val(),
-            lineCap: $('#LinHeadType').val(),
-            lineJoin: $('#LinJointType').val(),
-            lineDash: [parseInt($('#LinDash').val()), parseInt($('#LinDot').val())],
             width: parseInt($('#LinWidth').val())
         }),
         image: new ol.style.Circle({
-            radius: parseInt($('#PntRadius').val()),
             fill: new ol.style.Fill({
-                color: $('#FillClr').val()
+                color: $('#FillClr').val() + "64"
             })
         })
     });
@@ -290,12 +282,12 @@ function cancelEditGeom() {
     }
     selectedFeatures = new Array();
     styles = new Array();
-    $('#cancelEditBtn').attr({ disabled: true });
+    $('#cancelEditBtn').attr("class", "disable");
 }
 
 //移除所有控件
 function removeInteractions() {
-    $('#cancelEditBtn').attr({ disabled: true });
+    $('#cancelEditBtn').attr("class", "disable");
 
     if (drawTool) {
         drawTool.deactivate();

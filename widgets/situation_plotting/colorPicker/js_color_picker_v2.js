@@ -248,7 +248,7 @@
 	}
 
 	function createColorPickerTopRow(inputObj){
-		var tabs = ['RGB','Named colors','Color slider'];
+		var tabs = ['内置颜色','自定义'];
 		var tabWidths = [37,90,70];
 		var div = document.createElement('DIV');
 		div.className='colorPicker_topRow';
@@ -551,7 +551,7 @@
 			contentDiv.id = 'color_picker_content';
 			color_picker_div.appendChild(contentDiv);
 			createWebColors(contentDiv);
-			createNamedColors(contentDiv);
+			// createNamedColors(contentDiv);
 			createAllColorDiv(contentDiv);
 			createStatusBar(color_picker_div);
 		}
