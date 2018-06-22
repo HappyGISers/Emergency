@@ -248,7 +248,7 @@
 	}
 
 	function createColorPickerTopRow(inputObj){
-		var tabs = ['内置颜色','自定义'];
+		var tabs = ['内置','自定义'];
 		var tabWidths = [37,90,70];
 		var div = document.createElement('DIV');
 		div.className='colorPicker_topRow';

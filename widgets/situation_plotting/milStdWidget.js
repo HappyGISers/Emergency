@@ -70,7 +70,7 @@ function drawArrow(type) {
                 neckWidthFactor: 0.1,
                 tailWidthFactor: 0.1,
                 hasSwallowTail: true,
-                swallowTailFactor: 0.1
+                swallowTailFactor: 0.8
             });
             drawTool.activate(MilStd.EnumMilstdType.SimpleArrow, milParam, "drawSimpleArrow");
             break;
@@ -106,26 +106,6 @@ function drawArrow(type) {
         case "RectFlag":
         case "CurveFlag":
             drawTool.activate(type, null, "drawFlag");
-            break;
-        //十字箭头指北针
-        case "ArrowCross":
-        //圆形尖角指北针
-        case "CircleClosedangle":
-        //尖角指北针
-        case "Closedangle":
-        //双向尖角指北针
-        case "DoubleClosedangle":
-        //四角指北针
-        case "Fourstar":
-        //菱形指北针
-        case "Rhombus":
-        //同向尖角指北针
-        case "SameDirectionClosedangle":
-        //三角指北针
-        case "Triangle":
-        //风向标指北针
-        case "Vane":
-            drawTool.activate(type, null, "drawCompass");
             break;
         //贝塞尔曲线成区
         case "Bezier":
