@@ -48,7 +48,7 @@
                 //向数组中新加内容
                 bookmarkData.push({
                     "name": bookmarkName,
-                    "extent": [map.getBounds().getSouthWest().lng, map.getBounds().getSouthWest().lat, map.getBounds().getNorthEast().lng, map.getBounds().getNorthEast().lat]
+                    "extent": [[map.getBounds().getSouthWest().lng, map.getBounds().getSouthWest().lat], [map.getBounds().getNorthEast().lng, map.getBounds().getNorthEast().lat]]
                 });
                 localStorage.setItem("bookmarks", JSON.stringify(bookmarkData));
             }
