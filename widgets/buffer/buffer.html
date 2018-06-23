@@ -6,6 +6,7 @@
     <title>周边查找</title>
     <link rel="stylesheet" href="./buffer.css"/>
     <script rel="stylesheet" src="buffer.js"></script>
+    <script rel="stylesheet" src="turf.min.js"></script>
 </head>
 
 <body>
@@ -24,9 +25,6 @@
             </div>
             <div class="lump" title="面" onclick="addGraphic('polygon')">
                 <img src="./images/lump5.png"/>
-            </div>
-            <div class="lump" title="手绘面">
-                <img src="./images/lump4.png"/>
             </div>
             <div class="lump" title="选择要素">
                 <img src="./images/lump6.png"/>
@@ -52,10 +50,10 @@
     <div class="widgets-row">
         <p class="name">缓冲范围：</p>
         <div class="content" style="margin-bottom: 0;">
-            <input type="text" name="" value="5"/>
-            <select class="select">
-                <option>千米</option>
-                <option>米</option>
+            <input id="bufferRadius" type="text" name="" value="5"/>
+            <select class="select" id="bufferUnits">
+                <option value="kilometers">千米</option>
+                <option value="meters">米</option>
             </select>
         </div>
     </div>
