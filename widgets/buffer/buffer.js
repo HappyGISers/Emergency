@@ -8,7 +8,11 @@ var polygonTool = parent.polygonTool;// 初始化画面工具
 var rectangleTool = parent.rectangleTool;// 初始化矩形工具
 var geoFormat = new ol.format.GeoJSON();
 var currentDrawTool;
-var currentBufferFeature;
+var currentDrawGeoJson = {
+    type: "Feature",
+    geometry: {},
+    properties:null
+};
 
 var source = new ol.source.Vector({ wrapX: false });
 var bufferLayer = new ol.layer.Vector({
@@ -40,14 +44,9 @@ var drawStyle = new ol.style.Style({
         })
     })
 });
-$(function () {
-    //获取父窗口的关闭事件
-    $('.widgets-select', window.parent.document).find('.widgets-close').click(function () {
-        clear();
-    })
-});
 
 function addGraphic(type) {
+    map.disableDoubleClickZoom();
     switch (type)
     {
         case "point":
@@ -65,7 +64,6 @@ function addGraphic(type) {
 }
 
 function startDraw(drawTool) {
-    map.disableDoubleClickZoom();
     currentDrawTool = drawTool;
     drawTool.open();
     if(drawTool instanceof T.MarkTool)
@@ -79,26 +77,87 @@ function startDraw(drawTool) {
     }
 }
 
+//绘制点完成回调
 function drawMarkEnd(currentLnglat, currentFeature) {
+    currentDrawGeoJson.geometry = getGeometry(currentLnglat, currentFeature);
     map.enableDoubleClickZoom();
-    doBuffer(currentFeature);
     closeTool();
 }
 
+//除点以外的绘制完成回调
 function drawEnd(currentLnglats,area, currentFeature) {
+    currentDrawGeoJson.geometry = getGeometry(currentLnglats, currentFeature);
     map.enableDoubleClickZoom();
-    doBuffer(currentFeature);
     closeTool();
 }
 
-function doBuffer(currentFeature) {
-    var radius = parseInt($('#bufferRadius').val());
-    var bufferUnit = $('#bufferUnits').val();
-    var geojson = JSON.parse(geoFormat.writeFeature(currentFeature,{dataProjection:map.getView().getProjection().getCode()}));
-    var bufferJson = turf.buffer(geojson, radius, {units: bufferUnit});
-    currentBufferFeature = geoFormat.readFeature(bufferJson);
+function getGeometry(lnglats, feature) {
+    var geometry = feature.getGeometry();
+    return {
+        type: geometry.getType(),
+        coordinates: lnglats
+    };
+}
+
+function search() {
+    if(currentDrawGeoJson === undefined)
+    {
+        alert('请先绘制缓冲图形');
+        return;
+    }
+    var bufferParameters = getBufferParameters();
+    var selectedLayers = bufferParameters.selectedLayers;
+    var bufferJson = doBuffer(bufferParameters.radius, bufferParameters.bufferUnit);
+    // var resultLayers = [], len = [];
+    // var self = this;
+    // var count = 0, layerLength = selectedLayers.length - 1;
+    // selectedLayers.forEach(function (index) {
+    //     resultLayers.push(index);
+    //     var layer = selectedLayers[index];
+    //     var layerData = layer.data;
+    //     var intersectData = turf.intersect(layerData, bufferJson);
+    //     len.push(intersectData.features.length);
+    //     if (count === layerLength) {
+    //         var resultLen = 0;
+    //         for (var i = 0; i < len.length; i++) {
+    //             resultLen += len[i];
+    //         }
+    //         var returnData = {
+    //             features: self._resultDatas,
+    //             allResultLen: resultLen,
+    //             resultLayer: self._resultLayers
+    //         };
+    //     }
+    //     count++;
+    // })
+}
+//根据绘制的图形进行缓冲获取缓冲图形
+function doBuffer(radius, bufferUnit) {
+    var bufferJson = turf.buffer(currentDrawGeoJson, radius, {units: bufferUnit});
+    var currentBufferFeature = geoFormat.readFeature(bufferJson);
     currentBufferFeature.setStyle(drawStyle);
-    source.addFeature(currentBufferFeature)
+    source.addFeature(currentBufferFeature);
+    return bufferJson;
+}
+function getBufferParameters() {
+    var selectedLayers = [];
+    $('.analog-select-valueall .checkbox').each(function () {
+        if ($(this).hasClass('checked')) {
+            for(var i=0; i<layers.length; i++)
+            {
+                if(layers[i] === this.id)
+                {
+
+                    selectedLayers.push(layers[i]);
+                }
+            }
+        }
+    });
+    return{
+        radius:parseInt($('#bufferRadius').val()),
+        bufferUnit : $('#bufferUnits').val(),
+        selectedLayers: selectedLayers
+    }
 }
 
 function closeTool() {

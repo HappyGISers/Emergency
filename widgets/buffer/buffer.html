@@ -37,12 +37,11 @@
             <div class="analog-select">
                 <div class="analog-select-value">请选择查询对象</div>
                 <div class="analog-select-valueall">
-                    <p class="checkbox">工业企业</p>
-                    <p class="checkbox">市政排污口</p>
-                    <p class="checkbox">园区内风险单元</p>
-                    <p class="checkbox">电网500kv_点</p>
-                    <p class="checkbox">电网500kv_线</p>
-                    <p class="checkbox">风险单元</p>
+                    <p class="checkbox" id="1">工业企业</p>
+                    <p class="checkbox" id="2">市政排污口</p>
+                    <p class="checkbox" id="3">园区内风险单元</p>
+                    <p class="checkbox" id="4">电网500kv_点</p>
+                    <p class="checkbox" id="5">电网500kv_线</p>
                 </div>
             </div>
         </div>
@@ -59,7 +58,7 @@
     </div>
     <div class="widgets-row">
         <div class="widgets-button">
-            <span class="search-btn" onclick="alert(0)">搜索</span>
+            <span class="search-btn">搜索</span>
         </div>
     </div>
     <div class="widgets-row">
@@ -138,7 +137,7 @@
     $(function () {
         //获取父窗口的关闭事件
         $('.widgets-select', window.parent.document).find('.widgets-close').click(function () {
-            //alert('我是子页面的周边查找')
+            clear();
         })
         //选中状态
         $('.lump').click(function () {
@@ -175,6 +174,9 @@
             }
 
         })
+        $('.widgets-button .search-btn').click(function () {
+            search();
+        });
         $('body').click(function () {
             if (!$('.analog-select-valueall').is(":hidden")) {
                 $('.analog-select-valueall').hide();
