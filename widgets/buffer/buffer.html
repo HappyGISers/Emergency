@@ -64,14 +64,12 @@
     <div class="widgets-row">
         <div class="widgets-button" style="margin-top: 10px;">
             <span onclick="alert(0)">全部缩放</span>
-            <span onclick="alert(0)">清空</span>
+            <span onclick="clear()">清空</span>
         </div>
     </div>
     <div class="widgets-row">
         <div class="list-title">
             <p class="select">全部（149）</p>
-            <p>空气质量测点（1）</p>
-            <p>建设项目（148）</p>
         </div>
         <ul class="list-keyword">
             <li>
@@ -138,7 +136,20 @@
         //获取父窗口的关闭事件
         $('.widgets-select', window.parent.document).find('.widgets-close').click(function () {
             clear();
+        });
+        initCheckbox();
+        initSelect();
+        $('.widgets-button .search-btn').click(function () {
+            search();
+        });
+        $('body').click(function () {
+            if (!$('.analog-select-valueall').is(":hidden")) {
+                $('.analog-select-valueall').hide();
+            }
         })
+    })
+
+    function initSelect() {
         //选中状态
         $('.lump').click(function () {
             if ($(this).hasClass('active')) {
@@ -146,7 +157,7 @@
             } else {
                 $(this).addClass('active').siblings('.lump').removeClass('active');
             }
-        })
+        });
         //下拉，复选
         $('.analog-select-value').click(function (e) {
             e.stopPropagation();
@@ -174,15 +185,7 @@
             }
 
         })
-        $('.widgets-button .search-btn').click(function () {
-            search();
-        });
-        $('body').click(function () {
-            if (!$('.analog-select-valueall').is(":hidden")) {
-                $('.analog-select-valueall').hide();
-            }
-        })
-    })
+    }
 </script>
 </body>
 
