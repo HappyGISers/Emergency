@@ -1,5 +1,4 @@
 var T = parent.T;
-var $ = parent.$;
 var ol = parent.ol;
 var map = parent.map;
 var layerList = parent.mainData.data.layerList;
@@ -9,7 +8,13 @@ var polygonTool = parent.polygonTool;// 初始化画面工具
 var rectangleTool = parent.rectangleTool;// 初始化矩形工具
 var geoFormat = new ol.format.GeoJSON();
 var currentDrawTool;
-var bufferResultCount = 0;
+var bufferResult = {
+    count: 0,
+    coordinates: [],
+    marks: {},
+    contents:{}
+};
+
 var currentDrawGeoJson = {
     type: "Feature",
     geometry: null,
@@ -38,6 +43,7 @@ var bufferLayer = new ol.layer.Vector({
 map.addLayer(bufferLayer);
 
 function initCheckbox() {
+    layerList = parent.mainData.data.layerList;
     var tableContent = '';
     var allLayer = document.getElementsByClassName('analog-select-valueall')[0];
     for(var layer in layerList)
@@ -107,14 +113,50 @@ function search() {
         alert('请先绘制缓冲图形');
         return;
     }
+    initBufferResult();
+    //获取缓冲查询参数设置
     var bufferParameters = getBufferParameters();
     var selectedLayers = bufferParameters.selectedLayers;
+    //缓冲
     var bufferJson = doBuffer(bufferParameters.radius, bufferParameters.bufferUnit);
     var resultLayers = [];
-    var layerLength = selectedLayers.length - 1;
+    //查询结果
     selectedLayers.forEach(function (layer) {
+        //按勾选图层逐个查询
         resultLayers.push(layer);
-        queryLayerAndIntersects(layer,bufferJson);
+        //获取图层所有数据
+        queryLayer(layer,function (data) {
+            var count = 0;
+            var list = $('.list-keyword')[0];
+            for (var i=0; i<data.length; i++) {
+                var pointData = data[i];
+                // var coordinate = [parseInt(pointData.longitude), parseInt(pointData.latitude)];
+                var coordinate = [pointData.longitude, pointData.latitude];
+                //查询当前点是否和缓冲区不相交
+                var isDisjoint = turf.booleanDisjoint(turf.point(coordinate), bufferJson);
+                //如果相交，则添加缓冲结果
+                if(isDisjoint === false)
+                {
+                    var marker = parent.addMarker(pointData);
+                    bufferResult.coordinates.push(coordinate);
+                    var listContent =getResultContent(layer, pointData.name);
+                    bufferResult.contents[layer] +=listContent;
+                    //添加结果
+                    if(!bufferResult.marks[layer]){
+                        bufferResult.marks[layer] = [];
+                    }
+                    bufferResult.marks[layer].push(marker);
+                    count++;
+                    bufferResult.count++;
+                }
+            }
+            list.innerHTML(bufferResult.contents[layer]);
+            //添加标题栏
+            var title = document.createElement('p');
+            title.innerHTML = layerList[layer].name + ' (' +count + ') ';
+            document.getElementsByClassName('list-title')[0].appendChild(title);
+            $('.list-title .select')[0].innerHTML = '全部 (' + bufferResult.count + ') ';
+        });
     })
 }
 //根据绘制的图形进行缓冲获取缓冲图形
@@ -140,43 +182,47 @@ function getBufferParameters() {
 }
 
 //查询所对应的列表所有图层
-var queryLayerAndIntersects = function(val, bufferJson){
-    $.ajax({
-        type : "POST",
-        url : parent.ctx+"/eventMap/queryMarker.vm",
-        data:{flag:"point",type:val},
-        dataType:'json',
-        success : function(retMsg){//成功
-            if (retMsg.success){
-                retMsg.data = retMsg.data || [];
-                var points =retMsg.data.map(function (point) {
-                    return {
-                        type: "Feature",
-                        geometry: {
-                            x: point.longitude,
-                            y: point.latitude
-                        },
-                        properties:{
-                            dataId: point.dataId,
-                            name: point.name,
-                            type: point.type
-                        }
-                    }
-                });
-                var intersectData = turf.pointsWithinPolygon({
-                    type: "FeatureCollection ",
-                    features: points
-                }, bufferJson);
-                bufferResultCount += intersectData.features.length;
-                var title = document.createElement('p');
-                title.innerHTML = layerList[val].name + ' (' + intersectData.features.length + ') ';
-                document.getElementsByClassName('list-title')[0].appendChild(title);
-                $('.list-title .select')[0].innerHTML = '全部 (' + bufferResultCount + ') ';
+var queryLayer = function(val, callback){
+    var bufferLayerData = parent.mainData.data.bufferLayerData[val];
+    if(bufferLayerData)
+    {
+        callback(bufferLayerData);
+    }
+    else {
+        $.ajax({
+            type : "POST",
+            url : parent.ctx+"/eventMap/queryMarker.vm",
+            data:{flag:"point",type:val},
+            dataType:'json',
+            success : function(retMsg){//成功
+                if (retMsg.success){
+                    var data = retMsg.data || [];
+                    callback(data);
+                }
             }
-        }
-    })
+        })
+    }
 };
 
+function getResultContent(val,name) {
+    return "<li>\n" +
+        "<img src=\"" + layerList[val].imageUrl + "\">\n" +
+        "<p class=\"listname\">\n" +
+        "<a>"+name+"</a>\n" +
+        "</p>\n" +
+        "</li>";
+}
+
+function initBufferResult() {
+    bufferResult = {
+        count: 0,
+        coordinates: [],
+        marks: {},
+        contents:{}
+    };
+   $('.list-keyword')[0].innerHTML = '';
+   $('.list-title')[0].innerHTML ='<p class=\"select\">全部（149）</p>';
+}
 function closeTool() {
     if(currentDrawTool)
     {
@@ -185,7 +231,6 @@ function closeTool() {
     }
 }
 function clear() {
-    bufferResultCount = 0;
     currentDrawGeoJson.geometry = null;
     source.clear();
     closeTool();

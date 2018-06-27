@@ -9,6 +9,7 @@ var mainData = {
         accidentMarker: null,  //事故点标注
         eventId: "f4wytyu-2iu3-wvfng-y456df-b6fbfd5-ewe2c",
         targetMark: {},        //各个目标图层点位数据
+        bufferLayerData: {}, //缓冲区各个目标图层点位数据
         layerList: {},         //各个图层列表的数据
         accidentInfo: {}       //事故信息
     },
