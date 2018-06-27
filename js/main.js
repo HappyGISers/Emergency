@@ -32,6 +32,63 @@ window.onload = function () {
     rectangleTool = new T.RectangleTool(map);// 初始化矩形工具
 };
 
+
+var layerList={};     //各个列表的数据
+var targentMark = {};  //各个点位的数据
+
+$(function () {
+
+    var ctx = "http://124.200.187.214:9300/emergency-slzy";
+
+    //查询图层的列表
+    $.ajax({
+        type: "POST",
+        url: ctx + "/eventMap/queryTabulation.vm",
+        data: {flag: "point"},
+        dataType: 'json',
+        success: function (retMsg) {
+            if (retMsg.success) {
+                //所有列表的类型集合
+                var typeList = [];
+                $.each(retMsg.data,function(i, item){
+                    layerList[item.type] = item;
+                    typeList.push(item.type);
+                });
+                findTypeMarkList(typeList);
+            } else {
+            }
+        }
+    });
+
+    //查询所有点位
+    function findTypeMarkList(typeList){
+        $.ajax({
+            type : "POST",
+            url : ctx+"/eventMap/queryMarker.vm",
+            data:{flag:"point",type:typeList.join()},
+            dataType:'json',
+            success : function(retMsg){
+                if (retMsg.success){
+                    $.each(retMsg.data,function(i, item){
+                        if(!targentMark[item.type]){
+                            targentMark[item.type] = [];
+                        }
+                        targentMark[item.type].push(item);
+                    })
+                }else{
+                }
+            }
+        })
+    }
+
+});
+
+
+
+
+
+
+
 /**
  * 向地图中添加点位
  * @param data
@@ -42,7 +99,7 @@ function addMarker(data) {
     //向地图上添加自定义标注
     var marker = new T.Marker(new T.LngLat(data.longitude, data.latitude), {
         icon: new T.Icon({
-            iconUrl: layer.imageUrl,
+            iconUrl: layer.imageUrl||"images/monitor/defMark.png",
             scale: 0.3,
             iconAnchor: new T.Point(0.5, 1)
         })
@@ -75,4 +132,14 @@ function createInfoWindow(data, layer) {
         }
     }
     return new T.InfoWindow(sContent, {offset: new T.Point(0, 56)}); //加上图片的像素高度偏移
+}
+
+
+function showInfoWindow(data) {
+    var point = new T.LngLat(data.longitude, data.latitude);
+    map.centerAndZoom(point, 12);
+    var layer = mainData.data.layerList[data.type];
+    setTimeout(function () {
+        map.openInfoWindow(createInfoWindow(data,layer), point);
+    }, 500);
 }
