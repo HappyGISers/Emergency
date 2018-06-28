@@ -7,6 +7,7 @@ var polylineTool = parent.polylineTool;// 初始化画线工具
 var polygonTool = parent.polygonTool;// 初始化画面工具
 var rectangleTool = parent.rectangleTool;// 初始化矩形工具
 var currentDrawTool;
+var selectLayerCount = 0;
 var bufferResult = {
     bufferJson: {},
     bufferPolygon: {},
@@ -37,6 +38,7 @@ function initCheckbox() {
 function prepareDraw(type) {
     clearDrawGraphic();
     initBufferResult();
+    closeTool();
     switch (type)
     {
         case "point":
@@ -109,50 +111,14 @@ function search() {
     initBufferResult();
     //缓冲
     var bufferJson = doBuffer(bufferParameters.radius, bufferParameters.bufferUnit);
-    var resultLayers = [];
+    selectLayerCount = selectedLayers.length;
     //查询结果
     selectedLayers.forEach(function (layer) {
-        //按勾选图层逐个查询
-        resultLayers.push(layer);
         //获取图层所有数据
         queryLayer(layer,queryAndAddResult.bind(null,layer,bufferJson));
     })
 }
 
-//对每个图层进行缓冲查询并添加结果
-function queryAndAddResult(layer,bufferJson,data) {
-    var count = 0;
-    var list = $('.list-keyword')[0];
-    bufferResult.contents[layer] = bufferResult.contents[layer] ||"";
-    for (var i=0; i<data.length; i++) {
-        var pointData = data[i];
-        var coordinate = [parseFloat(pointData.longitude), parseFloat(pointData.latitude)];
-        // var coordinate = [pointData.longitude, pointData.latitude];
-        //查询当前点是否和缓冲区相交
-        var isInPolygon = turf.booleanDisjoint(turf.point(coordinate), bufferJson);
-        //如果相交，则添加缓冲结果
-        if(isInPolygon === false) {
-            var marker = parent.addMarker(pointData);
-            bufferResult.coordinates.push(coordinate);
-            var listContent =getResultContent(layer, pointData.name);
-            bufferResult.contents[layer] += listContent;
-            //添加结果
-            if(!bufferResult.marks[layer]){
-                bufferResult.marks[layer] = [];
-            }
-            bufferResult.marks[layer].push(marker);
-            count++;
-            bufferResult.count++;
-        }
-    }
-    //更新结果列表
-    list.innerHTML +=bufferResult.contents[layer];
-    //添加标题栏
-    var title = document.createElement('p');
-    title.innerHTML = layerList[layer].name + ' (' +count + ') ';
-    document.getElementsByClassName('list-title')[0].appendChild(title);
-    $('.list-title .select')[0].innerHTML = '全部 (' + bufferResult.count + ') ';
-}
 //根据绘制的图形进行缓冲获取缓冲图形
 function doBuffer(radius, bufferUnit) {
     var bufferJson = turf.buffer(currentDrawGeoJson,
@@ -192,7 +158,6 @@ function getBufferParameters() {
         selectedLayers: selectedLayers
     }
 }
-
 //查询所对应的列表所有图层
 var queryLayer = function(val, callback){
     var bufferLayerData = parent.mainData.data.bufferLayerData[val];
@@ -216,6 +181,46 @@ var queryLayer = function(val, callback){
     }
 };
 
+//对每个图层进行缓冲查询并添加结果
+function queryAndAddResult(layer,bufferJson,data) {
+    var count = 0;
+    var list = $('.list-keyword')[0];
+    bufferResult.contents[layer] = bufferResult.contents[layer] ||"";
+    for (var i=0; i<data.length; i++) {
+        var pointData = data[i];
+        var coordinate = [parseFloat(pointData.longitude), parseFloat(pointData.latitude)];
+        // var coordinate = [pointData.longitude, pointData.latitude];
+        //查询当前点是否和缓冲区相交
+        var isInPolygon = turf.booleanDisjoint(turf.point(coordinate), bufferJson);
+        //如果相交，则添加缓冲结果
+        if(isInPolygon === false) {
+            var marker = parent.addMarker(pointData);
+            bufferResult.coordinates.push(coordinate);
+            var listContent =getResultContent(layer, pointData.name);
+            bufferResult.contents[layer] += listContent;
+            //添加结果
+            if(!bufferResult.marks[layer]){
+                bufferResult.marks[layer] = [];
+            }
+            bufferResult.marks[layer].push(marker);
+            count++;
+            bufferResult.count++;
+        }
+    }
+    //更新结果列表
+    list.innerHTML +=bufferResult.contents[layer];
+    //添加标题栏
+    var title = document.createElement('p');
+    title.innerHTML = layerList[layer].name + ' (' +count + ') ';
+    document.getElementsByClassName('list-title')[0].appendChild(title);
+    $('.list-title .select')[0].innerHTML = '全部 (' + bufferResult.count + ') ';
+    var count = Object.keys(bufferResult.contents).length;
+    if(selectLayerCount ===  count)
+    {
+        zoomToBuffer();
+    }
+}
+
 function getResultContent(val,name) {
     return "<li>\n" +
         "<img src=\"../../" + layerList[val].imageUrl + "\">\n" +
@@ -224,6 +229,7 @@ function getResultContent(val,name) {
         "</p>\n" +
         "</li>";
 }
+
 function zoomToBuffer() {
     if (bufferResult.bufferCoordinates.length)
     {
@@ -232,18 +238,22 @@ function zoomToBuffer() {
 }
 
 //清空所有并初始化面板
-function clear() {
-    initBufferWidget();
+function clear(isClearBufferParameters) {
+    initBufferWidget(isClearBufferParameters);
     clearDrawGraphic();
     closeTool();
     currentDrawTool = undefined;
 }
 
 //初始化缓冲区微件
-function initBufferWidget() {
+function initBufferWidget(isClearBufferParameters) {
+    isClearBufferParameters = isClearBufferParameters||true;
     initBufferResult();
     currentDrawGeoJson.geometry = null;
-    $('.analog-select-value').html('请选择查询对象');
+    if(isClearBufferParameters)
+    {
+        $('.analog-select-value').html('请选择查询对象');
+    }
 }
 
 //清空搜索结果
@@ -271,6 +281,7 @@ function initBufferResult() {
     $('.list-keyword')[0].innerHTML = '';
     $('.list-title')[0].innerHTML ='<p class=\"select\">全部（0）</p>';
 }
+
 function closeTool() {
     if(currentDrawTool)
     {
