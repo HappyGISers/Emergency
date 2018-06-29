@@ -33,7 +33,7 @@ window.onload = function () {
 };
 
 
-var layerList={};     //各个列表的数据
+var layerList = {};     //各个列表的数据
 var targentMark = {};  //各个点位的数据
 
 $(function () {
@@ -50,7 +50,7 @@ $(function () {
             if (retMsg.success) {
                 //所有列表的类型集合
                 var typeList = [];
-                $.each(retMsg.data,function(i, item){
+                $.each(retMsg.data, function (i, item) {
                     layerList[item.type] = item;
                     typeList.push(item.type);
                 });
@@ -61,21 +61,21 @@ $(function () {
     });
 
     //查询所有点位
-    function findTypeMarkList(typeList){
+    function findTypeMarkList(typeList) {
         $.ajax({
-            type : "POST",
-            url : ctx+"/eventMap/queryMarker.vm",
-            data:{flag:"point",type:typeList.join()},
-            dataType:'json',
-            success : function(retMsg){
-                if (retMsg.success){
-                    $.each(retMsg.data,function(i, item){
-                        if(!targentMark[item.type]){
+            type: "POST",
+            url: ctx + "/eventMap/queryMarker.vm",
+            data: {flag: "point", type: typeList.join()},
+            dataType: 'json',
+            success: function (retMsg) {
+                if (retMsg.success) {
+                    $.each(retMsg.data, function (i, item) {
+                        if (!targentMark[item.type]) {
                             targentMark[item.type] = [];
                         }
                         targentMark[item.type].push(item);
                     })
-                }else{
+                } else {
                 }
             }
         })
@@ -84,22 +84,22 @@ $(function () {
 });
 
 
-
-
-
-
-
 /**
  * 向地图中添加点位
  * @param data
  * @returns {*}
  */
 function addMarker(data) {
-    var layer = mainData.data.layerList[data.type];
+    var layer;
+    if (data.type == "accident") {
+        layer = mainData.data.layerList[data.type];
+    } else {
+        layer = layerList[data.type];
+    }
     //向地图上添加自定义标注
     var marker = new T.Marker(new T.LngLat(data.longitude, data.latitude), {
         icon: new T.Icon({
-            iconUrl: layer.imageUrl||"images/monitor/defMark.png",
+            iconUrl: layer.imageUrl || "images/monitor/defMark.png",
             scale: 0.3,
             iconAnchor: new T.Point(0.5, 1)
         })
@@ -138,8 +138,13 @@ function createInfoWindow(data, layer) {
 function showInfoWindow(data) {
     var point = new T.LngLat(data.longitude, data.latitude);
     map.centerAndZoom(point, 12);
-    var layer = mainData.data.layerList[data.type];
+    var layer;
+    if (data.type == "accident") {
+        layer = mainData.data.layerList[data.type];
+    } else {
+        layer = layerList[data.type];
+    }
     setTimeout(function () {
-        map.openInfoWindow(createInfoWindow(data,layer), point);
+        map.openInfoWindow(createInfoWindow(data, layer), point);
     }, 500);
 }
