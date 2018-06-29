@@ -14,7 +14,8 @@ var bufferResult = {
     count: 0,
     coordinates: [],
     marks: {},
-    contents: {}
+    contents: {},
+    contentsAll: {}
 };
 
 var currentDrawGeoJson = {
@@ -30,7 +31,7 @@ function initCheckbox() {
     for (var layer in layerList) {
         tableContent += "<p class='checkbox' id=" + layer + ">" + layerList[layer].name + "</p>";
     }
-    allLayer.innerHTML = tableContent
+    allLayer.innerHTML = tableContent;
 }
 
 //开始绘制
@@ -70,11 +71,6 @@ function startDraw(drawTool) {
 //绘制点完成回调
 function drawMarkEnd(currentLnglat, currentFeature) {
     $('.lump').removeClass('active');
-    // var temp=[];
-    // for(var i =0;i<currentLnglat.length;i++)
-    // {
-    //     temp.push(currentLnglat[i].toFixed(6));
-    // }
     currentDrawGeoJson.geometry = getGeometry(currentLnglat, currentFeature);
     closeTool();
 }
@@ -84,7 +80,9 @@ function drawEnd(currentLnglats, area, currentFeature) {
     $('.lump').removeClass('active');
     currentDrawGeoJson.geometry = getGeometry(currentLnglats, currentFeature);
     closeTool();
-    map.enableDoubleClickZoom();
+    setTimeout(function () {
+        map.enableDoubleClickZoom();
+    }, 100);
 }
 
 function getGeometry(lnglats, feature) {
@@ -117,6 +115,14 @@ function search() {
         //获取图层所有数据
         queryLayer(layer, queryAndAddResult.bind(null, layer, bufferJson));
     })
+    $('.list-title p:first-child')[0].innerHTML = '全部 (' + bufferResult.count + ') ';
+    $('.list-title p:first-child').click(function () {
+        showAllLayer(null, 'allLayer')
+    });
+    var count = Object.keys(bufferResult.contents).length;
+    if (selectLayerCount === count) {
+        zoomToBuffer();
+    }
 }
 
 //根据绘制的图形进行缓冲获取缓冲图形
@@ -198,6 +204,7 @@ function queryAndAddResult(layer, bufferJson, data) {
             bufferResult.coordinates.push(coordinate);
             var listContent = getResultContent(layer, pointData.name);
             bufferResult.contents[layer] += listContent;
+            bufferResult.contentsAll += listContent;
             //添加结果
             if (!bufferResult.marks[layer]) {
                 bufferResult.marks[layer] = [];
@@ -212,12 +219,24 @@ function queryAndAddResult(layer, bufferJson, data) {
     //添加标题栏
     var title = document.createElement('p');
     title.innerHTML = layerList[layer].name + ' (' + count + ') ';
+    title.setAttribute('id', 'title-' + layer);
+    title.onclick = titleClick.bind(null, layer);
     document.getElementsByClassName('list-title')[0].appendChild(title);
-    $('.list-title .select')[0].innerHTML = '全部 (' + bufferResult.count + ') ';
-    var count = Object.keys(bufferResult.contents).length;
-    if (selectLayerCount === count) {
-        zoomToBuffer();
-    }
+}
+
+function titleClick(layer) {
+    $('.list-title p').removeClass('select');
+    $('.list-title #title-' + layer).addClass('select');
+    handleBufferMark(true, layer);
+    $('.list-keyword')[0].innerHTML = bufferResult.contents[layer];
+
+}
+
+function showAllLayer() {
+    $('.list-title p').removeClass('select');
+    $('.list-title p:first-child').addClass('select');
+    handleBufferMark(false);
+    $('.list-keyword')[0].innerHTML = bufferResult.contentsAll;
 }
 
 function getResultContent(val, name) {
@@ -255,15 +274,7 @@ function initBufferWidget(isClearBufferParameters) {
 
 //清空搜索结果
 function initBufferResult() {
-    //移除地图上所有缓冲结果点
-    $.each(bufferResult.marks, function (i, layer) {
-        $.each(layer, function (i, mark) {
-            try {
-                map.removeOverLay(mark);
-            } catch (e) {
-            }
-        });
-    });
+    handleBufferMark(true);
     try {
         map.removeOverLay(bufferResult.bufferPolygon);
     } catch (e) {
@@ -275,10 +286,39 @@ function initBufferResult() {
         bufferCoordinates: [],
         coordinates: [],
         marks: {},
-        contents: {}
+        contents: {},
+        contentsAll: ""
     };
     $('.list-keyword')[0].innerHTML = '';
     $('.list-title')[0].innerHTML = '<p class=\"select\">全部（0）</p>';
+}
+
+function handleBufferMark(isClear, remindLayer) {
+    // isClear = isClear || true;
+    //移除地图上所有缓冲结果点
+    $.each(bufferResult.marks, function (name, layer) {
+        $.each(layer, function (i, mark) {
+            if (isClear) {
+                if (name === remindLayer) {
+                    try {
+                        map.addOverLay(mark);
+                    } catch (e) {
+                    }
+                    return
+                }
+                try {
+                    map.removeOverLay(mark);
+                } catch (e) {
+                }
+            }
+            else {
+                try {
+                    map.addOverLay(mark);
+                } catch (e) {
+                }
+            }
+        });
+    });
 }
 
 function closeTool() {

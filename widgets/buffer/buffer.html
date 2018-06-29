@@ -28,7 +28,7 @@
                 <img src="./images/lump5.png"/>
             </div>
             <!--<div class="lump" title="选择要素">-->
-                <!--<img src="./images/lump6.png"/>-->
+            <!--<img src="./images/lump6.png"/>-->
             <!--</div>-->
         </div>
     </div>
@@ -65,7 +65,7 @@
     </div>
     <div class="widgets-row">
         <div class="list-title">
-            <p class="select">全部（0）</p>
+            <p id="list-all" class="select">全部（0）</p>
         </div>
         <ul class="list-keyword">
         </ul>
@@ -113,7 +113,7 @@
         $('.analog-select-value').click(function (e) {
             e.stopPropagation();
             $(this).next('.analog-select-valueall').stop().slideToggle();
-        })
+        });
         $('.analog-select .checkbox').click(function (e) {
             e.stopPropagation();
             if ($(this).hasClass('checked')) {
