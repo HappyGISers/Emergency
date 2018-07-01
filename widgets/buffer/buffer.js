@@ -202,14 +202,14 @@ function queryAndAddResult(layer, bufferJson, data) {
         if (isInPolygon === false) {
             var marker = parent.addMarker(pointData);
             bufferResult.coordinates.push(coordinate);
-            var listContent = getResultContent(layer, pointData.name);
+            var listContent = getResultContent(layer, pointData);
             bufferResult.contents[layer] += listContent;
             bufferResult.contentsAll += listContent;
             //添加结果
             if (!bufferResult.marks[layer]) {
-                bufferResult.marks[layer] = [];
+                bufferResult.marks[layer] = {};
             }
-            bufferResult.marks[layer].push(marker);
+            bufferResult.marks[layer][pointData.dataId] = marker;
             count++;
             bufferResult.count++;
         }
@@ -223,7 +223,11 @@ function queryAndAddResult(layer, bufferJson, data) {
     title.onclick = titleClick.bind(null, layer);
     document.getElementsByClassName('list-title')[0].appendChild(title);
 }
-
+function zoomToBuffer() {
+    if (bufferResult.bufferCoordinates.length) {
+        map.setViewport(bufferResult.bufferCoordinates);
+    }
+}
 function titleClick(layer) {
     $('.list-title p').removeClass('select');
     $('.list-title #title-' + layer).addClass('select');
@@ -239,19 +243,36 @@ function showAllLayer() {
     $('.list-keyword')[0].innerHTML = bufferResult.contentsAll;
 }
 
-function getResultContent(val, name) {
+function getResultContent(val, pointData) {
     return "<li>\n" +
         "<img src=\"../../" + layerList[val].imageUrl + "\">\n" +
         "<p class=\"listname\">\n" +
-        "<a>" + name + "</a>\n" +
+        "<a onclick = \"zoomToPoint('" +val+ "','"+ pointData.dataId +"')\">" + pointData.name + "</a>\n" +
         "</p>\n" +
         "</li>";
 }
+function zoomToPoint(layer,id) {
+    var data = getPoint(layer, id);
+    map.setViewport([[parseFloat(data.pointData.longitude),parseFloat(data.pointData.latitude)]]);
+    data.mark.openInfoWindow(parent.createInfoWindow(data.pointData, layerList[layer]), {closeOnClick: true});
+}
 
-function zoomToBuffer() {
-    if (bufferResult.bufferCoordinates.length) {
-        map.setViewport(bufferResult.bufferCoordinates);
-    }
+function getPoint(layer, id) {
+    var allData = parent.targentMark[layer];
+    var marks = bufferResult.marks[layer];
+    var data = {
+        pointData: {},
+        pointCoordinate:[],
+        mark: marks[id]
+    };
+
+    $.each(allData, function(i,point) {
+        if(point.dataId === id)
+        {
+            data.pointData = point;
+        }
+    });
+    return data;
 }
 
 //清空所有并初始化面板
