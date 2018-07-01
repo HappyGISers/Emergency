@@ -253,7 +253,7 @@ function getResultContent(val, pointData) {
 }
 function zoomToPoint(layer,id) {
     var data = getPoint(layer, id);
-    map.setViewport([[parseFloat(data.pointData.longitude),parseFloat(data.pointData.latitude)]]);
+    map.centerAndZoom(data.pointCoordinate, 15);
     data.mark.openInfoWindow(parent.createInfoWindow(data.pointData, layerList[layer]), {closeOnClick: true});
 }
 
@@ -269,6 +269,7 @@ function getPoint(layer, id) {
     $.each(allData, function(i,point) {
         if(point.dataId === id)
         {
+            data.pointCoordinate = new T.LngLat(parseFloat(point.longitude),parseFloat(point.latitude));
             data.pointData = point;
         }
     });
