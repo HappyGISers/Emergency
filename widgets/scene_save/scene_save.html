@@ -23,6 +23,8 @@
 <script src="../../js/jquery.min.js"></script>
 <script>
     var map = parent.map;
+    var milstdSource = parent.milstdSource;
+    var  format = new parent.ol.format.GeoJSON();
     $(function () {
         var sceneData = []; //存放json数据
         if (window.localStorage) {
@@ -53,7 +55,8 @@
                 sceneData.push({
                     "name": sceneName,
                     "geojson": sceneName,
-                    "time": t
+                    "time": t,
+                    data: getFeatureAsGeoJson()
                 });
                 localStorage.setItem("scenes", JSON.stringify(sceneData));
             }
@@ -81,13 +84,20 @@
                 var name = $(this).find('p').text();
                 for (var i = 0; i < sceneData.length; i++) {
                     if (name == sceneData[i].name) {
+                        milstdSource.clear();
+                        milstdSource.addFeatures(format.readFeatures(sceneData[i].data));
                         console.log(sceneData[i].time);
                         break;
                     }
                 }
             }
         })
-    })
+    });
+
+    function getFeatureAsGeoJson() {
+        var features = milstdSource.getFeatures();
+        return format.writeFeatures(features);
+    }
 </script>
 </body>
 

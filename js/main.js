@@ -3,6 +3,7 @@ var markerTool; //加点工具
 var polylineTool;
 var polygonTool;
 var rectangleTool;
+var milstdSource = {};//存放态势标绘的source，场景保存时使用
 window.onload = function () {
     var satelliteLayerUrl = "http://cache1.arcgisonline.cn/ArcGIS/rest/services/ChinaOnlineCommunity/MapServer/tile/{z}/{y}/{x}";//影像图地址
     var mapCenter = new T.LngLat(109.69, 34.968);//地图中心点坐标

@@ -31,6 +31,7 @@ $(function () {
 function init() {
 
     source = new ol.source.Vector({ wrapX: false });
+    parent.milstdSource = source;
     drawLayer = new ol.layer.Vector({
         source: source,
         style: new ol.style.Style({
