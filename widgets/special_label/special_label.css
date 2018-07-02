@@ -1,0 +1,192 @@
+html,
+body {
+    padding: 0;
+    margin: 0;
+    font-family: 'Microsoft yahei';
+    font-size: 14px;
+    color: #333;
+    height: 100%;
+}
+
+p,
+ul,
+li,
+dl,
+dd,
+dt {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+a {
+    text-decoration: none;
+}
+
+input,textarea {
+    outline: none;
+}
+
+/*专题标注*/
+
+.widgets-content {
+    padding: 14px;
+}
+
+.widgets-row {
+    clear: both;
+    overflow: visible;
+    min-height: 30px;
+}
+
+.widgets-row p.name {
+    float: left;
+    font-size: 14px;
+    color: #333;
+    line-height: 30px;
+    width: 81px;
+    text-align: right;
+}
+
+.widgets-row p.name sub {
+    vertical-align: baseline;
+    color: #f00;
+    font-size: 14px;
+    margin-right: 2px;
+}
+
+.widgets-row div.content {
+    float: left;
+    width: 73%;
+    min-height: 30px;
+    position: relative;
+    margin-bottom: 10px;
+    margin-left: 2%;
+}
+
+.widgets-row div.content .select {
+    width: 100%;
+    height: 30px;
+    font-size: 14px;
+    color: #333;
+}
+
+.widgets-row div.content input {
+    display: block;
+    width: 96%;
+    padding: 0 2%;
+    height: 30px;
+    border: 1px solid #ddd;
+    font-size: 14px;
+}
+
+.widgets-row div.content textarea{
+	display: block;
+    width: 96%;
+    min-width: 96%;
+    max-width: 96%;
+    padding: 0 2%;
+    min-height: 60px;
+    line-height: 30px;
+    border: 1px solid #ddd;
+    font-size: 14px;
+    font-family: 'Microsoft yahei';
+}
+
+.widgets-row div.content input:hover,.widgets-row div.content textarea:hover {
+    border-color: #3b8fc4;
+}
+
+.widgets-row div.content .radio{
+	overflow: hidden;
+}
+
+.widgets-row div.content .radio p{
+	background: url(./images/radio2.png) no-repeat left center;
+    width: 16px;
+    height: 30px;
+    line-height: 30px;
+    padding-left: 20px;
+    float: left;
+    margin-right: 15px;
+    cursor: pointer;
+} 
+
+.widgets-row div.content .radio p.active{
+	background: url(./images/radio.png) no-repeat left center;
+}
+
+.widgets-row div.content .text-next-search{
+	float: left;
+	width: 82%;
+}
+.widgets-row div.content .btn-search {
+	width: 30px;
+	height: 30px;
+	float: right;
+	cursor: pointer;
+    background-image: url(./images/search.png);
+    background-repeat: no-repeat;
+    background-position: center;
+}
+.widgets-tab{
+	overflow: hidden;
+	border-bottom: 1px solid #ddd;
+}
+.widgets-tab dl{
+	width: 33.3%;
+	float: left;
+	cursor: pointer;
+	text-align: center;
+	overflow: hidden;
+	margin-bottom: 15px;
+}
+.widgets-tab dl dd{
+	font-size: 14px;
+	color: #333;
+}
+.widgets-tab dl.active dd{
+	color: #3b8fc4;
+	font-weight: bold;
+}
+.widgets-content .widgets-tab-main {
+    padding-top: 14px;
+    margin-bottom: 14px;
+}
+
+.widgets-content .widgets-tab-main .widgets-tab-content {
+    overflow: hidden;
+}
+
+
+.widgets-button {
+    width: 100%;
+    overflow: hidden;
+    text-align: right;
+}
+
+.widgets-button span {
+    display: inline-block;
+    height: 30px;
+    line-height: 30px;
+    padding: 0px 10px;
+    font-size: 14px;
+    text-align: center;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    color: #333;
+    background-repeat: no-repeat;
+    background-position: 10px center;
+    border-radius: 2px;
+    cursor: pointer;
+}
+
+.widgets-button span:hover {
+    background-color: #e6e6e6;
+    border-color: #d2d2d2;
+}
+
+.widgets-button span.disabled {
+    background-color: #f1f1f1 !important;
+    cursor: not-allowed !important;
+}

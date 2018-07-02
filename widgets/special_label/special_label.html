@@ -1,10 +1,157 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
 
-</body>
+	<head>
+		<meta charset="UTF-8">
+		<title>专题标注</title>
+		<link rel="stylesheet" href="special_label.css" />
+	</head>
+
+	<body>
+		<div class="widgets-content">
+	    	<div class="widgets-row">
+		        <div class="widgets-tab">
+		           <dl class="active">
+			           	<dt>
+			           		<img src="images/1.png" />
+			           	</dt>
+			           	<dd>调度物资</dd>
+		           </dl>
+		           <dl>
+			           	<dt>
+			           		<img src="images/2.png" />
+			           	</dt>
+			           	<dd>监控录像</dd>
+		           </dl>
+		           <dl>
+			           	<dt>
+			           		<img src="images/3.png" />
+			           	</dt>
+			           	<dd>摄影拍照</dd>
+		           </dl>
+		           <dl>
+			           	<dt>
+			           		<img src="images/4.png" />
+			           	</dt>
+			           	<dd>应急车辆</dd>
+		           </dl>
+		           <dl>
+			           	<dt>
+			           		<img src="images/5.png" />
+			           	</dt>
+			           	<dd>应急人员</dd>
+		           </dl>
+		           <dl>
+			           	<dt>
+			           		<img src="images/6.png" />
+			           	</dt>
+			           	<dd>监测点位</dd>
+		           </dl>
+		        </div>
+			    <div class="widgets-tab-main">
+			    	<div class="widgets-tab-content">
+		                <p class="name">物资名称：</p>
+		                <div class="content">
+		                    <input type="text" placeholder="" class="text-next-search"/>
+		                	<div class="btn-search"></div>
+		                </div>
+		            </div>
+		            <div class="widgets-tab-content">
+		                <p class="name">联系人：</p>
+		                <div class="content">
+		                    <input type="text" placeholder="" class="text-next-search"/>
+		                	<div class="btn-search"></div>
+		                </div>
+		            </div>
+		            <div class="widgets-tab-content">
+		                <p class="name">联系电话：</p>
+		                <div class="content">
+		                    <input type="text" placeholder=""/>
+		                </div>
+		            </div>
+		            <div class="widgets-tab-content">
+		                <p class="name">所属单位：</p>
+		                <div class="content">
+		                    <input type="text" placeholder=""/>
+		                </div>
+		            </div>
+		            <div class="widgets-tab-content">
+		                <p class="name">经度：</p>
+		                <div class="content">
+		                    <input type="text" placeholder=""/>
+		                </div>
+		            </div>
+		            <div class="widgets-tab-content">
+		                <p class="name">纬度：</p>
+		                <div class="content">
+		                    <input type="text" placeholder=""/>
+		                </div>
+		            </div>
+		            <div class="widgets-tab-content">
+		                <p class="name">分配任务：</p>
+		                <div class="content">
+		                    <input type="text" placeholder="" class="text-next-search"/>
+		                	<div class="btn-search"></div>
+		                </div>
+		            </div>
+		            <div class="widgets-tab-content">
+		                <p class="name">备注：</p>
+		                <div class="content">
+		                	<textarea></textarea>
+		                </div>
+		            </div>
+		            <div class="widgets-tab-content">
+		                <p class="name">GPS：</p>
+		                <div class="content">
+		                    <div class="radio">
+		                    	<p class="active">有</p>
+		                    	<p>无</p>
+		                    </div>
+		                </div>
+		            </div>
+		            <div class="widgets-tab-content">
+		                <div class="widgets-button">
+		                    <span>保存</span>
+		                    <span>关闭</span>
+		                </div>
+		            </div>
+			    </div>
+			    <div class="widgets-tab-main" style="display: none;">
+			    	2
+			    </div>
+			    <div class="widgets-tab-main" style="display: none;">
+			    	3
+			    </div>
+			    <div class="widgets-tab-main" style="display: none;">
+			    	4
+			    </div>
+			    <div class="widgets-tab-main" style="display: none;">
+			    	5
+			    </div>
+			    <div class="widgets-tab-main" style="display: none;">
+			    	6
+			    </div>
+		    </div>
+	    </div>
+	    <script src="../../js/jquery.min.js"></script>
+		<script>
+			$(function() {
+				//获取父窗口的关闭事件
+				$('.widgets-select', window.parent.document).find('.widgets-close').click(function() {
+					//alert('我是子页面的专题标注')
+				});
+				//单选选中状态
+				$('.radio p').click(function(){
+					$(this).addClass('active').siblings('p').removeClass('active');
+				})
+				//tab切换
+				 $('.widgets-tab dl').click(function () {
+		            $(this).addClass('active').siblings('dl').removeClass('active');
+		            var index = $(this).index();
+		            $('.widgets-tab-main').hide().eq(index).show();
+		        })
+			});
+		</script>
+	</body>
+
 </html>

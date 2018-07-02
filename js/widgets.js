@@ -89,7 +89,7 @@ $(function () {
             $(this).find('span').addClass('select').parent('li').siblings('li').find('span').removeClass('select');
             //$('.widgets-main').removeClass('widgets-select').hide();
             //向页面新加弹框内容
-            var divhtml = '<div class="widgets-main ' + thisclass + '-main widgets-select"><div class="widgets-main-title"><p>' + json.widgets[index].name + '</p><div class="widgets-close"></div></div><div class="widgets-content"><iframe frameborder="0" src="' + json.widgets[index].url + '"></iframe><div class="widgets-layer"></div></div></div>';
+            var divhtml = '<div class="widgets-main ' + thisclass + '-main widgets-select"><div class="widgets-main-title"><p><img src="' + json.widgets[index].icon + '"/>' + json.widgets[index].name + '</p><div class="widgets-close"></div></div><div class="widgets-content"><iframe frameborder="0" src="' + json.widgets[index].url + '"></iframe><div class="widgets-layer"></div></div></div>';
             $('body').append(divhtml);
             //拖拽
             $('.' + thisclass + '-main').myDrag({

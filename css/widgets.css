@@ -50,7 +50,7 @@ body {
 }
 
 .widgets li span.select {
-	background-color: #2delete-butc6b93;
+	background-color: #2c6b93;
 }
 
 .widgets-main {
@@ -61,10 +61,15 @@ body {
 	position: absolute;
 	right: 0;
 	top: 63px;
+	opacity: 1;
 }
 
 .widgets-main:hover {
 	box-shadow: 0 12px 8px -4px rgba(0, 0, 0, 0.3), 0 15px 20px rgba(0, 0, 0, 0.2);
+}
+
+.widgets-main.on{
+	opacity: 0.9;
 }
 
 .widgets-main-title {
@@ -86,6 +91,12 @@ body {
 	width: 82%;
 	text-align: left;
 	padding: 0 15% 0 3%;
+}
+
+.widgets-main-title p img{
+	width: 15px;
+	vertical-align: -2px;
+    margin-right: 6px;
 }
 
 .widgets-main-title .widgets-close {
