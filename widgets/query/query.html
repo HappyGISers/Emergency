@@ -5,116 +5,81 @@
     <meta charset="UTF-8">
     <title>关键字查询</title>
     <link rel="stylesheet" href="./query.css"/>
+    <!--<script src="../../../assets/components/Vue/vue.min.js"></script>-->
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
 </head>
 
 <body>
-<div class="widgets-content widgets-keyword">
+<div id="app" class="widgets-content widgets-keyword">
     <div class="widgets-row">
-        <div class="content" style="margin-bottom: 5px;">
-            <input type="text" placeholder="请输入关键字" id="keyword-input"/>
-            <div class="btn-search btn-search-keyword"></div>
+        <div class="content" style="margin-bottom: 0px;">
+            <span class="analog-select">
+                <input id="multi" readonly class="analog-select-value" style="width: 60.6%;" placeholder="请选择查询对象"/>
+                <div class="analog-select-valueall">
+                    <label v-for="(type,key) in multiList"
+                           :class="multiCheckbox.indexOf(type.type)!=-1?'checked checkbox':'checkbox'">
+                        {{type.name}}
+                        <input type="checkbox" :value="type.type" v-model="multiCheckbox" style="display: none;"/>
+                    </label>
+                </div>
+            </span>
+            <input type="text" style="width: 29%;" placeholder="请输入关键字" v-model="keyword" id="keyword-input"/>
+            <div class="btn-search btn-search-keyword" @click="search"></div>
         </div>
     </div>
     <div class="widgets-row">
-        <div class="prompt-word">
-            <span class="checkbox">在当前地图范围内查询</span>
-        </div>
+        <!--<div class="prompt-word">-->
+            <!--<span class="checkbox">在当前地图范围内查询</span>-->
+        <!--</div>-->
     </div>
     <div class="widgets-row">
         <div class="widgets-button">
-            <span onclick="alert(0)">全部缩放</span>
-            <span onclick="alert(0)">清空</span>
+            <!--<span onclick="alert(0)">全部缩放</span>-->
+            <span @click="empty">清空</span>
         </div>
     </div>
     <div class="widgets-row">
-        <div class="list-title">
-            <p class="select">全部（149）</p>
-            <p>空气质量测点（1）</p>
-            <p>建设项目（148）</p>
+        <div class="list-title" >
+            <p v-for="type in typeList"
+               :class="listFilter==type.value?'select':''"
+               @click="selectType(type.value)">
+                {{type.name}}({{type.length}})&nbsp;&nbsp;
+            </p>
         </div>
         <ul class="list-keyword">
-            <li>
-                <img src="./images/air.png">
-                <p class="listname">
-                    <a>海淀北京植物园 - 空气质量测点</a>
-                </p>
-            </li>
-            <li>
-                <img src="./images/construction.png">
-                <p class="listname">
-                    <a>海淀北京植物园 - 空气质量测点</a>
-                </p>
-                <a class="listdetails" href="http://baidu.com" target="_blank">详情></a>
-            </li>
-            <li>
-                <img src="./images/construction.png">
-                <p class="listname">
-                    <a>海淀北京植物园 - 空气质量测点</a>
-                </p>
-                <a class="listdetails" href="http://baidu.com" target="_blank">详情></a>
-            </li>
-            <li>
-                <img src="./images/construction.png">
-                <p class="listname">
-                    <a>海淀北京植物园 - 空气质量测点</a>
-                </p>
-                <a class="listdetails" href="http://baidu.com" target="_blank">详情></a>
-            </li>
-            <li>
-                <img src="./images/construction.png">
-                <p class="listname">
-                    <a>海淀北京植物园 - 空气质量测点</a>
-                </p>
-                <a class="listdetails" href="http://baidu.com" target="_blank">详情></a>
-            </li>
-            <li>
-                <img src="./images/construction.png">
-                <p class="listname">
-                    <a>海淀北京植物园 - 空气质量测点</a>
-                </p>
-                <a class="listdetails" href="http://baidu.com" target="_blank">详情></a>
-            </li>
-            <li>
-                <img src="./images/construction.png">
-                <p class="listname">
-                    <a>海淀北京植物园 - 空气质量测点</a>
-                </p>
-                <a class="listdetails" href="http://baidu.com" target="_blank">详情></a>
-            </li>
-            <li>
-                <img src="./images/construction.png">
-                <p class="listname">
-                    <a>海淀北京植物园 - 空气质量测点</a>
-                </p>
-                <a class="listdetails" href="http://baidu.com" target="_blank">详情></a>
-            </li>
+            <span v-for="(value,key) in searchList">
+                <li v-if="listFilter=='all'||listFilter==key" v-for="type in value">
+                    <img width="20" height="20" :src="type.img" />
+                    <p class="listname">
+                        <a :href="type.hyperlink" target="_blank">{{type.name}}-{{type.typeName}}</a>
+                    </p>
+                    <a v-if="notMarkType.indexOf(type.type) == -1" class="listdetails" @click="showMarkInfo(type)">点位></a>
+                </li>
+            </span>
         </ul>
     </div>
 </div>
 <script src="../../js/jquery.min.js"></script>
+<script src="query.js"></script>
 <script>
     $(function () {
         //获取父窗口的关闭事件
         $('.widgets-select', window.parent.document).find('.widgets-close').click(function () {
-            //alert('我是子页面的关键字查询')
-        })
-        //复选框
-        $('.checkbox').click(function () {
-            if ($(this).hasClass('checked')) {
-                $(this).removeClass('checked');
-            } else {
-                $(this).addClass('checked');
-            }
-        })
-        //搜索
-        $('.btn-search-keyword').click(function () {
-            var bookmarkName = $('#keyword-input').val();
-            if (bookmarkName == '') {
-                alert('关键字不能为空！');
-            } else {
+            vm.empty();
+        });
 
+        $('.analog-select-value').click(function (e) {
+            e.stopPropagation();
+            $(this).next('.analog-select-valueall').stop().slideToggle();
+        });
+        $('.analog-select-valueall').click(function (e) {
+            e.stopPropagation();
+        });
+        $('body').click(function () {
+            if (!$('.analog-select-valueall').is(":hidden")) {
+                $('.analog-select-valueall').hide();
             }
-        })
+        });
     })
 </script>
 </body>

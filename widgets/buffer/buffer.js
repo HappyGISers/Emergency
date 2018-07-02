@@ -1,7 +1,7 @@
 var T = parent.T;
 var ol = parent.ol;
 var map = parent.map;
-var layerList = parent.layerList;
+var layerList = parent.mainData.data.layerList;
 var markerTool = parent.markerTool;
 var polylineTool = parent.polylineTool;// 初始化画线工具
 var polygonTool = parent.polygonTool;// 初始化画面工具
@@ -25,7 +25,7 @@ var currentDrawGeoJson = {
 };
 
 function initCheckbox() {
-    layerList = parent.layerList;
+    layerList = parent.mainData.data.layerList;
     var tableContent = '';
     var allLayer = document.getElementsByClassName('analog-select-valueall')[0];
     for (var layer in layerList) {
@@ -167,7 +167,7 @@ function getBufferParameters() {
 
 //查询所对应的列表所有图层
 var queryLayer = function (val, callback) {
-    var bufferLayerData = parent.targentMark[val];
+    var bufferLayerData = parent.mainData.data.targetList[val];
     if (bufferLayerData) {
         callback(bufferLayerData);
     }
@@ -223,11 +223,13 @@ function queryAndAddResult(layer, bufferJson, data) {
     title.onclick = titleClick.bind(null, layer);
     document.getElementsByClassName('list-title')[0].appendChild(title);
 }
+
 function zoomToBuffer() {
     if (bufferResult.bufferCoordinates.length) {
         map.setViewport(bufferResult.bufferCoordinates);
     }
 }
+
 function titleClick(layer) {
     $('.list-title p').removeClass('select');
     $('.list-title #title-' + layer).addClass('select');
@@ -247,29 +249,29 @@ function getResultContent(val, pointData) {
     return "<li>\n" +
         "<img src=\"../../" + layerList[val].imageUrl + "\">\n" +
         "<p class=\"listname\">\n" +
-        "<a onclick = \"zoomToPoint('" +val+ "','"+ pointData.dataId +"')\">" + pointData.name + "</a>\n" +
+        "<a onclick = \"zoomToPoint('" + val + "','" + pointData.dataId + "')\">" + pointData.name + "</a>\n" +
         "</p>\n" +
         "</li>";
 }
-function zoomToPoint(layer,id) {
+
+function zoomToPoint(layer, id) {
     var data = getPoint(layer, id);
     map.centerAndZoom(data.pointCoordinate, 15);
     data.mark.openInfoWindow(parent.createInfoWindow(data.pointData, layerList[layer]), {closeOnClick: true});
 }
 
 function getPoint(layer, id) {
-    var allData = parent.targentMark[layer];
+    var allData = parent.mainData.data.targetList[layer];
     var marks = bufferResult.marks[layer];
     var data = {
         pointData: {},
-        pointCoordinate:[],
+        pointCoordinate: [],
         mark: marks[id]
     };
 
-    $.each(allData, function(i,point) {
-        if(point.dataId === id)
-        {
-            data.pointCoordinate = new T.LngLat(parseFloat(point.longitude),parseFloat(point.latitude));
+    $.each(allData, function (i, point) {
+        if (point.dataId === id) {
+            data.pointCoordinate = new T.LngLat(parseFloat(point.longitude), parseFloat(point.latitude));
             data.pointData = point;
         }
     });
