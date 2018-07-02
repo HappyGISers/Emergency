@@ -43,6 +43,12 @@
             if (bookmarkName == '') {
                 alert('书签名称不能为空！');
             } else {
+                for (var i = 0; i < bookmarkData.length; i++) {
+                    if (bookmarkName == bookmarkData[i].name) {
+                        alert("已包含名称为 " + bookmarkName + " 的书签，请重新命名");
+                        return;
+                    }
+                }
                 var extentStr = map.getBounds().getSouthWest().lng.toFixed(3) + " " + map.getBounds().getSouthWest().lat.toFixed(3) + " " + map.getBounds().getNorthEast().lng.toFixed(3) + " " + map.getBounds().getNorthEast().lat.toFixed(3);
                 $('.list-bookmark').append('<li><p>' + bookmarkName + '</p><span>' + extentStr + '</span><a class="delete-btn" title="删除"></a></li>');
                 //向数组中新加内容

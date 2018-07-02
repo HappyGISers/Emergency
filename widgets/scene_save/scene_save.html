@@ -24,7 +24,7 @@
 <script>
     var map = parent.map;
     var milstdSource = parent.milstdSource;
-    var  format = new parent.ol.format.GeoJSON();
+    var format = new parent.ol.format.GeoJSON();
     $(function () {
         var sceneData = []; //存放json数据
         if (window.localStorage) {
@@ -45,6 +45,12 @@
             if (sceneName == '') {
                 alert('场景名称不能为空！');
             } else {
+                for (var i = 0; i < sceneData.length; i++) {
+                    if (sceneName == sceneData[i].name) {
+                        alert("已包含名称为 " + sceneName + " 的书签，请重新命名");
+                        return;
+                    }
+                }
                 var time = new Date();   // 程序计时的月从0开始取值后+1
                 var m = time.getMonth() + 1;
                 var t = time.getFullYear() + "-" + m + "-"
