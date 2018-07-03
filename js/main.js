@@ -4,6 +4,7 @@ var polylineTool;
 var polygonTool;
 var rectangleTool;
 var milstdSource = {};//存放态势标绘的source，场景保存时使用
+var milstdDrawLayer ={};
 window.onload = function () {
     var satelliteLayerUrl = "http://cache1.arcgisonline.cn/ArcGIS/rest/services/ChinaOnlineCommunity/MapServer/tile/{z}/{y}/{x}";//影像图地址
     var mapCenter = new T.LngLat(109.69, 34.968);//地图中心点坐标
@@ -31,6 +32,29 @@ window.onload = function () {
     polylineTool = new T.PolylineTool(map);// 初始化画线工具
     polygonTool = new T.PolygonTool(map);// 初始化画面工具
     rectangleTool = new T.RectangleTool(map);// 初始化矩形工具
+
+    //初始化态势标绘的图层
+    milstdSource = new ol.source.Vector({ wrapX: false });//存放态势标绘的source，场景保存时使用
+    milstdDrawLayer = new ol.layer.Vector({
+        source: milstdSource,
+        style: new ol.style.Style({
+            fill: new ol.style.Fill({
+                color: "#99CCFF64"
+            }),
+            stroke: new ol.style.Stroke({
+                color: "#99CCFF64",
+                width: 2
+            }),
+            image: new ol.style.Circle({
+                radius: 5,
+                fill: new ol.style.Fill({
+                    color: "#99CCFF64",
+                })
+            })
+        })
+    });
+
+    map.addLayer(milstdDrawLayer);
 };
 
 /**

@@ -23,8 +23,10 @@
 <script src="../../js/jquery.min.js"></script>
 <script>
     var map = parent.map;
+    var ol = parent.ol;
     var milstdSource = parent.milstdSource;
-    var format = new parent.ol.format.GeoJSON();
+    var MilStd = parent.MilStd;
+    // var format = new parent.ol.format.GeoJSON();
     $(function () {
         var sceneData = []; //存放json数据
         if (window.localStorage) {
@@ -90,9 +92,7 @@
                 var name = $(this).find('p').text();
                 for (var i = 0; i < sceneData.length; i++) {
                     if (name == sceneData[i].name) {
-                        milstdSource.clear();
-                        milstdSource.addFeatures(format.readFeatures(sceneData[i].data));
-                        console.log(sceneData[i].time);
+                        addFeatureToMilstd(sceneData[i].data);
                         break;
                     }
                 }
@@ -101,8 +101,53 @@
     });
 
     function getFeatureAsGeoJson() {
+        if(!(milstdSource instanceof ol.source.Vector)) {
+            return {};
+        }
         var features = milstdSource.getFeatures();
-        return format.writeFeatures(features);
+        var featuresJson = [];
+        $.each(features, function (i, feature) {
+            var geometry = feature.getGeometry();
+            var style = feature.getStyle();
+            var featureJson =  {
+                style:style,
+                geometry: {
+                    vertices:  geometry.vertices,
+                    milStdType: geometry.milStdType,
+                    milStdParams: geometry.milStdParams
+                }
+            };
+            featuresJson.push(featureJson);
+        });
+        return featuresJson;
+    }
+
+    function addFeatureToMilstd(data) {
+        milstdSource.clear();
+        $.each(data, function (i, featureJson) {
+            var geometryJson = featureJson.geometry;
+            var milGeo = new MilStd.MilStdGeomtry(geometryJson.vertices,
+                geometryJson.milStdType,
+                new MilStd.MilstdParams(geometryJson.milStdParams));
+            milGeo.Update(geometryJson.vertices, false);   //更新几何
+            var feature = new ol.Feature(milGeo);
+            var style = featureJson.style;
+            feature.setStyle(new ol.style.Style({
+                fill: new ol.style.Fill({
+                    color: style.fill_.color_
+                }),
+                stroke: new ol.style.Stroke({
+                    color: style.stroke_.color_,
+                    width: style.stroke_.width_
+                }),
+                image: new ol.style.Circle({
+                    fill: new ol.style.Fill({
+                        color: style.image_.fill_.color_
+                    })
+                })
+            }));
+            milstdSource.addFeature(feature);
+        });
     }
 </script>
 </body>

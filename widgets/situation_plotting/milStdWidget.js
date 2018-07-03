@@ -21,6 +21,8 @@ var map = parent.map;
 
 var ol = parent.ol;
 var MilStd = parent.MilStd;
+source = parent.milstdSource;
+var milstdDrawLayer = parent.milstdDrawLayer;
 $(function () {
     //获取父窗口的关闭事件
     $('.widgets-select', window.parent.document).find('.widgets-close').click(function () {
@@ -29,32 +31,6 @@ $(function () {
 });
 //初始化
 function init() {
-
-    source = new ol.source.Vector({ wrapX: false });
-    parent.milstdSource = source;
-    drawLayer = new ol.layer.Vector({
-        source: source,
-        style: new ol.style.Style({
-            fill: new ol.style.Fill({
-                color: $('#FillClr').val()
-            }),
-            stroke: new ol.style.Stroke({
-                color: $('#LinClr').val(),
-                lineCap: $('#LinHeadType').val(),
-                lineJoin: $('#LinJointType').val(),
-                lineDash: [parseInt($('#LinDash').val()), parseInt($('#LinDot').val())],
-                width: parseInt($('#LinWidth').val())
-            }),
-            image: new ol.style.Circle({
-                radius: parseInt($('#PntRadius').val()),
-                fill: new ol.style.Fill({
-                    color: $('#FillClr').val()
-                })
-            })
-        })
-    });
-
-    map.addLayer(drawLayer);
     drawTool = new MilStd.tool.MilStdDrawTool(map);
     drawTool.on(MilStd.event.MilStdDrawEvent.DRAW_END, onDrawEnd, false, this);
 }
@@ -126,7 +102,7 @@ function onDrawEnd(event) {
             color: $('#FillClr').val() + "64"
         }),
         stroke: new ol.style.Stroke({
-            color: $('#LinClr').val(),
+            color: $('#LinClr').val() + "64",
             width: parseInt($('#LinWidth').val())
         }),
         image: new ol.style.Circle({
