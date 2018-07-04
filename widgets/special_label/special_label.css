@@ -23,7 +23,7 @@ a {
     text-decoration: none;
 }
 
-input,textarea {
+input, textarea {
     outline: none;
 }
 
@@ -57,7 +57,7 @@ input,textarea {
 
 .widgets-row div.content {
     float: left;
-    width: 73%;
+    width: 70%;
     min-height: 30px;
     position: relative;
     margin-bottom: 10px;
@@ -80,8 +80,8 @@ input,textarea {
     font-size: 14px;
 }
 
-.widgets-row div.content textarea{
-	display: block;
+.widgets-row div.content textarea {
+    display: block;
     width: 96%;
     min-width: 96%;
     max-width: 96%;
@@ -93,16 +93,16 @@ input,textarea {
     font-family: 'Microsoft yahei';
 }
 
-.widgets-row div.content input:hover,.widgets-row div.content textarea:hover {
+.widgets-row div.content input:hover, .widgets-row div.content textarea:hover {
     border-color: #3b8fc4;
 }
 
-.widgets-row div.content .radio{
-	overflow: hidden;
+.widgets-row div.content .radio {
+    overflow: hidden;
 }
 
-.widgets-row div.content .radio p{
-	background: url(./images/radio2.png) no-repeat left center;
+.widgets-row div.content .radio p {
+    background: url(./images/radio2.png) no-repeat left center;
     width: 16px;
     height: 30px;
     line-height: 30px;
@@ -110,54 +110,102 @@ input,textarea {
     float: left;
     margin-right: 15px;
     cursor: pointer;
-} 
-
-.widgets-row div.content .radio p.active{
-	background: url(./images/radio.png) no-repeat left center;
 }
 
-.widgets-row div.content .text-next-search{
-	float: left;
-	width: 82%;
+.widgets-row div.content .radio p.active {
+    background: url(./images/radio.png) no-repeat left center;
 }
+
+.widgets-row div.content .text-next-search {
+    float: left;
+    width: 81%;
+}
+
 .widgets-row div.content .btn-search {
-	width: 30px;
-	height: 30px;
-	float: right;
-	cursor: pointer;
+    width: 30px;
+    height: 30px;
+    float: right;
+    cursor: pointer;
     background-image: url(./images/search.png);
     background-repeat: no-repeat;
     background-position: center;
 }
-.widgets-tab{
-	overflow: hidden;
-	border-bottom: 1px solid #ddd;
+
+.widgets-content .widgets-tab {
+    border-left: 1px solid #ddd;
+    height: 31px;
 }
-.widgets-tab dl{
-	width: 33.3%;
-	float: left;
-	cursor: pointer;
-	text-align: center;
-	overflow: hidden;
-	margin-bottom: 15px;
+
+.widgets-content .widgets-tab p {
+    float: left;
+    height: 30px;
+    line-height: 30px;
+    padding: 0px 12px;
+    font-size: 14px;
+    text-align: center;
+    background: #f7f7f7;
+    border: 1px solid #ddd;
+    border-left: none;
+    border-bottom: none;
+    color: #333;
+    cursor: pointer;
 }
-.widgets-tab dl dd{
-	font-size: 14px;
-	color: #333;
+
+.widgets-content .widgets-tab p:hover {
+    background: #fff;
 }
-.widgets-tab dl.active dd{
-	color: #3b8fc4;
-	font-weight: bold;
+
+.widgets-content .widgets-tab p sub {
+    vertical-align: baseline;
+    color: #f00;
+    font-size: 14px;
+    margin-right: 4px;
 }
+
+.widgets-content .widgets-tab p.select {
+    border-bottom: 1px solid #fff;
+    background: #fff;
+}
+
 .widgets-content .widgets-tab-main {
     padding-top: 14px;
+    border: 1px solid #ddd;
+    margin-bottom: -1px;
     margin-bottom: 14px;
+    padding: 14px;
 }
 
-.widgets-content .widgets-tab-main .widgets-tab-content {
+.widgets-label-tab {
+    overflow: hidden;
+    border-bottom: 1px solid #ddd;
+}
+
+.widgets-label-tab dl {
+    width: 33.3%;
+    float: left;
+    cursor: pointer;
+    text-align: center;
+    overflow: hidden;
+    margin-bottom: 15px;
+}
+
+.widgets-label-tab dl dd {
+    font-size: 14px;
+    color: #333;
+}
+
+.widgets-label-tab dl.active dd {
+    color: #3b8fc4;
+    font-weight: bold;
+}
+
+.widgets-content .widgets-label-tab-main {
+    padding-top: 14px;
+}
+
+.widgets-content .widgets-label-tab-main .widgets-label-tab-content {
     overflow: hidden;
 }
-
 
 .widgets-button {
     width: 100%;
@@ -189,4 +237,55 @@ input,textarea {
 .widgets-button span.disabled {
     background-color: #f1f1f1 !important;
     cursor: not-allowed !important;
+}
+
+.list-bookmark {
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.list-bookmark li {
+    padding: 5px 35px 5px 40px;
+    border: 1px solid #E4E4E4;
+    border-top-color: #fff;
+    line-height: 20px;
+    background: url(./images/book.png) no-repeat 10px center;
+    position: relative;
+}
+
+.list-bookmark li:hover {
+    background-color: #f7f7f7;
+    border-top-color: #f7f7f7;
+}
+
+.list-bookmark li p {
+    font-size: 14px;
+    color: #333;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+.list-bookmark li span {
+    display: block;
+    font-size: 12px;
+    color: #666;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+.list-bookmark li .delete-btn {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    background: url(./images/delete.png) no-repeat center;
+    top: 50%;
+    margin-top: -10px;
+    right: 10px;
+    cursor: pointer;
+}
+
+.list-bookmark li:first-child {
+    border-top-color: #E4E4E4;
 }
