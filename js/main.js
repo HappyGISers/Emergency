@@ -42,7 +42,7 @@ window.onload = function () {
                 color: "#99CCFF64"
             }),
             stroke: new ol.style.Stroke({
-                color: "#99CCFF64",
+                color: "#99CCFF",
                 width: 2
             }),
             image: new ol.style.Circle({

@@ -20,7 +20,7 @@
         <p class="name">基本图形：</p>
         <div class="content">
             <div class="lump point">
-                <img src="./images/plottingIcon/circle.png" title="点"/>
+                <img src="./images/plottingIcon/circle.png" title="点"  onclick="drawArrow('Point')"/>
             </div>
         </div>
     </div>
@@ -235,12 +235,15 @@
     };
     scale.prototype = {
         init: function () {
-            this.silderx = 0;
-            this.silderm = 0;
             var f = this,
                 g = document,
                 b = window,
                 m = Math;
+            this.silderx = this.bar.offsetWidth/2;
+            this.btn.style.left = this.silderx + 'px';
+            this.step.style.width = Math.max(0, this.silderx) + 'px';
+            this.silderm = m.round(m.max(0, this.silderx / this.bar.offsetWidth) * 100);
+            this.opacity = 0.5;
             f.btn.onmousedown = function (e) {
                 var x = (e || b.event).clientX;
                 var l = this.offsetLeft;
@@ -278,19 +281,11 @@
         ondrag: function (pos, x, bool) {
             this.btn.style.left = x + 'px';
             this.step.style.width = Math.max(0, x) + 'px';
-            if (bool) {
-                var targetMark = parent.mainData.data.targetMark[this.type];
-                if (targetMark) {
-                    var opacity = 1 - pos / 100;
-                    $.each(targetMark, function (i, item) {
-                        item.setOpacity(opacity);
-                    })
-                }
-            }
+            this.opacity = 1 - pos / 100;
         }
     };
-    new scale('silder1', 'bar1', 'opacity-add1', 'opacity-minus1');
-    new scale('silder2', 'bar2', 'opacity-add2', 'opacity-minus2');
+    var vectorScale = new scale('silder1', 'bar1', 'opacity-add1', 'opacity-minus1');
+    var markScale = new scale('silder2', 'bar2', 'opacity-add2', 'opacity-minus2');
 </script>
 </body>
 

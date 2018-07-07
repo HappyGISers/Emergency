@@ -15,14 +15,14 @@ var boxSelectTool;
 //选中要素数组
 var selectedFeatures;
 //样式数组
-var styles;
+var styles = [];
 //地图容器
 var map = parent.map;
 
 var ol = parent.ol;
 var MilStd = parent.MilStd;
 source = parent.milstdSource;
-var milstdDrawLayer = parent.milstdDrawLayer;
+var markerTool = parent.markerTool;
 $(function () {
     //获取父窗口的关闭事件
     $('.widgets-select', window.parent.document).find('.widgets-close').click(function () {
@@ -35,10 +35,26 @@ function init() {
     drawTool.on(MilStd.event.MilStdDrawEvent.DRAW_END, onDrawEnd, false, this);
 }
 
+var inputObjStyleEx = null;
+//*设置颜色选择器
+function showcolors(ids) {
+    var o = document.getElementById(ids);
+    inputObjStyleEx = o;
+    showColorPicker(o, o, colorchangStyleEx);
+}
+function colorchangStyleEx(e) {
+    inputObjStyleEx.style.background = inputObjStyleEx.value;
+}
+
 //绘制军标
 function drawArrow(type) {
     removeInteractions();
     switch (type) {
+        case "Point":
+            markerTool.open();
+            markerTool.removeEventListener("mouseup", drawMarkEnd);
+            markerTool.addEventListener("mouseup", drawMarkEnd);
+            break;
         case "SimpleArrow":
             var milParam = new MilStd.MilstdParams({
                 headHeightFactor: 0.15,
@@ -97,26 +113,19 @@ function drawArrow(type) {
 };
 //绘制完成后的回调
 function onDrawEnd(event) {
-    var drawStyle = new ol.style.Style({
-        fill: new ol.style.Fill({
-            color: $('#FillClr').val() + "64"
-        }),
-        stroke: new ol.style.Stroke({
-            color: $('#LinClr').val() + "64",
-            width: parseInt($('#LinWidth').val())
-        }),
-        image: new ol.style.Circle({
-            fill: new ol.style.Fill({
-                color: $('#FillClr').val() + "64"
-            })
-        })
-    });
-
     var feature = event.feature;
-    feature.setStyle(drawStyle);
+    feature.setStyle(getStyle(vectorScale.opacity));
     source.addFeature(feature);
+    $(this).removeClass('active');
+    markerTool.close();
 }
 
+function drawMarkEnd(currentLnglat, currentFeature) {
+    var feature = currentFeature;
+    feature.setStyle(getStyle(markScale.opacity));
+    source.addFeature(feature);
+
+}
 //修改军标
 function modifyArrow() {
     removeInteractions();
@@ -127,7 +136,6 @@ function modifyArrow() {
 //移动军标
 function moveArrow() {
     removeInteractions();
-
     dragTool = new MilStd.DragPan(map);
     dragTool.activate();
 };
@@ -135,7 +143,6 @@ function moveArrow() {
 //移除选中的军标
 function removeArrow() {
     removeInteractions();
-
     boxSelectTool = new ol.interaction.DragBox({
         style: new ol.style.Style({
             stroke: new ol.style.Stroke({
@@ -145,7 +152,7 @@ function removeArrow() {
     });
     map.addInteraction(boxSelectTool);
     boxSelectTool.on('boxend', function (e) {
-        selectedFeatures = new Array();
+        selectedFeatures = [];
         var extent = boxSelectTool.getGeometry().getExtent();
         source.forEachFeatureIntersectingExtent(extent, function (feature) {
             selectedFeatures.push(feature);
@@ -156,17 +163,6 @@ function removeArrow() {
             }
         }
     });
-}
-
-var inputObjStyleEx = null;
-//*设置颜色选择器
-function showcolors(ids) {
-    var o = document.getElementById(ids);
-    inputObjStyleEx = o;
-    showColorPicker(o, o, colorchangStyleEx);
-}
-function colorchangStyleEx(e) {
-    inputObjStyleEx.style.background = inputObjStyleEx.value;
 }
 
 //修改样式
@@ -185,60 +181,81 @@ function editGeom() {
     });
     map.addInteraction(boxSelectTool);
     boxSelectTool.on('boxend', function (e) {
-        selectedFeatures = new Array();
-        styles = new Array();
+        selectedFeatures = [];
+        styles = [];
         var extent = boxSelectTool.getGeometry().getExtent();
         source.forEachFeatureIntersectingExtent(extent, function (feature) {
-            styles.push(feature.getStyle());
-            selectedFeatures.push(feature);
-            var editStyle = getEditStyle();
-            feature.setStyle(editStyle);
+            setStyle(feature);
             $('#cancelEditBtn').attr("class", "enable");
         });
     });
 
     selectTool.on('select', function (e) {
-        styles = new Array();
+        styles = [];
         selectedFeatures = e.selected;
         if (selectedFeatures && selectedFeatures.length > 0) {
             for (var i = 0; i < selectedFeatures.length; i++) {
-                styles.push(selectedFeatures[i].getStyle());
-                var editStyle = getEditStyle();
-                selectedFeatures[i].setStyle(editStyle);
+                setStyle(selectedFeatures[i])
             }
         }
         $('#cancelEditBtn').attr("class", "enable");
     });
 }
 
+function setStyle(selectedFeature) {
+    var geometry = selectedFeature.getGeometry();
+    var opacity = undefined;
+    if(geometry instanceof MilStd.MilStdGeomtry) {
+        opacity = vectorScale.opacity;
+    }
+    else {
+        opacity = markScale.opacity;
+    }
+    var editStyle = getStyle(opacity);
+    styles.push({
+        style: selectedFeature.getStyle(),
+    });
+    selectedFeature.setStyle(editStyle);
+}
 //获取表单样式信息
-function getEditStyle() {
+function getStyle(opacity) {
     var style = new ol.style.Style({
         fill: new ol.style.Fill({
-            color: $('#FillClr').val() + "64"
+            color: getRgba($('#FillClr').val(), opacity),
+            opacity: opacity
         }),
         stroke: new ol.style.Stroke({
-            color: $('#LinClr').val(),
+            color: getRgba($('#LinClr').val(), 1),
             width: parseInt($('#LinWidth').val())
         }),
         image: new ol.style.Circle({
             fill: new ol.style.Fill({
-                color: $('#FillClr').val() + "64"
+                color: getRgba($('#FillClr').val(), opacity)
             })
         })
     });
 
     return style;
 }
+
+function getRgba(cl,opacity) {
+    var value= cl.replace('#','');
+    var red = parseInt(baseConverter(value.substr(0,2),16,10))|| 0;
+    var green = parseInt(baseConverter(value.substr(2,2),16,10)) || 0;
+    var blue = parseInt(baseConverter(value.substr(4,2),16,10)) || 0;
+
+    return [red, green, blue, opacity]
+}
 //撤销样式修改
 function cancelEditGeom() {
     if (selectedFeatures && selectedFeatures.length > 0) {
         for (var i = 0; i < selectedFeatures.length; i++) {
-            selectedFeatures[i].setStyle(styles[i]);
+            selectedFeatures[i].setStyle(styles[i].style);
+            selectedFeatures[i].setOpacity(styles[i].opacity)
         }
     }
-    selectedFeatures = new Array();
-    styles = new Array();
+    selectedFeatures = [];
+    styles = [];
     $('#cancelEditBtn').attr("class", "disable");
 }
 
