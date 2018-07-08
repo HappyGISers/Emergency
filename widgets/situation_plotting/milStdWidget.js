@@ -51,9 +51,7 @@ function drawArrow(type) {
     removeInteractions();
     switch (type) {
         case "Point":
-            markerTool.open();
-            markerTool.removeEventListener("mouseup", drawMarkEnd);
-            markerTool.addEventListener("mouseup", drawMarkEnd);
+            drawTool.activate(MilStd.EnumMilstdType.Marker, undefined, "drawMarker");
             break;
         case "SimpleArrow":
             var milParam = new MilStd.MilstdParams({
@@ -113,32 +111,28 @@ function drawArrow(type) {
 };
 //绘制完成后的回调
 function onDrawEnd(event) {
+    $('.lump').removeClass('active');
     var feature = event.feature;
-    feature.setStyle(getStyle(vectorScale.opacity));
+    var opacity = this.milStdType === MilStd.EnumMilstdType.Marker ?
+        markScale.opacity : vectorScale.opacity;
+    var style = getStyle(opacity);
+    feature.setStyle(style);
     source.addFeature(feature);
-    $(this).removeClass('active');
-    markerTool.close();
 }
 
-function drawMarkEnd(currentLnglat, currentFeature) {
-    var feature = currentFeature;
-    feature.setStyle(getStyle(markScale.opacity));
-    source.addFeature(feature);
-
-}
 //修改军标
 function modifyArrow() {
     removeInteractions();
     modifyTool = new MilStd.ModifyTool(map);
     modifyTool.activate();
-};
+}
 
 //移动军标
 function moveArrow() {
     removeInteractions();
     dragTool = new MilStd.DragPan(map);
     dragTool.activate();
-};
+}
 
 //移除选中的军标
 function removeArrow() {
@@ -212,9 +206,7 @@ function setStyle(selectedFeature) {
         opacity = markScale.opacity;
     }
     var editStyle = getStyle(opacity);
-    styles.push({
-        style: selectedFeature.getStyle(),
-    });
+    styles.push(selectedFeature.getStyle());
     selectedFeature.setStyle(editStyle);
 }
 //获取表单样式信息
@@ -228,10 +220,11 @@ function getStyle(opacity) {
             color: getRgba($('#LinClr').val(), 1),
             width: parseInt($('#LinWidth').val())
         }),
-        image: new ol.style.Circle({
-            fill: new ol.style.Fill({
-                color: getRgba($('#FillClr').val(), opacity)
-            })
+        image: new ol.style.Icon({
+            //透明度
+            opacity: opacity,
+            //图标的url
+            src: $('.widgets-point-show img')[0].src
         })
     });
 
@@ -250,8 +243,7 @@ function getRgba(cl,opacity) {
 function cancelEditGeom() {
     if (selectedFeatures && selectedFeatures.length > 0) {
         for (var i = 0; i < selectedFeatures.length; i++) {
-            selectedFeatures[i].setStyle(styles[i].style);
-            selectedFeatures[i].setOpacity(styles[i].opacity)
+            selectedFeatures[i].setStyle(styles[i]);
         }
     }
     selectedFeatures = [];

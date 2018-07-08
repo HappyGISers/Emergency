@@ -239,11 +239,18 @@
                 g = document,
                 b = window,
                 m = Math;
-            this.silderx = this.bar.offsetWidth/2;
-            this.btn.style.left = this.silderx + 'px';
-            this.step.style.width = Math.max(0, this.silderx) + 'px';
-            this.silderm = m.round(m.max(0, this.silderx / this.bar.offsetWidth) * 100);
-            this.opacity = 0.5;
+            if(this.btn.id === "silder2") {
+               this.silderx = 0;
+               this.silderm = 0;
+               this.opacity = 1;
+            }
+            else {
+                this.silderx = this.bar.offsetWidth/2;
+                this.btn.style.left = this.silderx + 'px';
+                this.step.style.width = Math.max(0, this.silderx) + 'px';
+                this.silderm = m.round(m.max(0, this.silderx / this.bar.offsetWidth) * 100);
+                this.opacity = 0.5;
+            }
             f.btn.onmousedown = function (e) {
                 var x = (e || b.event).clientX;
                 var l = this.offsetLeft;

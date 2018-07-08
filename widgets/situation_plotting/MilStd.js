@@ -129,6 +129,7 @@ MilStd.enum = {
 };
 
 MilStd.EnumMilstdType = {
+    Marker: 'Marker', //点
     ArrowCross: 'ArrowCross',                      //十字箭头指北针
     CircleClosedangle: 'CircleClosedangle',        //圆形尖角指北针
     Closedangle: 'Closedangle',                    //尖角指北针
@@ -270,7 +271,7 @@ MilStd.commonFun.getAzimuthAngle = function (geoPntStart, geoPntEnd) {
 MilStd.commonFun.getThirdPoint = function (startPnt, endPnt, angle, length, side) {
     var num = MilStd.commonFun.getAzimuthAngle(startPnt, endPnt);
     var num2 = 0.0;
-    if (side.toLowerCase() == "left") {
+    if (side.toLowerCase() === "left") {
         num2 = num + angle;
     }
     else {
@@ -340,13 +341,13 @@ MilStd.commonFun.getBinomialFactor = function (n, index) {
  * {double:二次样条因子}
  */
 MilStd.commonFun.getQuadricBSplineFactor = function (k, t) {
-    if (k == 0) {
+    if (k === 0) {
         return (Math.pow((t - 1.0), 2.0) / 2.0);
     }
-    if (k == 1) {
+    if (k === 1) {
         return ((((-2.0 * Math.pow(t, 2.0)) + (2.0 * t)) + 1.0) / 2.0);
     }
-    if (k == 2) {
+    if (k === 2) {
         return (Math.pow(t, 2.0) / 2.0);
     }
     return 0.0;
@@ -363,13 +364,13 @@ MilStd.commonFun.getQuadricBSplineFactor = function (k, t) {
  * {double:样条曲线因子}
  */
 MilStd.commonFun.getBSplineFFactor = function (k, n, t) {
-    if (n == 2) {
+    if (n === 2) {
         return MilStd.commonFun.getQuadricBSplineFactor(k, t);
     }
     var num = 0.0;
     var num2 = MilStd.commonFun.getFactorial(n);
     for (var i = 0; i <= (n - k) ; i++) {
-        var num4 = ((i % 2) == 0) ? 1 : -1;
+        var num4 = ((i % 2) === 0) ? 1 : -1;
         num += (num4 * MilStd.commonFun.getBinomialFactor(n + 1, i)) * Math.pow(((t + n) - k) - i, n);
     }
     return (num / num2);
@@ -489,8 +490,8 @@ MilStd.commonFun.getBSplinePoints = function (points, n) {
 MilStd.commonFun.geomEquals = function (geom, geom1) {
     var equals = false;
     if (geom != null) {
-        equals = ((geom1[0] == geom[0] && geom1[1] == geom[1]) ||
-            (geom1[0] == null && geom1[1] == null && geom[0] == null && geom[1] == null));
+        equals = ((geom1[0] === geom[0] && geom1[1] === geom[1]) ||
+            (geom1[0] === null && geom1[1] === null && geom[0] === null && geom[1] === null));
     }
     return equals;
 };
@@ -588,8 +589,8 @@ MilStd.Arrow.getSimpleArrowPnts = function (inpoints, hasSwallowTail, swallowTai
     var list4 = MilStd.Arrow.getArrowTailPoints(inpoints, tailWidthFactor, hasSwallowTail, swallowTailFactor);
     var point3 = list4[0];
 
-    var point4 = (list4.length == 3) ? list4[1] : list4[1];
-    var point5 = (list4.length == 3) ? list4[2] : list4[1];
+    var point4 = (list4.length === 3) ? list4[1] : list4[1];
+    var point5 = (list4.length === 3) ? list4[2] : list4[1];
     var num = list3.length;
     var range = list3.slice(0, Math.ceil(num / 2));
     var list6 = list3.slice(Math.ceil(num / 2));
@@ -603,7 +604,7 @@ MilStd.Arrow.getSimpleArrowPnts = function (inpoints, hasSwallowTail, swallowTai
     var rangNew = null;
     var list6New = null;
 
-    if (curveFitMethod == "useBezierFit") {
+    if (curveFitMethod === "useBezierFit") {
         rangNew = MilStd.commonFun.getBezierPoints(range);
         list6New = MilStd.commonFun.getBezierPoints(list6);
     }
@@ -693,7 +694,7 @@ MilStd.Arrow.getDoubleArrowPnts = function (inpoints, headHeightFactor, headWidt
         var point2 = inpoints[1];
         var point3 = inpoints[2];
         var point4 = null;
-        if (num == 3) {
+        if (num === 3) {
             point4 = MilStd.Arrow.getTempPnt4(point, point2, point3);
             inpoints.push(point4);
         }
@@ -937,8 +938,8 @@ MilStd.Arrow.getArrowPoints = function (pnt1, pnt2, pnt3, side, headHeightFactor
     var neckLeftPoint = list2[0];
     var neckRightPoint = list2[4];
     var tailWidthFactor = (MilStd.commonFun.CalLengthOfTwoPoints(pnt1, pnt2) / MilStd.commonFun.wholeDistance(points)) / 2.0;
-    var leftFactor = (side == "left") ? 1.0 : 0.01;
-    var rightFactor = (side == "left") ? 0.01 : 1.0;
+    var leftFactor = (side === "left") ? 1.0 : 0.01;
+    var rightFactor = (side === "left") ? 0.01 : 1.0;
     var list3 = MilStd.Arrow.getArrowBodyPoints(points, neckLeftPoint, neckRightPoint, tailWidthFactor, leftFactor, rightFactor);
     var num5 = list3.length;
 
@@ -1267,7 +1268,7 @@ MilStd.Compass.getCompassFromVert = function (arg, compassType) {
                     case "CircleClosedangle":
                     case "Rhombus":
                     case "SameDirectionClosedangle":
-                        if (i == (parseDots.length - 1)) {
+                        if (i === (parseDots.length - 1)) {
                             polyDotArr.push(parseDots[i][0]);
                         }
                         else {
@@ -1276,7 +1277,7 @@ MilStd.Compass.getCompassFromVert = function (arg, compassType) {
                         break;
                     case "Closedangle":
                     case "Fourstar":
-                        if (i % 2 == 0) {
+                        if (i % 2 === 0) {
                             mulLinDotArr.push(parseDots[i][0]);
                         }
                         else {
@@ -1284,7 +1285,7 @@ MilStd.Compass.getCompassFromVert = function (arg, compassType) {
                         }
                         break;
                     case "Triangle":
-                        if (i == 1 || i == 4) {
+                        if (i === 1 || i === 4) {
                             polyDotArr.push(parseDots[i][0]);
                         }
                         else {
@@ -1292,7 +1293,7 @@ MilStd.Compass.getCompassFromVert = function (arg, compassType) {
                         }
                         break;
                     case "Vane":
-                        if (i == (parseDots.length - 1)) {
+                        if (i === (parseDots.length - 1)) {
                             mulLinDotArr.push(parseDots[i][0]);
                         }
                         else {
@@ -1321,7 +1322,7 @@ MilStd.Compass.getCompassFromVert = function (arg, compassType) {
  * locArr-{Array.<Array.<ol.Coordinate>>：二维点数组，十字箭头由5部分组成，每一部分的用一个点数组存储}
  */
 MilStd.Compass.GetArrowCrossDots = function (arg1) {
-    if (arg1 == null || arg1.length < 2) {
+    if (arg1 === null || arg1.length < 2) {
         return null;
     }
 
@@ -1462,7 +1463,7 @@ MilStd.Compass.GetArrowCrossDots = function (arg1) {
  * locArr-{Array.<Array.<ol.Coordinate>>：二维点数组，圆形尖角由4部分组成，每一部分的用一个点数组存储}
  */
 MilStd.Compass.GetCircleClosedangleDots = function (arg1) {
-    if (arg1 == null || arg1.length < 2) {
+    if (arg1 === null || arg1.length < 2) {
         return null;
     }
 
@@ -1564,7 +1565,7 @@ MilStd.Compass.GetCircleClosedangleDots = function (arg1) {
  * locArr-{Array.<Array.<ol.Coordinate>>：二维点数组，尖角指北针由2部分组成，每一部分的用一个点数组存储}
  */
 MilStd.Compass.GetClosedangleDots = function (arg1) {
-    if (arg1 == null || arg1.length < 2) {
+    if (arg1 === null || arg1.length < 2) {
         return null;
     }
     var loc4 = new Array();
@@ -1604,7 +1605,7 @@ MilStd.Compass.GetClosedangleDots = function (arg1) {
  * locArr-{Array.<Array.<ol.Coordinate>>：二维点数组，双向尖角指北针由4部分组成，每一部分的用一个点数组存储}
  */
 MilStd.Compass.GetDoubleClosedangleDots = function (arg1) {
-    if (arg1 == null || arg1.length < 2) {
+    if (arg1 === null || arg1.length < 2) {
         return null;
     }
     var width = Math.abs(arg1[1][0] - arg1[0][0]);
@@ -1700,7 +1701,7 @@ MilStd.Compass.GetDoubleClosedangleDots = function (arg1) {
  * locArr-{Array.<Array.<ol.Coordinate>>：二维点数组，四角指北针由4部分组成，每一部分的用一个点数组存储}
  */
 MilStd.Compass.GetFourstarDots = function (arg1) {
-    if (arg1 == null || arg1.length < 2) {
+    if (arg1 === null || arg1.length < 2) {
         return null;
     }
     var width = Math.abs(arg1[1][0] - arg1[0][0]);
@@ -1770,7 +1771,7 @@ MilStd.Compass.GetFourstarDots = function (arg1) {
  * locArr-{Array.<Array.<ol.Coordinate>>：二维点数组，菱形指北针由3部分组成，每一部分的用一个点数组存储}
  */
 MilStd.Compass.GetRhombusDots = function (arg1) {
-    if (arg1 == null || arg1.length < 2) {
+    if (arg1 === null || arg1.length < 2) {
         return null;
     }
     var width = Math.abs(arg1[1][0] - arg1[0][0]);
@@ -1831,7 +1832,7 @@ MilStd.Compass.GetRhombusDots = function (arg1) {
  * locArr-{Array.<Array.<ol.Coordinate>>：二维点数组，同向尖角指北针由3部分组成，每一部分的用一个点数组存储}
  */
 MilStd.Compass.GetSameDirectionClosedangleDots = function (arg1) {
-    if (arg1 == null || arg1.length < 2) {
+    if (arg1 === null || arg1.length < 2) {
         return null;
     }
 
@@ -1890,7 +1891,7 @@ MilStd.Compass.GetSameDirectionClosedangleDots = function (arg1) {
  * locArr-{Array.<Array.<ol.Coordinate>>：二维点数组，三角指北针由6部分组成，每一部分的用一个点数组存储}
  */
 MilStd.Compass.GetTriangleDots = function (arg1) {
-    if (arg1 == null || arg1.length < 2) {
+    if (arg1 === null || arg1.length < 2) {
         return null;
     }
     var width = Math.abs(arg1[1][0] - arg1[0][0]);
@@ -1964,7 +1965,7 @@ MilStd.Compass.GetTriangleDots = function (arg1) {
  * locArr-{Array.<Array.<ol.Coordinate>>：二维点数组，风向标指北针由11部分组成，每一部分的用一个点数组存储}
  */
 MilStd.Compass.GetVaneDots = function (arg1) {
-    if (arg1 == null || arg1.length < 2) {
+    if (arg1 === null || arg1.length < 2) {
         return null;
     }
 
@@ -2124,17 +2125,17 @@ goog.provide("MilStd.Bezier");
  */
 MilStd.Bezier.getBezierFromVert = function (arg, bazierType) {
     var geom = null;
-    if (bazierType == "BezierLine") {
+    if (bazierType === "BezierLine") {
         var dots = MilStd.commonFun.getBSplinePoints(arg, 2);
         geom = new ol.geom.LineString(dots);
     }
-    else if (bazierType == "Bezier") {
+    else if (bazierType === "Bezier") {
         arg.push(arg[0]);
         var dots = MilStd.commonFun.getBSplinePoints(arg, 2);
         arg.pop(arg[arg.length - 1]);
         geom = new ol.geom.Polygon([dots]);
     }
-    else if (bazierType == "AssemblyArea") {
+    else if (bazierType === "AssemblyArea") {
         var dots = MilStd.Bezier.GetAssemblyAreaDots(arg);
         geom = new ol.geom.Polygon([dots]);
     }
@@ -2164,7 +2165,7 @@ MilStd.Bezier.GetAssemblyAreaDots = function (arg1) {
     var loc13 = null;
     var loc14 = null;
     var loc1 = arg1.length;
-    if (loc1 >= 2 && !(arg1[loc1 - 1] == arg1[loc1 - 2])) {
+    if (loc1 >= 2 && !(arg1[loc1 - 1] === arg1[loc1 - 2])) {
         loc2 = arg1[0];
         loc3 = arg1[1];
         loc4 = MilStd.commonFun.CalLengthOfTwoPoints(loc2, loc3);
@@ -2247,34 +2248,37 @@ goog.provide("MilStd.MilStdGeomtry");
 
 MilStd.MilStdGeomtry = function (verticePnts, miltype, milStdParams, opt_options) {
     ol.geom.GeometryCollection.call(this, []);
-    if (verticePnts === undefined || verticePnts == null) {
+    if (verticePnts === undefined || verticePnts === null) {
         return;
     }
-    var options;
-    if (opt_options !== undefined && opt_options == null) {
+    if (opt_options !== undefined && opt_options === null) {
 
         ol.geom.GeometryCollection.call(this, opt_options);
     }
     this.vertices = verticePnts;
     this.milStdType = miltype;
     this.milStdParams = (milStdParams !== undefined && milStdParams != null) ? milStdParams : new MilStd.MilstdParams();
-    if (this.milStdType == MilStd.EnumMilstdType.TriangleFlag || this.milStdType == MilStd.EnumMilstdType.RectFlag ||
-        this.milStdType == MilStd.EnumMilstdType.CurveFlag || this.milStdType == MilStd.EnumMilstdType.ArrowCross ||
-        this.milStdType == MilStd.EnumMilstdType.CircleClosedangle || this.milStdType == MilStd.EnumMilstdType.Closedangle ||
-        this.milStdType == MilStd.EnumMilstdType.DoubleClosedangle || this.milStdType == MilStd.EnumMilstdType.Fourstar ||
-        this.milStdType == MilStd.EnumMilstdType.Rhombus || this.milStdType == MilStd.EnumMilstdType.SameDirectionClosedangle ||
-        this.milStdType == MilStd.EnumMilstdType.Triangle || this.milStdType == MilStd.EnumMilstdType.Vane ||
-        this.milStdType == MilStd.EnumMilstdType.AssemblyArea) {
+    if (this.milStdType === MilStd.EnumMilstdType.TriangleFlag || this.milStdType === MilStd.EnumMilstdType.RectFlag ||
+        this.milStdType === MilStd.EnumMilstdType.CurveFlag || this.milStdType === MilStd.EnumMilstdType.ArrowCross ||
+        this.milStdType === MilStd.EnumMilstdType.CircleClosedangle || this.milStdType === MilStd.EnumMilstdType.Closedangle ||
+        this.milStdType === MilStd.EnumMilstdType.DoubleClosedangle || this.milStdType === MilStd.EnumMilstdType.Fourstar ||
+        this.milStdType === MilStd.EnumMilstdType.Rhombus || this.milStdType === MilStd.EnumMilstdType.SameDirectionClosedangle ||
+        this.milStdType === MilStd.EnumMilstdType.Triangle || this.milStdType === MilStd.EnumMilstdType.Vane ||
+        this.milStdType === MilStd.EnumMilstdType.AssemblyArea) {
         this.milStdParams.maxVertices = 2;
     }
-    if (this.milStdType == MilStd.EnumMilstdType.DoubleArrow) {
+    if (this.milStdType === MilStd.EnumMilstdType.DoubleArrow) {
         this.milStdParams.maxVertices = 4;
+    }
+    if(this.milStdType === MilStd.EnumMilstdType.Marker)
+    {
+        this.milStdParams.maxVertices = 1 ;
     }
 };
 ol.inherits(MilStd.MilStdGeomtry, ol.geom.GeometryCollection);
 
 MilStd.MilStdGeomtry.prototype.Create = function () {
-    if (this.milStdType == "DoubleArrow") {
+    if (this.milStdType === "DoubleArrow") {
         if (this.vertices.length < 3) {
             return;
         };
@@ -2285,6 +2289,10 @@ MilStd.MilStdGeomtry.prototype.Create = function () {
         };
     }
     switch (this.milStdType) {
+        case MilStd.EnumMilstdType.Marker:
+            var geom = new ol.geom.Point(vertices);
+            this.setGeometriesArray([geom]);
+            break;
         case MilStd.EnumMilstdType.SimpleArrow:
         case MilStd.EnumMilstdType.StraightArrow:
         case MilStd.EnumMilstdType.DoubleArrow:
@@ -2321,15 +2329,20 @@ MilStd.MilStdGeomtry.prototype.Create = function () {
 };
 
 MilStd.MilStdGeomtry.prototype.Update = function (vertices, isMouseMove) {
-    if (this.milStdType == "DoubleArrow") {
+    if (this.milStdType === "DoubleArrow") {
         if (vertices.length < 3) {
             return;
-        };
+        }
+    }
+    else if(this.milStdType === MilStd.EnumMilstdType.Marker) {
+        if(vertices.length === 0){
+            return;
+        }
     }
     else {
         if (vertices.length < 2) {
             return;
-        };
+        }
     }
 
     if (!isMouseMove) {
@@ -2337,6 +2350,10 @@ MilStd.MilStdGeomtry.prototype.Update = function (vertices, isMouseMove) {
     }
 
     switch (this.milStdType) {
+        case MilStd.EnumMilstdType.Marker:
+            var geom = new ol.geom.Point(vertices[0]);
+            this.setGeometriesArray([geom]);
+            break;
         case MilStd.EnumMilstdType.SimpleArrow:
         case MilStd.EnumMilstdType.StraightArrow:
         case MilStd.EnumMilstdType.DoubleArrow:
@@ -2520,6 +2537,23 @@ MilStd.tool.MilStdDrawTool.prototype.drawStartHandle = function (e) {
     var temPnt = this.map.getCoordinateFromPixel([e.clientX, e.clientY]);
     this.vertices.push(temPnt);
     this.milStdGeom = new MilStd.MilStdGeomtry(this.vertices, this.milStdType, this.milStdParams);
+    if(this.milStdType === MilStd.EnumMilstdType.Marker)
+    {
+        this.milStdGeom.Update(this.vertices, false);   //更新几何
+        if (this.feature === null) {
+            this.feature = new ol.Feature(this.milStdGeom);
+            this.featureOverLay.getSource().addFeature(this.feature);
+        }
+        else {
+            this.feature.setGeometry(this.milStdGeom);
+        }
+
+        //if (this.milStdGeom.vertices.length === this.milStdGeom.GetMaxVerticesNum()) {  //达到最大控制点数则终止
+        if (this.milStdGeom.vertices.length === this.milStdGeom.milStdParams.maxVertices) {  //达到最大控制点数则终止
+            this.drawEndHandle(e);
+        }
+        return;
+    }
     this.featureOverLay.getSource().addFeature(new ol.Feature(new ol.geom.Point(temPnt)));
     ol.events.unlisten(this.mapViewport, ol.events.EventType.CLICK, this.drawStartHandle, this);
     ol.events.listen(this.mapViewport, ol.events.EventType.CLICK, this.drawContinueHandle, this);
@@ -2536,7 +2570,7 @@ MilStd.tool.MilStdDrawTool.prototype.drawContinueHandle = function (e) {
     this.vertices.push(temPnt);
 
     this.milStdGeom.Update(this.vertices, false);   //更新几何
-    if (this.feature == null) {
+    if (this.feature === null) {
         this.feature = new ol.Feature(this.milStdGeom);
         this.featureOverLay.getSource().addFeature(this.feature);
     }
@@ -2544,8 +2578,8 @@ MilStd.tool.MilStdDrawTool.prototype.drawContinueHandle = function (e) {
         this.feature.setGeometry(this.milStdGeom);
     }
 
-    //if (this.milStdGeom.vertices.length == this.milStdGeom.GetMaxVerticesNum()) {  //达到最大控制点数则终止
-    if (this.milStdGeom.vertices.length == this.milStdGeom.milStdParams.maxVertices) {  //达到最大控制点数则终止
+    //if (this.milStdGeom.vertices.length === this.milStdGeom.GetMaxVerticesNum()) {  //达到最大控制点数则终止
+    if (this.milStdGeom.vertices.length === this.milStdGeom.milStdParams.maxVertices) {  //达到最大控制点数则终止
         this.drawEndHandle(e);
     }
 };
@@ -2567,7 +2601,7 @@ MilStd.tool.MilStdDrawTool.prototype.mouseMoveHandle = function (e) {
     this.milStdGeom.Update(pnts, true);
     //var dots = this.milStdGeom.getCoordinates();
 
-    if (this.feature == null) {
+    if (this.feature === null) {
         this.feature = new ol.Feature(this.milStdGeom);
         this.featureOverLay.getSource().addFeature(this.feature);
     }
@@ -2747,11 +2781,11 @@ ol.inherits(MilStd.ModifyTool, ol.interaction.Pointer);
 
 
 MilStd.ModifyTool.prototype.activate = function () {
-    if (this.selectTool == null) {
+    if (this.selectTool === null) {
         this.selectTool = new ol.interaction.Select({ wrapX: false });
     }
 
-    if (this.map_ === undefined || this.map_ == null) {
+    if (this.map_ === undefined || this.map_ === null) {
         return;
     }
 
@@ -2937,7 +2971,7 @@ MilStd.ModifyTool.prototype.writeVerticeGeometry = function (feature) {
  */
 MilStd.ModifyTool.prototype.createOrUpdateVertexFeature_ = function (coordinates) {
     var vertexFeature = this.vertexFeature_;
-    if (vertexFeature == null) {
+    if (vertexFeature === null) {
         vertexFeature = new ol.Feature(new ol.geom.Point(coordinates));
         this.vertexFeature_ = vertexFeature;
         this.overlay_.getSource().addFeature(vertexFeature);
@@ -3004,7 +3038,7 @@ MilStd.ModifyTool.handleMoveEvent = function (evt) {
                 return feature;
             });
         var element = evt.map.getTargetElement();
-        if (feature) {
+        if (feature && feature.getGeometry().milStdType !== MilStd.EnumMilstdType.Marker) {
             if (element.style.cursor != this.cursor_) {
                 this.previousCursor_ = element.style.cursor;
                 element.style.cursor = this.cursor_;
@@ -3033,24 +3067,24 @@ MilStd.ModifyTool.handleDragEvent_ = function (evt) {
         var feature = segmentData.feature;
         var geom = feature.getGeometry();
 
-        if (geom.getType() == ol.geom.GeometryType.GEOMETRY_COLLECTION) {
+        if (geom.getType() === ol.geom.GeometryType.GEOMETRY_COLLECTION) {
             while (vertex.length < feature.getGeometry().geometries_[0].getStride()) {
                 vertex.push(0);
             }
             var vertices = geom.vertices;
-            if (geom.milStdType == MilStd.EnumMilstdType.TriangleFlag || geom.milStdType == MilStd.EnumMilstdType.RectFlag ||
-                geom.milStdType == MilStd.EnumMilstdType.CurveFlag || geom.milStdType == MilStd.EnumMilstdType.ArrowCross ||
-                geom.milStdType == MilStd.EnumMilstdType.CircleClosedangle || geom.milStdType == MilStd.EnumMilstdType.Closedangle ||
-                geom.milStdType == MilStd.EnumMilstdType.DoubleClosedangle || geom.milStdType == MilStd.EnumMilstdType.Fourstar ||
-                geom.milStdType == MilStd.EnumMilstdType.Rhombus || geom.milStdType == MilStd.EnumMilstdType.SameDirectionClosedangle ||
-                geom.milStdType == MilStd.EnumMilstdType.Triangle || geom.milStdType == MilStd.EnumMilstdType.Vane) {
+            if (geom.milStdType === MilStd.EnumMilstdType.TriangleFlag || geom.milStdType === MilStd.EnumMilstdType.RectFlag ||
+                geom.milStdType === MilStd.EnumMilstdType.CurveFlag || geom.milStdType === MilStd.EnumMilstdType.ArrowCross ||
+                geom.milStdType === MilStd.EnumMilstdType.CircleClosedangle || geom.milStdType === MilStd.EnumMilstdType.Closedangle ||
+                geom.milStdType === MilStd.EnumMilstdType.DoubleClosedangle || geom.milStdType === MilStd.EnumMilstdType.Fourstar ||
+                geom.milStdType === MilStd.EnumMilstdType.Rhombus || geom.milStdType === MilStd.EnumMilstdType.SameDirectionClosedangle ||
+                geom.milStdType === MilStd.EnumMilstdType.Triangle || geom.milStdType === MilStd.EnumMilstdType.Vane) {
 
-                if (verticeIndex == 0) {
+                if (verticeIndex === 0) {
                     if ((vertex[0] - vertices[1][0]) >= 0 || (vertex[1] - vertices[1][1]) <= 0) {
                         return;
                     }
                 }
-                else if (verticeIndex == 1) {
+                else if (verticeIndex === 1) {
                     if ((vertex[0] - vertices[0][0]) <= 0 || (vertex[1] - vertices[0][1]) >= 0) {
                         return;
                     }
@@ -3078,19 +3112,19 @@ MilStd.ModifyTool.handleUpEvent_ = function (evt) {
         this.rBush_.update(ol.extent.boundingExtent(segmentData.segment), segmentData);
         var geom = segmentData.feature.getGeometry();
         var vertices = geom.vertices;
-        if (geom.milStdType == MilStd.EnumMilstdType.TriangleFlag || geom.milStdType == MilStd.EnumMilstdType.RectFlag ||
-            geom.milStdType == MilStd.EnumMilstdType.CurveFlag || geom.milStdType == MilStd.EnumMilstdType.ArrowCross ||
-            geom.milStdType == MilStd.EnumMilstdType.CircleClosedangle || geom.milStdType == MilStd.EnumMilstdType.Closedangle ||
-            geom.milStdType == MilStd.EnumMilstdType.DoubleClosedangle || geom.milStdType == MilStd.EnumMilstdType.Fourstar ||
-            geom.milStdType == MilStd.EnumMilstdType.Rhombus || geom.milStdType == MilStd.EnumMilstdType.SameDirectionClosedangle ||
-            geom.milStdType == MilStd.EnumMilstdType.Triangle || geom.milStdType == MilStd.EnumMilstdType.Vane) {
+        if (geom.milStdType === MilStd.EnumMilstdType.TriangleFlag || geom.milStdType === MilStd.EnumMilstdType.RectFlag ||
+            geom.milStdType === MilStd.EnumMilstdType.CurveFlag || geom.milStdType === MilStd.EnumMilstdType.ArrowCross ||
+            geom.milStdType === MilStd.EnumMilstdType.CircleClosedangle || geom.milStdType === MilStd.EnumMilstdType.Closedangle ||
+            geom.milStdType === MilStd.EnumMilstdType.DoubleClosedangle || geom.milStdType === MilStd.EnumMilstdType.Fourstar ||
+            geom.milStdType === MilStd.EnumMilstdType.Rhombus || geom.milStdType === MilStd.EnumMilstdType.SameDirectionClosedangle ||
+            geom.milStdType === MilStd.EnumMilstdType.Triangle || geom.milStdType === MilStd.EnumMilstdType.Vane) {
 
-            if (segmentData.index == 0) {
+            if (segmentData.index === 0) {
                 if ((vertex[0] - vertices[1][0]) >= 0 || (vertex[1] - vertices[1][1]) <= 0) {
                     return false;
                 }
             }
-            else if (segmentData.index == 1) {
+            else if (segmentData.index === 1) {
                 if ((vertex[0] - vertices[0][0]) <= 0 || (vertex[1] - vertices[0][1]) >= 0) {
                     return false;
                 }
@@ -3133,7 +3167,7 @@ MilStd.ModifyTool.prototype.updateFeature = function (segmentData, coordinate, i
 MilStd.ModifyTool.handleEvent = function (mapBrowserEvent) {
     //var handled;
     //if (!mapBrowserEvent.map.getView().getHints()[ol.ViewHint.INTERACTING] &&
-    //mapBrowserEvent.type == ol.pointer.EventType.POINTERMOVE) {
+    //mapBrowserEvent.type === ol.pointer.EventType.POINTERMOVE) {
     //    this.handlePointerMove_(mapBrowserEvent);
     //}
     //return ol.interaction.Pointer.handleEvent.call(this, mapBrowserEvent) &&
@@ -3145,7 +3179,7 @@ MilStd.ModifyTool.handleEvent = function (mapBrowserEvent) {
     }
     var handled;
     if (!mapBrowserEvent.map.getView().getHints()[ol.ViewHint.INTERACTING] &&
-        mapBrowserEvent.type == ol.pointer.EventType.POINTERMOVE &&
+        mapBrowserEvent.type === ol.pointer.EventType.POINTERMOVE &&
         !this.handlingDownUpSequence) {
         this.handlePointerMove_(mapBrowserEvent);
     }
@@ -3265,7 +3299,7 @@ MilStd.DragPan = function (map) {
 ol.inherits(MilStd.DragPan, ol.interaction.Pointer);
 //2017.1.19修改
 MilStd.DragPan.prototype.activate = function () {
-    if (this.map_ === undefined || this.map_ == null) {
+    if (this.map_ === undefined || this.map_ === null) {
         return;
     }
     var interActionArr = this.map_.getInteractions();
@@ -3283,7 +3317,7 @@ MilStd.DragPan.prototype.activate = function () {
 };
 //2017.1.19修改
 MilStd.DragPan.prototype.deactivate = function () {
-    if (this.map_ === undefined || this.map_ == null) {
+    if (this.map_ === undefined || this.map_ === null) {
         return;
     }
     MilStd.tool.MilStdDrawTool.prototype.UnShieldDBClickZoomEvent(this.map_);
@@ -3300,7 +3334,7 @@ MilStd.DragPan.prototype.deactivate = function () {
 };
 
 MilStd.DragPan.prototype.modifyEndHandle = function (e) {
-    if (this.map_ === undefined || this.map_ == null) {
+    if (this.map_ === undefined || this.map_ === null) {
         return;
     }
     this.map_.un("dblclick", this.modifyEndHandle, this);
