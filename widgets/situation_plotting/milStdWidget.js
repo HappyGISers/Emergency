@@ -14,11 +14,11 @@ var selectTool;
 var boxSelectTool;
 //选中要素数组
 var selectedFeatures;
+var previousCursor;
 //样式数组
 var styles = [];
 //地图容器
 var map = parent.map;
-
 var ol = parent.ol;
 var MilStd = parent.MilStd;
 source = parent.milstdSource;
@@ -162,7 +162,10 @@ function removeArrow() {
 //修改样式
 function editGeom() {
     removeInteractions();
-
+    // ol.events.listen(map.getViewport(), ol.events.EventType.MOUSEMOVE, handleMoveEvent, this);
+   // var interactionPointer = new ol.interaction.Pointer({
+   //     handleMoveEvent: handleMoveEvent
+   //  });
     selectTool = new ol.interaction.Select();
     map.addInteraction(selectTool);
 
@@ -199,11 +202,11 @@ function editGeom() {
 function setStyle(selectedFeature) {
     var geometry = selectedFeature.getGeometry();
     var opacity = undefined;
-    if(geometry instanceof MilStd.MilStdGeomtry) {
-        opacity = vectorScale.opacity;
+    if(geometry.milStdType !== MilStd.EnumMilstdType.Marker) {
+        opacity = vectorScale.opacity ||0.01;
     }
     else {
-        opacity = markScale.opacity;
+        opacity = markScale.opacity || 0.01;
     }
     var editStyle = getStyle(opacity);
     styles.push(selectedFeature.getStyle());
@@ -239,6 +242,7 @@ function getRgba(cl,opacity) {
 
     return [red, green, blue, opacity]
 }
+
 //撤销样式修改
 function cancelEditGeom() {
     if (selectedFeatures && selectedFeatures.length > 0) {

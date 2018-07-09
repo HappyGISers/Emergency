@@ -140,10 +140,11 @@
                     color: style.stroke_.color_,
                     width: style.stroke_.width_
                 }),
-                image: new ol.style.Circle({
-                    fill: new ol.style.Fill({
-                        color: style.image_.fill_.color_
-                    })
+                image: new ol.style.Icon({
+                    //透明度
+                    opacity: style.image_.opacity_,
+                    //图标的url
+                    src: style.image_.iconImage_.src_
                 })
             }));
             milstdSource.addFeature(feature);

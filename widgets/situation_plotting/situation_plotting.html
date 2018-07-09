@@ -169,7 +169,7 @@
         <span class="disabled" id="cancelEditBtn" onclick="cancelEditGeom()" title="撤销上次样式修改">撤销修改</span>
     </div>
     <div class="widgets-button" style="margin-top: 14px;">
-        <span onclick="modifyArrow()" title="单击此按钮后用鼠标左键选中图形进行修改">修改图形</span>
+        <span  id="modify" onclick="modifyArrow()" title="单击此按钮后用鼠标左键选中图形进行修改">修改图形</span>
         <span onclick="moveArrow()" title="单击此按钮后用鼠标左键移动图形">移动图形</span>
         <span onclick="removeArrow()" title="单击此按钮后鼠标拉框选中移除图形">移除图形</span>
         <span onclick="removeAllFeatures()">清空要素</span>
@@ -184,6 +184,7 @@
         });
         //其他形状的图形，选中状态
         $('.other-shape').click(function () {
+            $('.widgets-button #modify').show();
             $('.widgets-point-main').hide();
             $('.widgets-tab-point-main').hide();
             $('.widgets-tab-main').show();
@@ -197,11 +198,13 @@
         //点击点之后，显示点的各种形状，及只显示透明度选项
         $('.point').click(function () {
             if ($(this).hasClass('active')) {
+                $('.widgets-button #modify').show();
                 $(this).removeClass('active');
                 $('.widgets-point-main').hide();
                 $('.widgets-tab-point-main').hide();
                 $('.widgets-tab-main').show();
             } else {
+                $('.widgets-button #modify').hide();
                 $('.lump').removeClass('active');
                 $(this).addClass('active');
                 $('.widgets-point-main').show();
