@@ -120,6 +120,10 @@ input {
     cursor: not-allowed !important;
 }
 
+.widgets-button span.active {
+    border-color: #3B8FC4;
+}
+
 .layer-alert-opacity {
     width: 220px;
     background-color: #ffffff;

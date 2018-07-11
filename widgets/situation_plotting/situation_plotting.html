@@ -162,11 +162,15 @@
                     </div>
                 </div>
             </div>
+            <p class="name">缩放比例：</p>
+            <div class="content">
+                <input type="text" id="pointSize" value="1"/>
+            </div>
         </div>
     </div>
     <div class="widgets-button">
         <span onclick="editGeom()" title="单击此按钮后用鼠标左键选中图形进行修改">修改样式</span>
-        <span class="disabled" id="cancelEditBtn" onclick="cancelEditGeom()" title="撤销上次样式修改">撤销修改</span>
+        <span class="disabled" id="cancelEditBtn" onclick="cancelEditGeom()" title="撤销上次样式修改">撤销上次修改</span>
     </div>
     <div class="widgets-button" style="margin-top: 14px;">
         <span  id="modify" onclick="modifyArrow()" title="单击此按钮后用鼠标左键选中图形进行修改">修改图形</span>
@@ -210,6 +214,15 @@
                 $('.widgets-point-main').show();
                 $('.widgets-tab-point-main').show();
                 $('.widgets-tab-main').hide();
+            }
+        });
+
+        $('.widgets-button span').not('#cancelEditBtn').click(function() {
+            if($(this).hasClass('active')) {
+                $(this).removeClass('active');
+            } else {
+                $('.widgets-button span').removeClass('active');
+                $(this).addClass('active');
             }
         });
         //调接口，渲染点图片

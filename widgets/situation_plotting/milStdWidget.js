@@ -48,6 +48,10 @@ function colorchangStyleEx(e) {
 
 //绘制军标
 function drawArrow(type) {
+    if($(".lump").hasClass('active')) {
+        drawTool.deactivate();
+        return ;
+    }
     removeInteractions();
     switch (type) {
         case "Point":
@@ -122,6 +126,11 @@ function onDrawEnd(event) {
 
 //修改军标
 function modifyArrow() {
+    if($('.widgets-button span').eq(2).hasClass('active')) {
+        if(modifyTool) {
+            modifyTool.deactivate();
+        }
+    }
     removeInteractions();
     modifyTool = new MilStd.ModifyTool(map);
     modifyTool.activate();
@@ -129,6 +138,11 @@ function modifyArrow() {
 
 //移动军标
 function moveArrow() {
+    if($('.widgets-button span').eq(3).hasClass('active')) {
+        if (dragTool) {
+            dragTool.deactivate();
+        }
+    }
     removeInteractions();
     dragTool = new MilStd.DragPan(map);
     dragTool.activate();
@@ -136,6 +150,14 @@ function moveArrow() {
 
 //移除选中的军标
 function removeArrow() {
+    if($('.widgets-button span').eq(4).hasClass('active')) {
+        if (selectTool) {
+            map.removeInteraction(selectTool);
+        }
+        if (boxSelectTool) {
+            map.removeInteraction(boxSelectTool);
+        }
+    }
     removeInteractions();
     boxSelectTool = new ol.interaction.DragBox({
         style: new ol.style.Style({
@@ -162,10 +184,6 @@ function removeArrow() {
 //修改样式
 function editGeom() {
     removeInteractions();
-    // ol.events.listen(map.getViewport(), ol.events.EventType.MOUSEMOVE, handleMoveEvent, this);
-   // var interactionPointer = new ol.interaction.Pointer({
-   //     handleMoveEvent: handleMoveEvent
-   //  });
     selectTool = new ol.interaction.Select();
     map.addInteraction(selectTool);
 
@@ -226,6 +244,7 @@ function getStyle(opacity) {
         image: new ol.style.Icon({
             //透明度
             opacity: opacity,
+            scale: $('#pointSize').val(),
             //图标的url
             src: $('.widgets-point-show img')[0].src
         })
@@ -252,12 +271,12 @@ function cancelEditGeom() {
     }
     selectedFeatures = [];
     styles = [];
-    $('#cancelEditBtn').attr("class", "disable");
+    $('#cancelEditBtn').attr("class", "disabled");
 }
 
 //移除所有控件
 function removeInteractions() {
-    $('#cancelEditBtn').attr("class", "disable");
+    $('#cancelEditBtn').attr("class", "disabled");
 
     if (drawTool) {
         drawTool.deactivate();
