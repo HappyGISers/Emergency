@@ -176,7 +176,7 @@
         <span  id="modify" onclick="modifyArrow()" title="单击此按钮后用鼠标左键选中图形进行修改">修改图形</span>
         <span onclick="moveArrow()" title="单击此按钮后用鼠标左键移动图形">移动图形</span>
         <span onclick="removeArrow()" title="单击此按钮后鼠标拉框选中移除图形">移除图形</span>
-        <span onclick="removeAllFeatures()">清空要素</span>
+        <span id = "milstd-clear" onclick="removeAllFeatures()">清空要素</span>
     </div>
 </div>
 <script src="../../js/jquery.min.js"></script>
@@ -188,6 +188,7 @@
         });
         //其他形状的图形，选中状态
         $('.other-shape').click(function () {
+            $('.widgets-button span').not('#cancelEditBtn').removeClass('active');
             $('.widgets-button #modify').show();
             $('.widgets-point-main').hide();
             $('.widgets-tab-point-main').hide();
@@ -201,6 +202,7 @@
         });
         //点击点之后，显示点的各种形状，及只显示透明度选项
         $('.point').click(function () {
+            $('.widgets-button span').not('#cancelEditBtn').removeClass('active');
             if ($(this).hasClass('active')) {
                 $('.widgets-button #modify').show();
                 $(this).removeClass('active');
@@ -217,7 +219,8 @@
             }
         });
 
-        $('.widgets-button span').not('#cancelEditBtn').click(function() {
+        //功能按钮选中状态和非选中状态
+        $('.widgets-button span').not('#cancelEditBtn').not('#milstd-clear').click(function() {
             if($(this).hasClass('active')) {
                 $(this).removeClass('active');
             } else {
@@ -230,7 +233,7 @@
             for (var i = 0; i < json.length; i++) {
                 $('.point-img').append('<li title="' + json[i].imgName + '"><img src="' + json[i].imgSrc + '"/></li>');
             }
-            ;
+
             $('.point-img li').eq(0).addClass('active');
             $('.widgets-point-show').html($('.point-img li').eq(0).html())
         });

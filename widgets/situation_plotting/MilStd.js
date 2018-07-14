@@ -2801,14 +2801,14 @@ MilStd.ModifyTool.prototype.activate = function () {
     this.map_.addInteraction(this);
     //this.map_ = this.selectTool.map_;
 
-    this.map_.on("dblclick", this.modifyEndHandle, this);
+    // this.map_.on("dblclick", this.modifyEndHandle, this);
     this.features_ = this.selectTool.getFeatures();
     this.features_.forEach(this.addFeature_, this);
     //修改
     ol.events.listen(this.features_, ol.CollectionEventType.ADD, this.handleFeatureAdd_, this);
     ol.events.listen(this.features_, ol.CollectionEventType.REMOVE, this.handleFeatureRemove_, this);
 
-    MilStd.tool.MilStdDrawTool.prototype.ShieldDBClickZoomEvent(this.map_);
+    // MilStd.tool.MilStdDrawTool.prototype.ShieldDBClickZoomEvent(this.map_);
 
 };
 
@@ -2846,30 +2846,32 @@ MilStd.ModifyTool.prototype.modifyEndHandle = function (e) {
 MilStd.ModifyTool.prototype.addFeature_ = function (feature) {
 
     var geometry = feature.getGeometry();
-    if (geometry instanceof ol.geom.Point) {
-        geom = geometry;
-    }
-    if (geometry instanceof ol.geom.GeometryCollection) {
-        geom = geometry.geometries_[0];
-    }
-    else {
-        geom = geometry;
-    }
-    if (this.SEGMENT_WRITERS_[geom.getType()] !== undefined) {
-        this.SEGMENT_WRITERS_[geom.getType()].call(this, feature);
-        this.oldVerticesFeature.clear();
-        this.clearOverLayer(this.overlay_);
-        if (geometry.vertices !== undefined && geometry.vertices != null) {
-            for (var i = 0; i < geometry.vertices.length; i++) {
-                var vertexFeature = new ol.Feature(new ol.geom.Point(geometry.vertices[i]));
-                this.overlay_.getSource().addFeature(vertexFeature);
-                this.oldVerticesFeature.push(vertexFeature);
+    if(geometry instanceof MilStd.MilStdGeomtry) {
+        if (geometry instanceof ol.geom.Point) {
+            geom = geometry;
+        }
+        if (geometry instanceof ol.geom.GeometryCollection) {
+            geom = geometry.geometries_[0];
+        }
+        else {
+            geom = geometry;
+        }
+        if (this.SEGMENT_WRITERS_[geom.getType()] !== undefined) {
+            this.SEGMENT_WRITERS_[geom.getType()].call(this, feature);
+            this.oldVerticesFeature.clear();
+            this.clearOverLayer(this.overlay_);
+            if (geometry.vertices !== undefined && geometry.vertices != null) {
+                for (var i = 0; i < geometry.vertices.length; i++) {
+                    var vertexFeature = new ol.Feature(new ol.geom.Point(geometry.vertices[i]));
+                    this.overlay_.getSource().addFeature(vertexFeature);
+                    this.oldVerticesFeature.push(vertexFeature);
+                }
             }
         }
-    }
-    var map = this.getMap();
-    if (map !== undefined && map != null) {
-        this.handlePointerAtPixel(this.lastPixel_, map);
+        var map = this.getMap();
+        if (map !== undefined && map != null) {
+            this.handlePointerAtPixel(this.lastPixel_, map);
+        }
     }
 };
 
@@ -2922,6 +2924,9 @@ MilStd.ModifyTool.prototype.handleFeatureAdd_ = function (evt) {
  */
 MilStd.ModifyTool.prototype.handleFeatureRemove_ = function (evt) {
     var feature = evt.element;
+    if(!(feature.getGeometry() instanceof MilStd.MilStdGeomtry)) {
+        return ;
+    }
     if (feature !== undefined && feature != null) {
         this.dispatchEvent(new MilStd.event.MilStdDrawEvent(MilStd.event.MilStdDrawEvent.MODIFY_FEATURE_END, feature));
     }
@@ -3038,7 +3043,8 @@ MilStd.ModifyTool.handleMoveEvent = function (evt) {
                 return feature;
             });
         var element = evt.map.getTargetElement();
-        if (feature && feature.getGeometry().milStdType !== MilStd.EnumMilstdType.Marker) {
+        if (feature && feature.getGeometry().milStdType !== MilStd.EnumMilstdType.Marker
+            && feature.getGeometry() instanceof MilStd.MilStdGeomtry) {
             if (element.style.cursor != this.cursor_) {
                 this.previousCursor_ = element.style.cursor;
                 element.style.cursor = this.cursor_;
@@ -3353,7 +3359,7 @@ MilStd.DragPan.prototype.handleDownEvent = function (evt) {
             return feature;
         });
 
-    if (feature) {
+    if (feature && feature.getGeometry() instanceof MilStd.MilStdGeomtry) {
         this.coordinate_ = evt.coordinate;
         this.feature_ = feature;
     }
@@ -3366,29 +3372,31 @@ MilStd.DragPan.prototype.handleDownEvent = function (evt) {
  * @param {ol.MapBrowserEvent} evt Map browser event.
  */
 MilStd.DragPan.prototype.handleDragEvent = function (evt) {
-    var map = evt.map;
+    if (this.coordinate_) {
+        var map = evt.map;
 
-    var feature = map.forEachFeatureAtPixel(evt.pixel,
-        function (feature, layer) {
-            return feature;
-        });
+        var feature = map.forEachFeatureAtPixel(evt.pixel,
+            function (feature, layer) {
+                return feature;
+            });
 
-    var deltaX = evt.coordinate[0] - this.coordinate_[0];
-    var deltaY = evt.coordinate[1] - this.coordinate_[1];
+        var deltaX = evt.coordinate[0] - this.coordinate_[0];
+        var deltaY = evt.coordinate[1] - this.coordinate_[1];
 
-    var geometry = /** @type {ol.geom.SimpleGeometry} */
-        (this.feature_.getGeometry());
-    geometry.translate(deltaX, deltaY);
+        var geometry = /** @type {ol.geom.SimpleGeometry} */
+            (this.feature_.getGeometry());
+        geometry.translate(deltaX, deltaY);
 
-    if (geometry.vertices !== undefined && geometry.vertices != null) {
-        var vertices = geometry.vertices;
-        for (var i = 0, len = vertices.length; i < len; i++) {
-            ol.coordinate.sub(vertices[i], [-deltaX, -deltaY]);
+        if (geometry.vertices !== undefined && geometry.vertices != null) {
+            var vertices = geometry.vertices;
+            for (var i = 0, len = vertices.length; i < len; i++) {
+                ol.coordinate.sub(vertices[i], [-deltaX, -deltaY]);
+            }
         }
-    }
 
-    this.coordinate_[0] = evt.coordinate[0];
-    this.coordinate_[1] = evt.coordinate[1];
+        this.coordinate_[0] = evt.coordinate[0];
+        this.coordinate_[1] = evt.coordinate[1];
+    }
 };
 
 
@@ -3403,7 +3411,7 @@ MilStd.DragPan.prototype.handleMoveEvent = function (evt) {
                 return feature;
             });
         var element = evt.map.getTargetElement();
-        if (feature) {
+        if (feature && feature.getGeometry() instanceof MilStd.MilStdGeomtry) {
             if (element.style.cursor != this.cursor_) {
                 this.previousCursor_ = element.style.cursor;
                 element.style.cursor = this.cursor_;

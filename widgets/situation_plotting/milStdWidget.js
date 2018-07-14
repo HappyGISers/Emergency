@@ -129,6 +129,7 @@ function modifyArrow() {
     if($('.widgets-button span').eq(2).hasClass('active')) {
         if(modifyTool) {
             modifyTool.deactivate();
+            return;
         }
     }
     removeInteractions();
@@ -141,6 +142,7 @@ function moveArrow() {
     if($('.widgets-button span').eq(3).hasClass('active')) {
         if (dragTool) {
             dragTool.deactivate();
+            return;
         }
     }
     removeInteractions();
@@ -151,11 +153,9 @@ function moveArrow() {
 //移除选中的军标
 function removeArrow() {
     if($('.widgets-button span').eq(4).hasClass('active')) {
-        if (selectTool) {
-            map.removeInteraction(selectTool);
-        }
         if (boxSelectTool) {
             map.removeInteraction(boxSelectTool);
+            return;
         }
     }
     removeInteractions();
@@ -171,7 +171,10 @@ function removeArrow() {
         selectedFeatures = [];
         var extent = boxSelectTool.getGeometry().getExtent();
         source.forEachFeatureIntersectingExtent(extent, function (feature) {
-            selectedFeatures.push(feature);
+            if (isMilstdFeature(feature))
+            {
+                selectedFeatures.push(feature);
+            }
         });
         if (selectedFeatures && selectedFeatures.length > 0) {
             for (var i = 0; i < selectedFeatures.length; i++) {
@@ -200,20 +203,29 @@ function editGeom() {
         styles = [];
         var extent = boxSelectTool.getGeometry().getExtent();
         source.forEachFeatureIntersectingExtent(extent, function (feature) {
-            setStyle(feature);
-            $('#cancelEditBtn').attr("class", "enable");
+            if (isMilstdFeature(feature))
+            {
+                selectedFeatures.push(feature);
+                setStyle(feature);
+            }
         });
+        $('#cancelEditBtn').attr("class", "enable");
     });
 
     selectTool.on('select', function (e) {
         styles = [];
-        selectedFeatures = e.selected;
-        if (selectedFeatures && selectedFeatures.length > 0) {
-            for (var i = 0; i < selectedFeatures.length; i++) {
-                setStyle(selectedFeatures[i])
+        selectedFeatures = [];
+        var currentSelectedFeatures = e.selected;
+        if (currentSelectedFeatures && currentSelectedFeatures.length > 0) {
+            for (var i = 0; i < currentSelectedFeatures.length; i++) {
+                if(isMilstdFeature(currentSelectedFeatures[i]))
+                {
+                    selectedFeatures.push(currentSelectedFeatures[i]);
+                    setStyle(selectedFeatures[i]);
+                    $('#cancelEditBtn').attr("class", "enable");
+                }
             }
         }
-        $('#cancelEditBtn').attr("class", "enable");
     });
 }
 
@@ -274,8 +286,11 @@ function cancelEditGeom() {
     $('#cancelEditBtn').attr("class", "disabled");
 }
 
+function isMilstdFeature(feature) {
+    return feature.getGeometry() instanceof MilStd.MilStdGeomtry;
+}
 //移除所有控件
-function removeInteractions() {
+function removeInteractions(keepTool) {
     $('#cancelEditBtn').attr("class", "disabled");
 
     if (drawTool) {
