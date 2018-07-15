@@ -2522,7 +2522,11 @@ MilStd.tool.MilStdDrawTool.prototype.activate = function (milType, milStdParams,
 
 MilStd.tool.MilStdDrawTool.prototype.deactivate = function () {
 
-    this.disconnectEventHandlers();
+    this.disconnectEventHandlers(true);
+    if(this.feature)
+    {
+        this.featureOverLay.getSource().removeFeature(this.feature);
+    }
     //this.map.removeLayer(this.featureOverLay);
     //2017.1.19修改
     this.featureOverLay.setMap(null);
@@ -2547,11 +2551,7 @@ MilStd.tool.MilStdDrawTool.prototype.drawStartHandle = function (e) {
         else {
             this.feature.setGeometry(this.milStdGeom);
         }
-
-        //if (this.milStdGeom.vertices.length === this.milStdGeom.GetMaxVerticesNum()) {  //达到最大控制点数则终止
-        if (this.milStdGeom.vertices.length === this.milStdGeom.milStdParams.maxVertices) {  //达到最大控制点数则终止
-            this.drawEndHandle(e);
-        }
+        this.drawEndHandle(e);
         return;
     }
     this.featureOverLay.getSource().addFeature(new ol.Feature(new ol.geom.Point(temPnt)));
@@ -2611,8 +2611,13 @@ MilStd.tool.MilStdDrawTool.prototype.mouseMoveHandle = function (e) {
     //this.feature.setGeometry(this.milStdGeom);
 };
 
-MilStd.tool.MilStdDrawTool.prototype.disconnectEventHandlers = function () {
-    ol.events.unlisten(this.mapViewport, ol.events.EventType.CLICK, this.drawStartHandle, this);
+MilStd.tool.MilStdDrawTool.prototype.disconnectEventHandlers = function (isDeactivate) {
+    if(isDeactivate) {
+        ol.events.unlisten(this.mapViewport, ol.events.EventType.CLICK, this.drawStartHandle, this);
+    }
+    else {
+        ol.events.listen(this.mapViewport, ol.events.EventType.CLICK, this.drawStartHandle, this);
+    }
     ol.events.unlisten(this.mapViewport, ol.events.EventType.CLICK, this.drawContinueHandle, this);
     ol.events.unlisten(this.mapViewport, ol.events.EventType.MOUSEMOVE, this.mouseMoveHandle, this);
     ol.events.unlisten(this.mapViewport, ol.events.EventType.DBLCLICK, this.drawEndHandle, this);
@@ -2622,10 +2627,10 @@ MilStd.tool.MilStdDrawTool.prototype.clear = function (opt_options) {
     this.feature.name = this.featureName;
     this.dispatchEvent(new MilStd.event.MilStdDrawEvent(MilStd.event.MilStdDrawEvent.DRAW_END, this.feature));
     this.featureOverLay.getSource().removeFeature(this.feature);
-    this.UnShieldDBClickZoomEvent(this.map);
+    // this.UnShieldDBClickZoomEvent(this.map);
     //this.disconnectEventHandlers();
     //2017.1.19修改
-    this.featureOverLay.setMap(null);
+    // this.featureOverLay.setMap(null);
     //this.map.removeLayer(this.featureOverLay);
     this.vertices = [];
     this.milStdGeom = null;

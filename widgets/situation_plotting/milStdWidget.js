@@ -48,9 +48,18 @@ function colorchangStyleEx(e) {
 
 //绘制军标
 function drawArrow(type) {
-    if($(".lump").hasClass('active')) {
-        drawTool.deactivate();
-        return ;
+    if(type === 'Point')
+    {
+        if($('.point').hasClass('active')) {
+            drawTool.deactivate();
+            return ;
+        }
+    }
+    else {
+        if($('.'+type).hasClass('active')) {
+            drawTool.deactivate();
+            return ;
+        }
     }
     removeInteractions();
     switch (type) {
@@ -115,7 +124,7 @@ function drawArrow(type) {
 };
 //绘制完成后的回调
 function onDrawEnd(event) {
-    $('.lump').removeClass('active');
+    // $('.lump').removeClass('active');
     var feature = event.feature;
     var opacity = this.milStdType === MilStd.EnumMilstdType.Marker ?
         markScale.opacity : vectorScale.opacity;

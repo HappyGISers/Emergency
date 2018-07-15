@@ -21,7 +21,8 @@ var bufferResult = {
 var currentDrawGeoJson = {
     type: "Feature",
     geometry: null,
-    properties: null
+    properties: null,
+    area: 0
 };
 
 function initCheckbox() {
@@ -78,6 +79,7 @@ function drawMarkEnd(currentLnglat, currentFeature) {
 //除点以外的绘制完成回调
 function drawEnd(currentLnglats, area, currentFeature) {
     $('.lump').removeClass('active');
+    currentDrawGeoJson.area = area;
     currentDrawGeoJson.geometry = getGeometry(currentLnglats, currentFeature);
     closeTool();
     setTimeout(function () {
@@ -102,10 +104,10 @@ function search() {
     //获取缓冲查询参数设置
     var bufferParameters = getBufferParameters();
     var selectedLayers = bufferParameters.selectedLayers;
-    if (selectedLayers.length === 0) {
-        alert('请选择查询对象');
-        return;
-    }
+    // if (selectedLayers.length === 0) {
+    //     alert('请选择查询对象');
+    //     return;
+    // }
     initBufferResult();
     //缓冲
     var bufferJson = doBuffer(bufferParameters.radius, bufferParameters.bufferUnit);
@@ -114,7 +116,7 @@ function search() {
     selectedLayers.forEach(function (layer) {
         //获取图层所有数据
         queryLayer(layer, queryAndAddResult.bind(null, layer, bufferJson));
-    })
+    });
     $('.list-title p:first-child')[0].innerHTML = '全部 (' + bufferResult.count + ') ';
     $('.list-title p:first-child').click(function () {
         showAllLayer(null, 'allLayer')
@@ -125,12 +127,31 @@ function search() {
     }
 }
 
+function getSteps(radius,bufferUnit) {
+    var baseSteps = 1000;
+    var steps = baseSteps;
+
+    if (currentDrawGeoJson.geometry.type === 'Polygon' && currentDrawGeoJson.area > 100000) {
+        steps += (currentDrawGeoJson.area / 100000) * baseSteps
+    }
+    if (currentDrawGeoJson.geometry.type === 'LineString' && currentDrawGeoJson.area > 1000) {
+        steps += (currentDrawGeoJson.area / 1000) * baseSteps
+    }
+    if (bufferUnit === 'kilometers' && radius > 1) {
+        steps += (radius / 1) * steps
+    }
+    if (bufferUnit === 'meters' && radius > 1000) {
+        steps += (radius / 1000) * steps
+    }
+    return steps;
+}
 //根据绘制的图形进行缓冲获取缓冲图形
 function doBuffer(radius, bufferUnit) {
+
     var bufferJson = turf.buffer(currentDrawGeoJson,
         radius, {
             units: bufferUnit,
-            steps: 200
+            steps: getSteps(radius, bufferUnit)
         });
     var bufferCoordinates = [];
     if (bufferJson && bufferJson.geometry &&
