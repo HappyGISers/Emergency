@@ -104,10 +104,10 @@ function search() {
     //获取缓冲查询参数设置
     var bufferParameters = getBufferParameters();
     var selectedLayers = bufferParameters.selectedLayers;
-    // if (selectedLayers.length === 0) {
-    //     alert('请选择查询对象');
-    //     return;
-    // }
+    if (selectedLayers.length === 0) {
+        alert('请选择查询对象');
+        return;
+    }
     initBufferResult();
     //缓冲
     var bufferJson = doBuffer(bufferParameters.radius, bufferParameters.bufferUnit);
@@ -127,8 +127,8 @@ function search() {
     }
 }
 
-function getSteps(radius,bufferUnit) {
-    var baseSteps = 1000;
+function getSteps(radius, bufferUnit) {
+    var baseSteps = 64;
     var steps = baseSteps;
 
     if (currentDrawGeoJson.geometry.type === 'Polygon' && currentDrawGeoJson.area > 100000) {
@@ -145,14 +145,24 @@ function getSteps(radius,bufferUnit) {
     }
     return steps;
 }
+
 //根据绘制的图形进行缓冲获取缓冲图形
 function doBuffer(radius, bufferUnit) {
+    var bufferJson;
+    if (currentDrawGeoJson.geometry.type != "Point") {
+        bufferJson = turf.buffer(currentDrawGeoJson,
+            radius, {
+                units: bufferUnit,
+                steps: getSteps(radius, bufferUnit)
+            });
+    } else {
+        bufferJson = turf.circle(currentDrawGeoJson,
+            radius, {
+                units: bufferUnit,
+                steps: getSteps(radius, bufferUnit)
+            });
+    }
 
-    var bufferJson = turf.buffer(currentDrawGeoJson,
-        radius, {
-            units: bufferUnit,
-            steps: getSteps(radius, bufferUnit)
-        });
     var bufferCoordinates = [];
     if (bufferJson && bufferJson.geometry &&
         bufferJson.geometry.coordinates.length === 1) {

@@ -20,7 +20,7 @@
         <p class="name">基本图形：</p>
         <div class="content">
             <div class="lump point">
-                <img src="./images/plottingIcon/circle.png" title="点"  onclick="drawArrow('Point')"/>
+                <img src="./images/plottingIcon/circle.png" title="点" onclick="drawArrow('Point')"/>
             </div>
         </div>
     </div>
@@ -162,7 +162,7 @@
                     </div>
                 </div>
             </div>
-            <p class="name">缩放比例：</p>
+            <p class="name" style="margin-top: 16px;">缩放比例：</p>
             <div class="content">
                 <input type="text" id="pointSize" value="1"/>
             </div>
@@ -173,10 +173,10 @@
         <span class="disabled" id="cancelEditBtn" onclick="cancelEditGeom()" title="撤销上次样式修改">撤销上次修改</span>
     </div>
     <div class="widgets-button" style="margin-top: 14px;">
-        <span  id="modify" onclick="modifyArrow()" title="单击此按钮后用鼠标左键选中图形进行修改">修改图形</span>
+        <span id="modify" onclick="modifyArrow()" title="单击此按钮后用鼠标左键选中图形进行修改">修改图形</span>
         <span onclick="moveArrow()" title="单击此按钮后用鼠标左键移动图形">移动图形</span>
         <span onclick="removeArrow()" title="单击此按钮后鼠标拉框选中移除图形">移除图形</span>
-        <span id = "milstd-clear" onclick="removeAllFeatures()">清空要素</span>
+        <span id="milstd-clear" onclick="removeAllFeatures()">清空要素</span>
     </div>
 </div>
 <script src="../../js/jquery.min.js"></script>
@@ -220,8 +220,8 @@
         });
 
         //功能按钮选中状态和非选中状态
-        $('.widgets-button span').not('#cancelEditBtn').not('#milstd-clear').click(function() {
-            if($(this).hasClass('active')) {
+        $('.widgets-button span').not('#cancelEditBtn').not('#milstd-clear').click(function () {
+            if ($(this).hasClass('active')) {
                 $(this).removeClass('active');
             } else {
                 $('.widgets-button span').removeClass('active');
@@ -258,13 +258,13 @@
                 g = document,
                 b = window,
                 m = Math;
-            if(this.btn.id === "silder2") {
-               this.silderx = 0;
-               this.silderm = 0;
-               this.opacity = 1;
+            if (this.btn.id === "silder2") {
+                this.silderx = 0;
+                this.silderm = 0;
+                this.opacity = 1;
             }
             else {
-                this.silderx = this.bar.offsetWidth/2;
+                this.silderx = this.bar.offsetWidth / 2;
                 this.btn.style.left = this.silderx + 'px';
                 this.step.style.width = Math.max(0, this.silderx) + 'px';
                 this.silderm = m.round(m.max(0, this.silderx / this.bar.offsetWidth) * 100);
